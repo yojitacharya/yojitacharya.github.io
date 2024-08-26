@@ -1,85 +1,49 @@
 <!DOCTYPE html>
     <html>
         <head>
-            <title> Coming Soon - Yojit Acharya </title>
+            <title> Portfolio - Yojit Acharya </title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta charset="UTF-8" />
             <link rel="stylesheet" type="text/css" href="style.css"> 
             <script type="text/javascript" src="tsparticles.all.bundle.js"></script>
         </head>
         <body>
-            <div class="container">
             <header>
-
-
+                <nav>
                     <ul>
-                        <h1> Coming Soon </h1>
-                        <a href="index.html">Back</a>
+                        <h1> Portfolio </h1>
+                        <a href="index.html"draggable="false">Home</a>
+                        <a href="links.html"draggable="false">Links</a>
+                        <a href="portfolio.html"draggable="false">Portfolio</a>
+                        <a href="contacts.html"draggable="false">Contacts</a>
+                        <a href="test.html"draggable="false">Test</a>
+                        <hr>
+
+                        <links>
+                            <figure>
+                                <a href="Blackjack/index.html"><img src="blackjack.png" alt="blackjack" width="100"></a>
+                                <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
+                            </figure>
+                            <figure>
+                                <a href="Stopwatch/index.html"><img src="stopwatch.png" alt="stopwatch" width="100"></a>
+                                <figcaption><a href="Stopwatch/index.html">Stopwatch</a></figcaption>
+                            </figure>
+                            <figure>
+                                <a href="Calculator/index.html"><img src="calculator.png" alt="calculator" width="100"></a>
+                                <figcaption><a href="Calculator/index.html">CleanCalculator</a></figcaption>
+                            </figure>
+                            <figure>
+                                <a href="RSVP Reader/index.html"><img src="RSVP.png" alt="RSVP" width="200"></a>
+                                <figcaption><a href="RSVP Reader/index.html">RSVP-Reader</a></figcaption>
+                            </figure>
+                            <figure>
+                                <a href="Snake/index.html"><img src="snake.png" alt="snake" width="100"></a>
+                                <figcaption><a href="Snake/index.html">Snake</a></figcaption>
+                            </figure>
+                        </links>
                     </ul>
+                </nav>
+            </header>
 
-    <!-- tsParticles div, not required, but it's recommended -->
-    <div id="tsparticles"></div>
-    <!-- https://github.com/matteobruni/tsparticles -->
-    <!-- https://www.jsdelivr.com/package/npm/tsparticles-slim -->
-    <!-- The bundle file contains all the necessary scripts for the slim version, instead of manually including them all -->
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.0.6/tsparticles.slim.bundle.min.js"></script>
-    <!-- https://www.jsdelivr.com/package/npm/tsparticles -->
-    <!-- The bundle file contains all the necessary scripts for the full version, instead of manually including them all -->
-    <!--<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.0.6/tsparticles.bundle.min.js"></script>-->
-    <script type="text/javascript">
-      // All options can be found here: https://particles.js.org/docs/interfaces/Options_Interfaces_IOptions.IOptions.html
-      // The slim version doesn't have the following plugins:
-      // Absorbers, Emitters, PolygonMask, Interactivity Trail
-      const options = {
-        background: {
-          color: "255,255,255,0", // the canvas background color
-        },
-        interactivity: {
-          events: {
-            onClick: {
-              // this handles the mouse click event
-              enable: true,
-              mode: "push", // this adds particles
-            },
-            onHover: {
-              // this handles the mouse hover event
-              enable: true,
-              mode: "repulse", // this make particles move away from the mouse
-            },
-          },
-          modes: {
-            push: {
-              quantity: 6, // number of particles to add
-            },
-            repulse: {
-              distance: 100, // the distance of the particles from the mouse
-            },
-          },
-        },
-        particles: {
-          links: {
-            enable: true, // this enables links between particles
-            opacity: 0.3,
-            distance: 200,
-          },
-          move: {
-            enable: true, // this makes particles move
-            speed: { min: 4, max: 6 }, // this is the speed of the particles
-          },
-          opacity: {
-            value: { min: 0.3, max: 0.7 }, // this sets the opacity of the particles
-          },
-          size: {
-            value: { min: 1, max: 3 }, // this sets the size of the particles
-          },
-        },
-      };
-
-      // tsParticles.load has two parameters, the first one is the id of the container, the second one is an object with the options
-      tsParticles.load("tsparticles", options);
-    </script>
-
-
-            </div>
         </body>
     </html>
