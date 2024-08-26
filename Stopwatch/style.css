@@ -1,0 +1,41 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align:center;
+
+}
+
+body {
+    background-color:black;
+    font-size:60px;
+    color:rgb(255, 255, 255); 
+}
+
+h2{
+    font-size:72px;
+}
+
+.r {
+    color:rgb(255, 255, 255);
+    background-color:rgb(133, 0, 0);
+    font-size:48px;
+    width:350px;
+    height:100px;
+    border-style:none;
+    text-align:center;
+    box-shadow:black;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.s {
+    color:rgb(255, 255, 255);
+    background-color:rgb(0, 95, 184);
+    width:350px;
+    height:100px;
+    font-size:48px;
+    border-style:none;
+    text-align:center;
+    box-shadow:black;
+    cursor:pointer;
+    border-radius:8px;
+}
