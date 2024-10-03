@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet">
+        <title>Protein Food Catalog - Yojit Acharya</title>
+        <script src="catalog.js"></script>
+    </head>
+    <body>
+        <h1> Find a high-protein food with your items </h1>
+        <br>
+        <br>
+        <div class="nav">
+            <input type="text" id="inputHave" onkeyup="search()" placeholder="I DON'T Have ...">
+            <input type="text" id="inputSearch" onkeyup="search()" placeholder="Search ...">
+            <button class="search">Search</button>
+        </div>
+        <p>
+            <ul id="myUL">
+                <li data-ingredients="oats, chocolate, peanut butter, honey, protein powder"><a href="#" class="recipe-link">Protein Bars - 800 cal, 44g P, 108g C, 28g F</a>
+                <div class="instructions">
+                    <h2>Instructions:</h2>
+                    <p>Step 1: Mix together 1 Cup of oats, scoop peanut butter, some honey, 1/4 cup water, and a scoop of whey</p>
+                    <p>Step 2: Melt 15g of chocolate chips</p>
+                    <p>Step 3: Refrigerate for 1-2 hours </p>
+                </div> </li>
+                <li data-ingredients="peanut butter, syrup, chocolate, protein powder"><a href="#">Cookie Dough - 340 cal, 27g P, 29g C, 14g F</a>
+                    <div class="instructions">
+                    <h2>Instructions:</h2>
+                    <p>Step 1: Mix 15g PB, 1 tbsp syrup, and 1 scoop whey + water optionally</p>
+                    <p>Step 2: Mix in chocolate chips</p>
+                </div> </li>
+                <li data-ingredients="bread, cheddar, mozzarella, mayo"><a href="#">Grilled Cheese - 250 cal, 15g P, 27g C, 9g F</a>
+                    <div class="instructions">
+                    <h2>Instructions:</h2>
+                    <p>Step 1: Take 2 pieces of bread and put 20g of cheddar and mozz on it.</p>
+                    <p>Step 2: Put about 7g of mayo on each outside bread slice</p>
+                    <p>Step 3: put in panini press or pan </p>
+                </div> </li>
+                <li data-ingredients="oats, egg, baking powder, vanilla extract, milk, banana, protein powder"><a href="#">Cake - 460 cal, 44g P, 56g C, 7g F</a>
+                    <div class="instructions">
+                    <h2>Instructions:</h2>
+                    <p>Step 1: Blend 60g oats and then put 1 egg, baking powder, vanilla extract, 100ml milk, banana then blend</p>
+                    <p>Step 2: Add a scoop of whey and blend again</p>
+                    <p>Step 3: Put in greased baking dish, and microwave for 3 minutes</p>
+                </div> </li>
+            </ul>
+        </p>
+    </body>
+</html>
