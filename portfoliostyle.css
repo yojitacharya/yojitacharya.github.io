@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    font-family: sans-serif; /* Simplified font */
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #222;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Very subtle shadow */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 15px 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+nav li {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+nav li a {
+    display: inline-block;
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 3px; /* Minimal rounding */
+    transition: background-color 0.3s ease;
+}
+
+nav li a:hover {
+    background-color: #333;
+}
+
+main {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+main h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+    font-weight: 300; /* Lighter font weight */
+}
+
+.portfolio-items {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.portfolio-items figure {
+    text-align: center;
+}
+
+.portfolio-items img {
+    width: 120px; /* Slightly smaller images */
+    border-radius: 2px; /* Minimal rounding */
+    transition: transform 0.3s ease;
+}
+
+.portfolio-items img:hover {
+    transform: scale(1.03); /* Very subtle hover effect */
+}
+
+.portfolio-items figcaption a {
+    color: #c0c0c0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.portfolio-items figcaption a:hover {
+    color: #e0e0e0;
+}

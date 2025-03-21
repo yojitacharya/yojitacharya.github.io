@@ -1,0 +1,32 @@
+<!DOCTYPE HTML> 
+<html>
+    <head>
+        <!-- stuff -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <title> BlackJack - Yojit Acharya </title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="blackjack.js"></script>
+    </head> 
+        <!-- Dealer Sum / Cards-->
+    <body style="background-color:rgb(20, 20, 20);">
+        <h2> Dealer: <span id="dealer-sum"></span></h2>
+        <div id="dealer-cards">
+            <!-- Hidden Card-->
+        <img id="hidden" src="./cards/BACK.png">
+        </div>
+        <!-- Your Cards -->
+        <h2> You: <span id="your-sum"></span></h2>
+        <div id="your-cards"></div>
+        <br>
+        <!-- Buttons -->
+        <button id="hit">Hit</button> 
+        <button id="stay">Stay</button>
+        <p id="results"></p>
+        <br>
+        <button id="reset">!!Reset!!</button>
+        <br>
+        <br>
+        <button id="back" onclick="history.back()">Go Back</button>
+    </body>
+</html>

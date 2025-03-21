@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - Yojit Acharya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerElement = document.querySelector('header');
+            const navListItems = document.querySelectorAll('nav li');
+            const mainElement = document.querySelector('main');
+            const figureElements = document.querySelectorAll('.games figure'); // Updated selector
+
+            headerElement.classList.add('slide-in');
+            navListItems.forEach(item => item.classList.add('slide-in'));
+            mainElement.classList.add('slide-in');
+            figureElements.forEach(item => item.classList.add('slide-in'));
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="links.html">Links</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="test.html">Test</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Games</h2>
+        <div class="games">
+            <figure>
+                <a href="Blackjack/index.html"><img src="Imgs/blackjack.png" alt="blackjack"></a>
+                <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
+            </figure>
+            <figure>
+                <a href="Snake/index.html"><img src="Imgs/snake.png" alt="snake"></a>
+                <figcaption><a href="Snake/index.html">Snake</a></figcaption>
+            </figure>
+            <figure>
+                <a href="Chess/index.html"><img src="Chess/Chess_Pieces/N.png" alt="chess"></a>
+                <figcaption><a href="Chess/index.html">Chess</a></figcaption>
+            </figure>
+            <figure>
+                <a href="Tetris/index.html"><img src="Imgs/Tetris.png" alt="tetris"></a>
+                <figcaption><a href="Tetris/index.html">Tetris</a></figcaption>
+            </figure>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000; /* Dark background */
+    color: #00ffff; /* Neon cyan text */
+    font-family: 'Courier New', monospace; /* Retro font */
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+#tetris-canvas {
+    border: 2px solid #00ffff; /* Neon border */
+    background-color: #000;
+    box-shadow: 0 0 20px #00ffff; /* Neon glow */
+}
+
+#game-over, #score, #level, #high-score, #reset-button {
+    position: absolute;
+    font-size: 1.2em;
+    text-shadow: 0 0 10px #00ffff; /* Neon text glow */
+}
+
+#game-over {
+    display: none;
+    font-size: 2em;
+}
+
+#score {
+    top: 10px;
+    left: 10px;
+}
+
+#level {
+    top: 40px;
+    left: 10px;
+}
+
+#high-score {
+    top: 70px;
+    left: 10px;
+}
+
+#reset-button {
+    bottom: 10px;
+    left: 10px;
+    background-color: #000;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#reset-button:hover {
+    background-color: #00ffff;
+    color: #000;
+}
