@@ -91,6 +91,8 @@ main h2 {
     transform: translateY(20px);
     opacity: 0;
     transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    display: block;
+    margin-bottom: 1em;
 }
 
 .games figure.slide-in {
@@ -104,10 +106,11 @@ games figure:nth-child(3) { transition-delay: 0.8s; }
 
 .games figure img {
     width: 200px;
-    height: 150px;
     object-fit: cover;
     border-radius: 0;
     transition: transform 0.3s ease;
+    max-width: 100%;
+    height: auto;
 }
 
 .games figure img:hover {
@@ -137,5 +140,6 @@ games figure:nth-child(3) { transition-delay: 0.8s; }
         transform: translateY(0);
     }
 }
+
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');

@@ -14,6 +14,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow-y: auto;
 }
 
 #game-container {
@@ -35,6 +36,57 @@ body {
     border-radius: 15px;
     margin-bottom: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative; /* Needed for absolute positioning of combo display if desired */
+}
+
+#combo-display {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffeb3b; /* Yellow color for combo */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out;
+}
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.tutorial-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #8BC34A; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.tutorial-button:hover {
+    transform: scale(1.05);
+    background-color: #AED581; /* Lighter green */
+}
+.combo-active {
+    opacity: 1;
+}
+
+.combo-flash {
+    animation: combo-flash-animation 0.5s ease-in-out;
+}
+
+@keyframes combo-flash-animation {
+    0% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0.8; transform: scale(1); }
+}
+
+.combo-indicator {
+    color: #ff9800; /* Orange color for combo in score */
+    font-size: 0.8em;
+    font-weight: normal;
 }
 
 #score {
@@ -188,7 +240,109 @@ body {
     will-change: transform, left, top;
     transform-origin: center center;
 }
+.block.placed {
+    transform: scale(0.8);
+    opacity: 0.8;
+}
 
+.block.placed.placed-animation {
+    animation: place-block 0.2s ease-out forwards;
+}
+/* Extravagant clear animation for individual blocks */
+.block.cleared-extravagant {
+    animation: clear-block-extravagant 0.5s ease-in-out forwards;
+}
+
+@keyframes clear-block-extravagant {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Row clearing animation */
+.block.row-clearing-animation {
+    animation: row-clear-flash 0.4s ease-in-out;
+}
+
+@keyframes row-clear-flash {
+    0%, 100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    50% {
+        opacity: 0.2;
+        transform: translateX(10px); /* Slight horizontal shift */
+    }
+}
+
+/* Column clearing animation */
+.block.col-clearing-animation {
+    animation: col-clear-flash 0.4s ease-in-out;
+}
+
+@keyframes col-clear-flash {
+    0%, 100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0.2;
+        transform: translateY(10px); /* Slight vertical shift */
+    }
+}
+
+/* Extravagant sparkle animation */
+.sparkle-extravagant {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    background-color: white;
+    z-index: 10; /* Ensure they are on top */
+    animation: sparkle-fade 0.6s forwards ease-out, sparkle-move 0.6s forwards ease-out;
+}
+
+@keyframes sparkle-fade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle-move {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.5) translate(var(--sparkle-end-x), var(--sparkle-end-y));
+    }
+}
+@keyframes place-block {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.block.cleared {
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.2s ease-in, opacity 0.2s ease-in; /* Added transition */
+}
 @keyframes sparkle {
     0% {
         transform: scale(0);

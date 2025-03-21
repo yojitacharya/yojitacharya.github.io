@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let floatingBlock = null;
     let comboLevel = 1;
     let turnsSinceLastClear = 0;
-    
+    const COMBO_DISPLAY_ID = 'combo-display';
     // Block colors (vibrant palette)
     const blockColors = [
         '#FF5252', // Red
@@ -87,6 +87,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Initial board sizing
         resizeBoard();
+            // Create combo display element and append it to the header
+        const header = document.getElementById('header');
+        const comboDisplay = document.createElement('div');
+        comboDisplay.id = COMBO_DISPLAY_ID;
+        comboDisplay.classList.add('combo-display');
+        header.insertBefore(comboDisplay, document.getElementById('best-score')); // Adjust placement if needed
+        updateComboDisplay(); // Initialize combo display
+    }
+    function updateComboDisplay() {
+        const comboDisplay = document.getElementById(COMBO_DISPLAY_ID);
+        if (comboLevel > 1) {
+            comboDisplay.textContent = `Combo: x${comboLevel}`;
+            comboDisplay.classList.add('combo-active');
+        } else {
+            comboDisplay.textContent = '';
+            comboDisplay.classList.remove('combo-active');
+        }
     }
     
     // Create the game board
@@ -244,6 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleMouseMove(e) {
     if (floatingBlock) {
         positionFloatingBlock(e.clientX, e.clientY);
+        updateRowColHighlight(floatingBlock.shape, floatingBlock.validPlacement ? floatingBlock.validPlacement.row : -1, floatingBlock.validPlacement ? floatingBlock.validPlacement.col : -1);
+    } else {
+        clearRowColHighlight();
     }
 }
 // Position the floating block at cursor with snapping behavior
@@ -323,6 +343,69 @@ function positionFloatingBlock(x, y) {
         floatingBlock.validPlacement = null;
     }
 }
+function updateRowColHighlight(shape, startRow, startCol) {
+    clearRowColHighlight(); // Clear any previous row/col highlights
+
+    if (!floatingBlock || !floatingBlock.validPlacement) {
+        return;
+    }
+
+    const { row: placementRow, col: placementCol } = floatingBlock.validPlacement;
+    const blockColor = floatingBlock.color;
+
+    // Check for potential row clears
+    for (let r = 0; r < BOARD_SIZE; r++) {
+        let full = true;
+        for (let c = 0; c < BOARD_SIZE; c++) {
+            if (gameBoard2D[r][c] === 0 &&
+                !(placementRow <= r && r < placementRow + shape.length &&
+                  placementCol <= c && c < placementCol + (shape[r - placementRow] ? shape[r - placementRow].length : 0) &&
+                  shape[r - placementRow][c - placementCol] === 1)) {
+                full = false;
+                break;
+            }
+        }
+        if (full) {
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                if (cell && cell.firstChild && !cell.firstChild.classList.contains('row-col-highlight')) {
+                    cell.firstChild.dataset.originalRow = r;
+                    cell.firstChild.dataset.originalCol = c;
+                    cell.firstChild.dataset.originalColor = cell.firstChild.style.backgroundColor;
+                    cell.firstChild.style.backgroundColor = blockColor;
+                    cell.firstChild.classList.add('row-col-highlight');
+                }
+            }
+        }
+    }
+
+    // Check for potential column clears
+    for (let c = 0; c < BOARD_SIZE; c++) {
+        let full = true;
+        for (let r = 0; r < BOARD_SIZE; r++) {
+            if (gameBoard2D[r][c] === 0 &&
+                !(placementRow <= r && r < placementRow + shape.length &&
+                  placementCol <= c && c < placementCol + (shape[r - placementRow] ? shape[r - placementRow].length : 0) &&
+                  shape[r - placementRow][c - placementCol] === 1)) {
+                full = false;
+                break;
+            }
+        }
+        if (full) {
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                if (cell && cell.firstChild && !cell.firstChild.classList.contains('row-col-highlight')) {
+                    cell.firstChild.dataset.originalRow = r;
+                    cell.firstChild.dataset.originalCol = c;
+                    cell.firstChild.dataset.originalColor = cell.firstChild.style.backgroundColor;
+                    cell.firstChild.style.backgroundColor = blockColor;
+                    cell.firstChild.classList.add('row-col-highlight');
+                }
+            }
+        }
+    }
+}
+
 // Update board cell highlights based on current position
 function updateBoardHighlightAtPosition(startRow, startCol) {
     // Clear all highlights
@@ -411,21 +494,23 @@ function placeBlockAndCleanup(startRow, startCol) {
 }
     
     // Cancel block placement
+
     function cancelBlockPlacement() {
         if (!floatingBlock) return;
-        
+    
         // Remove floating block
         floatingBlock.element.remove();
-        
+    
         // Restore original block
         floatingBlock.originalElement.style.opacity = '1';
-        
+    
         // Reset state
         floatingBlock = null;
         document.body.classList.remove('block-selected');
-        
+    
         // Clear highlights
         clearHighlights();
+        clearRowColHighlight(); // Clear row/col highlights on cancel
     }
     
     // Clear all highlights from the board
@@ -434,8 +519,24 @@ function placeBlockAndCleanup(startRow, startCol) {
             cell.classList.remove('highlight');
             cell.classList.remove('invalid');
         });
+        clearRowColHighlight(); // Ensure row/col highlights are also cleared
     }
-    
+    function clearRowColHighlight() {
+        const highlighted = document.querySelectorAll('.row-col-highlight');
+        highlighted.forEach(el => {
+            const row = parseInt(el.dataset.originalRow);
+            const col = parseInt(el.dataset.originalCol);
+            const originalColor = el.dataset.originalColor;
+            const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+            if (cell && cell.firstChild) {
+                cell.firstChild.style.backgroundColor = originalColor;
+                cell.firstChild.classList.remove('row-col-highlight');
+                delete cell.firstChild.dataset.originalRow;
+                delete cell.firstChild.dataset.originalCol;
+                delete cell.firstChild.dataset.originalColor;
+            }
+        });
+    }
     // Helper to get mouse position
     function getMousePosition() {
         const e = window.event;
@@ -475,31 +576,36 @@ function placeBlockAndCleanup(startRow, startCol) {
         if (!canPlaceBlock(shape, startRow, startCol)) {
             return false;
         }
-        
+    
         // Place the block on the board
         for (let row = 0; row < shape.length; row++) {
             for (let col = 0; col < shape[row].length; col++) {
                 if (shape[row][col]) {
                     const boardRow = startRow + row;
                     const boardCol = startCol + col;
-                    
+    
                     // Update the data model
                     gameBoard2D[boardRow][boardCol] = 1;
-                    
+    
                     // Update the visual board
                     const cell = document.querySelector(`.cell[data-row="${boardRow}"][data-col="${boardCol}"]`);
                     const block = document.createElement('div');
                     block.classList.add('block', 'placed');
                     block.style.backgroundColor = color;
                     cell.appendChild(block);
+
+                    // Trigger animation on the next frame
+                    requestAnimationFrame(() => {
+                        block.classList.add('placed-animation');
+});
                 }
             }
         }
-        
+    
         // Add points for placing the block
         const blockSize = shape.flat().filter(cell => cell === 1).length;
         addScore(blockSize);
-        
+    
         // Check if we need to generate new blocks
         if (document.querySelectorAll('.block-option').length === 0) {
             generateBlockOptions();
@@ -512,7 +618,7 @@ function placeBlockAndCleanup(startRow, startCol) {
     function checkForFilledLines() {
         const filledRows = [];
         const filledCols = [];
-        
+    
         // Check rows
         for (let row = 0; row < BOARD_SIZE; row++) {
             let rowFilled = true;
@@ -526,7 +632,7 @@ function placeBlockAndCleanup(startRow, startCol) {
                 filledRows.push(row);
             }
         }
-        
+    
         // Check columns
         for (let col = 0; col < BOARD_SIZE; col++) {
             let colFilled = true;
@@ -540,76 +646,130 @@ function placeBlockAndCleanup(startRow, startCol) {
                 filledCols.push(col);
             }
         }
-        
+    
         // Clear filled rows and columns
         if (filledRows.length > 0 || filledCols.length > 0) {
             const linesCleared = filledRows.length + filledCols.length;
             let comboMultiplier = 1;
-
+            let comboIncreased = false;
+            const previousComboLevel = comboLevel;
+    
             if (turnsSinceLastClear <= 4 && turnsSinceLastClear > 0) {
                 comboLevel++;
                 comboMultiplier = comboLevel;
-                // Consider adding visual feedback for combo increase here
+                if (comboLevel > previousComboLevel) {
+                    comboIncreased = true;
+                    flashComboDisplay(); // Trigger the flash animation
+                }
                 console.log(`Combo increased to ${comboLevel}!`);
             } else {
                 comboLevel = 1;
             }
-
+    
             clearLines(filledRows, filledCols);
-
+    
             // Award points with combo multiplier
             const basePoints = linesCleared * BOARD_SIZE * 10; // Adjust base points as needed
             addScore(basePoints * comboMultiplier);
-
+    
             // Reset turn counter after clearing lines
             turnsSinceLastClear = 0;
             updateScoreDisplay();
+            updateComboDisplay();
         } else if (turnsSinceLastClear > 4) {
             // Reset combo if no lines cleared within the turn limit
             comboLevel = 1;
             updateScoreDisplay();
+            updateComboDisplay();
+        }
+    }
+    function flashComboDisplay() {
+        const comboDisplay = document.getElementById(COMBO_DISPLAY_ID);
+        if (comboDisplay) {
+            comboDisplay.classList.add('combo-flash');
+            setTimeout(() => {
+                comboDisplay.classList.remove('combo-flash');
+            }, 500); // Adjust the duration of the flash
+        }
+    }
+    function updateScoreDisplay() {
+        scoreDisplay.textContent = `Score: ${score}`;
+        if (comboLevel > 1) {
+            scoreDisplay.innerHTML += ` <span class="combo-indicator">(Combo: x${comboLevel})</span>`;
         }
     }
     
     // Clear filled rows and columns
     function clearLines(rows, cols) {
         const clearedCells = new Set();
-        
+
         // Mark cells to be cleared in the data model
         rows.forEach(row => {
             for (let col = 0; col < BOARD_SIZE; col++) {
                 gameBoard2D[row][col] = 0;
                 clearedCells.add(`${row},${col}`);
             }
+            // Add a row clearing animation trigger
+            animateRowClear(row);
         });
-        
+
         cols.forEach(col => {
             for (let row = 0; row < BOARD_SIZE; row++) {
                 gameBoard2D[row][col] = 0;
                 clearedCells.add(`${row},${col}`);
             }
+            // Add a column clearing animation trigger
+            animateColumnClear(col);
         });
-        
-        // Create clearing animation for blocks
-        clearedCells.forEach(cellKey => {
-            const [row, col] = cellKey.split(',').map(Number);
-            const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+
+        // Create clearing animation for blocks (slightly delayed to let row/col animation start)
+        setTimeout(() => {
+            clearedCells.forEach(cellKey => {
+                const [row, col] = cellKey.split(',').map(Number);
+                const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+                const block = cell.querySelector('.block');
+
+                if (block) {
+                    // Add a more intense sparkle
+                    createSparkles(block, 15); // Increased number of sparkles
+
+                    // Add clearing animation
+                    block.classList.add('cleared-extravagant');
+
+                    // Remove block after animation
+                    setTimeout(() => {
+                        block.remove();
+                    }, 500); // Match the CSS animation duration
+                }
+            });
+        }, 100); // Small delay
+    }
+    function animateRowClear(row) {
+        const rowCells = document.querySelectorAll(`.cell[data-row="${row}"]`);
+        rowCells.forEach(cell => {
             const block = cell.querySelector('.block');
-            
             if (block) {
-                // Add sparkles
-                createSparkles(block);
-                
-                // Add clearing animation
-                block.classList.add('cleared');
-                
-                // Remove block after animation
+                block.classList.add('row-clearing-animation');
                 setTimeout(() => {
-                    block.remove();
-                }, 300);
+                    block.classList.remove('row-clearing-animation');
+                }, 400); // Adjust to match CSS animation
             }
         });
     }
+
+    function animateColumnClear(col) {
+        const colCells = document.querySelectorAll(`.cell[data-col="${col}"]`);
+        colCells.forEach(cell => {
+            const block = cell.querySelector('.block');
+            if (block) {
+                block.classList.add('col-clearing-animation');
+                setTimeout(() => {
+                    block.classList.remove('col-clearing-animation');
+                }, 400); // Adjust to match CSS animation
+            }
+        });
+    }
+    
     function selectBlock(e) {
         if (isGameOver) return;
         e.stopPropagation(); // Prevent triggering board click
@@ -628,37 +788,39 @@ function placeBlockAndCleanup(startRow, startCol) {
         document.body.classList.add('block-selected');
     }
     // Create sparkle effect when blocks are cleared
-    function createSparkles(element) {
+    function createSparkles(element, count = 8) {
         const rect = element.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         const color = element.style.backgroundColor;
-        
-        for (let i = 0; i < 8; i++) {
+
+        for (let i = 0; i < count; i++) {
             const sparkle = document.createElement('div');
-            sparkle.classList.add('sparkle');
-            
-            const size = Math.random() * 6 + 2;
+            sparkle.classList.add('sparkle-extravagant'); // New class for extravagant sparkles
+
+            const size = Math.random() * 8 + 4; // Larger size
             const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 20 + 10;
-            
+            const distance = Math.random() * 30 + 20; // Further distance
+            const speed = Math.random() * 0.8 + 0.5; // Varying speed
+
             const x = centerX + Math.cos(angle) * distance;
             const y = centerY + Math.sin(angle) * distance;
-            
+
             sparkle.style.width = `${size}px`;
             sparkle.style.height = `${size}px`;
             sparkle.style.left = `${x}px`;
             sparkle.style.top = `${y}px`;
             sparkle.style.backgroundColor = color;
-            
+            sparkle.style.animationDuration = `${0.6 / speed}s`; // Adjust duration based on speed
+            sparkle.style.opacity = Math.random() * 0.7 + 0.3; // Varying opacity
+
             document.body.appendChild(sparkle);
-            
+
             setTimeout(() => {
                 sparkle.remove();
-            }, 800);
+            }, 600 / speed); // Match animation duration
         }
     }
-    
     // Check if any block can be placed on the board
     function canPlaceAnyBlock() {
         const remainingBlocks = document.querySelectorAll('.block-option');
@@ -724,6 +886,7 @@ function placeBlockAndCleanup(startRow, startCol) {
         comboLevel = 1;
         turnsSinceLastClear = 0;
         updateScoreDisplay();
+        updateComboDisplay();
 
         // Clear board
         document.querySelectorAll('.cell').forEach(cell => {
