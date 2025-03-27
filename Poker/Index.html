@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Texas Hold'em Poker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="header">
+      <h1>Texas Hold'em Poker</h1>
+    </div>
+
+    <div class="players">
+      <div class="player" id="player1">
+        <h2>Player 1</h2>
+        <div class="cards" id="player1-cards"></div>
+        <div class="chips" id="player1-chips">Chips: 1000</div>
+      </div>
+
+      <div class="table">
+        <div class="community-cards" id="community-cards"></div>
+        <div class="pot" id="pot">Pot: 0</div>
+      </div>
+
+      <div class="player" id="player2">
+        <h2>Player 2</h2>
+        <div class="cards" id="player2-cards"></div>
+        <div class="chips" id="player2-chips">Chips: 1000</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="deal-button">Deal Cards</button>
+      <button id="bet-button">Bet</button>
+      <button id="call-button">Call</button>
+      <button id="check-button">Check</button>
+      <button id="fold-button">Fold</button>
+      <button id="showdown-button">Showdown</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
