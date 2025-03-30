@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "coding",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "chess-ap-csp-main"
+	}
+}

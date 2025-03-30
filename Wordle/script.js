@@ -2564,6 +2564,7 @@ function submitGuess() {
     if (currentRow === TRIES) {
         gameOver = true;
         showMessage(`You ran out of tries! The word was ${secretWord}`);
+        alert(`You ran out of tries! The word was ${secretWord}`);
         document.removeEventListener('keydown', handleKeyPress);
     }
 }
