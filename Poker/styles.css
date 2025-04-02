@@ -1,0 +1,238 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e6b30;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.table {
+    flex: 1;
+    background-color: #0e5722;
+    border-radius: 300px;
+    border: 15px solid #7b3d0e;
+    position: relative;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.community-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 80px;
+    height: 112px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.placeholder {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.5);
+}
+
+.pot {
+    position: absolute;
+    top: 40%;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.players {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.player {
+    position: absolute;
+    width: 180px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.player.active {
+    box-shadow: 0 0 20px yellow;
+}
+
+.player.folded {
+    opacity: 0.5;
+}
+
+.player-cards {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px 0;
+}
+
+.player-cards .card {
+    width: 60px;
+    height: 84px;
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.player-points, .player-status {
+    font-size: 14px;
+    margin: 3px 0;
+}
+
+#player1 {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#player2 {
+    top: 40%;
+    right: 10px;
+}
+
+#player3 {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#player4 {
+    top: 40%;
+    left: 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #0a4119;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d9a441;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #e8b352;
+}
+
+button:disabled {
+    background-color: #6e6e6e;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.bet-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="range"] {
+    width: 200px;
+}
+
+.bet-amount {
+    min-width: 80px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.game-message {
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    min-height: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.winner-highlight {
+    animation: winner-pulse 1.5s infinite;
+}
+
+@keyframes winner-pulse {
+    0% { box-shadow: 0 0 10px 5px rgba(255, 215, 0, 0.5); }
+    50% { box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.8); }
+    100% { box-shadow: 0 0 10px 5px rgba(255, 215, 0, 0.5); }
+}
+
+.hand-ranking {
+    font-size: 14px;
+    color: #ffd700;
+    font-style: italic;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4); }
+    50% { box-shadow: 0 0 0 5px rgba(0, 255, 0, 0.1); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+}
+
+.cell.highlight {
+    background-color: rgba(0, 255, 0, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+.cell.invalid {
+    background-color: rgba(255, 0, 0, 0.2);
+    box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+.floating-block {
+    transition: left 0.15s ease, top 0.15s ease, transform 0.15s ease;
+    will-change: transform, left, top;
+}
+
+.block {
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    will-change: opacity, transform;
+}
+
+@keyframes blockPlaced {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.placed-animation {
+    animation: blockPlaced 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
