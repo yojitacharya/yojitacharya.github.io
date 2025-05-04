@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Crossword Puzzle Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .game-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .crossword-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .crossword-grid {
+      display: grid;
+      grid-template-columns: repeat(15, 40px);
+      grid-template-rows: repeat(15, 40px);
+      gap: 1px;
+      margin-bottom: 20px;
+    }
+    
+    .cell {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background-color: white;
+    }
+    
+    .black-cell {
+      background-color: #222;
+    }
+    
+    .cell.selected {
+      background-color: #e0f7fa;
+    }
+    
+    .cell.highlighted {
+      background-color: #e1f5fe;
+    }
+    
+    .cell-number {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 10px;
+    }
+    
+    .cell-input {
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+    }
+    
+    .cell-input:focus {
+      outline: none;
+    }
+    
+    .clues-container {
+      flex: 1;
+      min-width: 300px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-height: 620px;
+      overflow-y: auto;
+    }
+    
+    .clues-section {
+      margin-bottom: 20px;
+    }
+    
+    .clues-list {
+      list-style-position: inside;
+      padding-left: 10px;
+    }
+    
+    .clues-list li {
+      margin-bottom: 8px;
+      cursor: pointer;
+      padding: 3px;
+      border-radius: 4px;
+    }
+    
+    .clues-list li:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .clues-list li.active {
+      background-color: #e1f5fe;
+      font-weight: bold;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #0d8aee;
+    }
+    
+    .settings {
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .settings label {
+      margin-right: 10px;
+    }
+    
+    .settings select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    
+    .message {
+      text-align: center;
+      margin: 10px 0;
+      font-weight: bold;
+      height: 24px;
+    }
+    
+    .success {
+      color: #4caf50;
+    }
+    
+    .error {
+      color: #f44336;
+    }
+    
+    .progress-container {
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    
+    .progress {
+      height: 100%;
+      background-color: #4caf50;
+      transition: width 0.3s;
+      width: 0%;
+    }
+    
+    @media (max-width: 768px) {
+      .crossword-grid {
+        grid-template-columns: repeat(15, 28px);
+        grid-template-rows: repeat(15, 28px);
+      }
+      
+      .cell {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .cell-input {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .crossword-grid {
+        grid-template-columns: repeat(15, 22px);
+        grid-template-rows: repeat(15, 22px);
+      }
+      
+      .cell {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .cell-input {
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+      }
+      
+      .cell-number {
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Random Crossword Puzzle Generator</h1>
+    <p>Generate unique crossword puzzles with random shapes and clues!</p>
+  </header>
+  
+  <div class="settings">
+    <label for="size-select">Puzzle Size:</label>
+    <select id="size-select">
+      <option value="small">Small (10x10)</option>
+      <option value="medium" selected>Medium (15x15)</option>
+      <option value="large">Large (20x20)</option>
+    </select>
+    
+    <label for="difficulty-select">Difficulty:</label>
+    <select id="difficulty-select">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+  
+  <div class="controls">
+    <button id="new-puzzle-btn">Generate New Puzzle</button>
+    <button id="check-btn">Check Answers</button>
+    <button id="reveal-btn">Reveal Solution</button>
+    <button id="clear-btn">Clear Grid</button>
+  </div>
+  
+  <div class="message" id="message"></div>
+  
+  <div class="progress-container">
+    <div>Progress: <span id="progress-text">0%</span></div>
+    <div class="progress-bar">
+      <div class="progress" id="progress-fill"></div>
+    </div>
+  </div>
+  
+  <div class="game-container">
+    <div class="crossword-container">
+      <div class="crossword-grid" id="crossword-grid"></div>
+    </div>
+    
+    <div class="clues-container">
+      <div class="clues-section">
+        <h3>Across</h3>
+        <ol class="clues-list" id="across-clues"></ol>
+      </div>
+      <div class="clues-section">
+        <h3>Down</h3>
+        <ol class="clues-list" id="down-clues"></ol>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // A large bank of words and clues
+    const wordBank = [
+      { word: "ALGORITHM", clue: "Step-by-step procedure for calculations" },
+      { word: "APPLE", clue: "Fruit associated with gravity's discovery" },
+      { word: "ASTRONOMY", clue: "Study of celestial objects" },
+      { word: "BALLET", clue: "Classical dance form with pointe shoes" },
+      { word: "BANANA", clue: "Yellow curved fruit" },
+      { word: "BEACH", clue: "Sandy shore by the ocean" },
+      { word: "BICYCLE", clue: "Two-wheeled human-powered vehicle" },
+      { word: "BLIZZARD", clue: "Severe snowstorm with strong winds" },
+      { word: "BOOK", clue: "Bound pages containing text" },
+      { word: "BRIDGE", clue: "Structure spanning a physical obstacle" },
+      { word: "CAMERA", clue: "Device for recording images" },
+      { word: "CANDLE", clue: "Wax cylinder with embedded wick for light" },
+      { word: "CAT", clue: "Domesticated feline pet" },
+      { word: "CHAIR", clue: "Furniture designed for sitting" },
+      { word: "CHEESE", clue: "Dairy product often aged for flavor" },
+      { word: "CHOCOLATE", clue: "Sweet food made from cacao beans" },
+      { word: "CLOCK", clue: "Device to measure and display time" },
+      { word: "CLOUD", clue: "Visible mass of water droplets in the atmosphere" },
+      { word: "COFFEE", clue: "Caffeinated beverage from roasted beans" },
+      { word: "COOKIE", clue: "Sweet baked treat" },
+      { word: "CORAL", clue: "Marine invertebrates forming reefs" },
+      { word: "DIAMOND", clue: "Precious gemstone of crystallized carbon" },
+      { word: "DINNER", clue: "Evening meal" },
+      { word: "DOG", clue: "Domesticated canine pet" },
+      { word: "DOLPHIN", clue: "Intelligent marine mammal" },
+      { word: "EARTH", clue: "Our planet" },
+      { word: "ECLIPSE", clue: "Astronomical event where one body obscures another" },
+      { word: "ELECTRICITY", clue: "Flow of electric charge" },
+      { word: "ELEPHANT", clue: "Large mammal with a trunk" },
+      { word: "FIREWORKS", clue: "Explosive pyrotechnic displays" },
+      { word: "FLOWER", clue: "Reproductive structure of plants" },
+      { word: "FOOTBALL", clue: "Sport played with an oval ball" },
+      { word: "FOREST", clue: "Large area covered with trees" },
+      { word: "GALAXY", clue: "Vast system of stars, gas, and dust" },
+      { word: "GARDEN", clue: "Area for growing plants" },
+      { word: "GLACIER", clue: "Slow-moving mass of ice" },
+      { word: "GUITAR", clue: "Six-stringed musical instrument" },
+      { word: "HAMBURGER", clue: "Sandwich with a ground meat patty" },
+      { word: "HELICOPTER", clue: "Aircraft with horizontal rotating blades" },
+      { word: "HORIZON", clue: "Line where earth meets sky" },
+      { word: "HOSPITAL", clue: "Institution providing medical care" },
+      { word: "HURRICANE", clue: "Tropical cyclone with high winds" },
+      { word: "ICE", clue: "Frozen water" },
+      { word: "ISLAND", clue: "Land mass surrounded by water" },
+      { word: "JACKET", clue: "Outer garment for the upper body" },
+      { word: "JAZZ", clue: "Musical genre originating in African American communities" },
+      { word: "JIGSAW", clue: "Puzzle of irregular pieces forming a picture" },
+      { word: "JUNGLE", clue: "Dense tropical forest" },
+      { word: "KANGAROO", clue: "Australian marsupial known for hopping" },
+      { word: "KEYBOARD", clue: "Input device with keys" },
+      { word: "KITCHEN", clue: "Room for cooking" },
+      { word: "KITE", clue: "Flying toy on a string" },
+      { word: "LAPTOP", clue: "Portable computer" },
+      { word: "LAVA", clue: "Molten rock from a volcano" },
+      { word: "LIBRARY", clue: "Collection of books for reading" },
+      { word: "LIGHTHOUSE", clue: "Tower with light to guide ships" },
+      { word: "LIGHTNING", clue: "Natural electrical discharge" },
+      { word: "MAGAZINE", clue: "Periodical publication" },
+      { word: "MAGNET", clue: "Object that attracts iron" },
+      { word: "MARBLE", clue: "Small glass sphere used in games" },
+      { word: "METEOR", clue: "Space rock entering Earth's atmosphere" },
+      { word: "MICROSCOPE", clue: "Instrument for viewing small objects" },
+      { word: "MIRROR", clue: "Reflective surface" },
+      { word: "MONKEY", clue: "Primate with a tail" },
+      { word: "MOON", clue: "Earth's natural satellite" },
+      { word: "MOUNTAIN", clue: "Large natural elevation of earth's surface" },
+      { word: "MUSEUM", clue: "Institution preserving artifacts" },
+      { word: "MUSIC", clue: "Art form using sound and rhythm" },
+      { word: "NEWSPAPER", clue: "Periodical publication with news" },
+      { word: "OCEAN", clue: "Large body of saltwater" },
+      { word: "ORCHESTRA", clue: "Large ensemble of musicians" },
+      { word: "OXYGEN", clue: "Element essential for breathing" },
+      { word: "PAINTING", clue: "Artistic creation on canvas" },
+      { word: "PALACE", clue: "Large, luxurious residence" },
+      { word: "PARADISE", clue: "Place of extreme beauty or happiness" },
+      { word: "PENGUIN", clue: "Flightless bird of the Southern Hemisphere" },
+      { word: "PIANO", clue: "Musical instrument with keys" },
+      { word: "PLANET", clue: "Celestial body orbiting a star" },
+      { word: "PYRAMID", clue: "Ancient structure with triangular sides" },
+      { word: "QUEEN", clue: "Female monarch" },
+      { word: "QUILT", clue: "Multilayered bedcover" },
+      { word: "RADIO", clue: "Device receiving broadcast signals" },
+      { word: "RAINBOW", clue: "Multicolored arc in the sky" },
+      { word: "RIVER", clue: "Natural flowing watercourse" },
+      { word: "ROBOT", clue: "Programmable machine" },
+      { word: "ROCKET", clue: "Vehicle for space travel" },
+      { word: "SAFARI", clue: "Expedition to observe wildlife" },
+      { word: "SANDWICH", clue: "Food with fillings between bread" },
+      { word: "SATELLITE", clue: "Object orbiting a larger object" },
+      { word: "SCHOOL", clue: "Institution for education" },
+      { word: "SCISSORS", clue: "Cutting tool with two blades" },
+      { word: "SCULPTURE", clue: "Three-dimensional art form" },
+      { word: "SHIP", clue: "Large watercraft" },
+      { word: "SHOE", clue: "Footwear" },
+      { word: "SKELETON", clue: "Framework of bones" },
+      { word: "SKY", clue: "Region of atmosphere above earth" },
+      { word: "SKYSCRAPER", clue: "Very tall building" },
+      { word: "SMARTPHONE", clue: "Mobile phone with advanced features" },
+      { word: "SNOW", clue: "Frozen precipitation" },
+      { word: "SOCCER", clue: "Sport played with a round ball" },
+      { word: "SPACE", clue: "Area beyond Earth's atmosphere" },
+      { word: "SPIDER", clue: "Eight-legged arachnid" },
+      { word: "STADIUM", clue: "Large sports venue" },
+      { word: "STAR", clue: "Luminous celestial body" },
+      { word: "STORM", clue: "Disturbed atmospheric condition" },
+      { word: "STRAWBERRY", clue: "Red fruit with seeds on surface" },
+      { word: "SUBMARINE", clue: "Underwater vessel" },
+      { word: "SUGAR", clue: "Sweet crystalline substance" },
+      { word: "SUN", clue: "Star at the center of our solar system" },
+      { word: "SUNSET", clue: "Daily disappearance of the sun" },
+      { word: "SWIMMING", clue: "Locomotion through water" },
+      { word: "TABLE", clue: "Furniture with flat top and legs" },
+      { word: "TELESCOPE", clue: "Instrument for viewing distant objects" },
+      { word: "TELEVISION", clue: "Electronic device for viewing broadcasts" },
+      { word: "TENNIS", clue: "Racket sport played over a net" },
+      { word: "THEATER", clue: "Building for dramatic performances" },
+      { word: "THUNDER", clue: "Sound following lightning" },
+      { word: "TIGER", clue: "Large wild cat with stripes" },
+      { word: "TORNADO", clue: "Violent rotating column of air" },
+      { word: "TRAIN", clue: "Connected vehicles running on rails" },
+      { word: "TREE", clue: "Perennial plant with trunk and branches" },
+      { word: "TUNNEL", clue: "Underground passage" },
+      { word: "UMBRELLA", clue: "Device for protection from rain" },
+      { word: "UNICORN", clue: "Mythical horse-like creature with a horn" },
+      { word: "UNIVERSE", clue: "All of space and time" },
+      { word: "VACATION", clue: "Period of leisure and recreation" },
+      { word: "VALLEY", clue: "Low area between hills or mountains" },
+      { word: "VAMPIRE", clue: "Mythical blood-sucking creature" },
+      { word: "VEGETABLE", clue: "Edible plant part" },
+      { word: "VILLAGE", clue: "Small community in a rural area" },
+      { word: "VIOLIN", clue: "Stringed musical instrument" },
+      { word: "VOLCANO", clue: "Mountain with a crater or vent" },
+      { word: "WATER", clue: "Transparent, odorless liquid" },
+      { word: "WATERFALL", clue: "Falling stream of water" },
+      { word: "WHALE", clue: "Large marine mammal" },
+      { word: "WHEEL", clue: "Circular object rotating on an axle" },
+      { word: "WINDOW", clue: "Opening in a wall for light" },
+      { word: "WINTER", clue: "Coldest season of the year" },
+      { word: "XYLOPHONE", clue: "Musical instrument with wooden bars" },
+      { word: "YACHT", clue: "Recreational sailing vessel" },
+      { word: "YOGURT", clue: "Fermented dairy product" },
+      { word: "ZEBRA", clue: "African equid with black and white stripes" },
+      { word: "ZEPPELIN", clue: "Type of rigid airship" },
+      { word: "ZODIAC", clue: "Band of twelve astrological signs" },
+      { word: "ZOMBIE", clue: "Fictional undead being" },
+      { word: "AEROBICS", clue: "Exercise system performed to music" },
+      { word: "BIOLOGY", clue: "Study of living organisms" },
+      { word: "CALENDAR", clue: "System for organizing days and dates" },
+      { word: "DEMOCRACY", clue: "Government system by the people" },
+      { word: "EQUATION", clue: "Mathematical statement with equal parts" },
+      { word: "FEATHER", clue: "Light outgrowth of a bird's skin" },
+      { word: "GEOLOGY", clue: "Study of Earth's physical structure" },
+      { word: "HISTORY", clue: "Record of past events" },
+      { word: "INTERNET", clue: "Global computer network" },
+      { word: "JUPITER", clue: "Largest planet in our solar system" },
+      { word: "KILOGRAM", clue: "Metric unit of mass" },
+      { word: "LEOPARD", clue: "Big cat with spotted coat" },
+      { word: "MARATHON", clue: "Long-distance running race" },
+      { word: "NEUTRON", clue: "Subatomic particle with no charge" },
+      { word: "OMELETTE", clue: "Dish made from beaten eggs" },
+      { word: "PLATINUM", clue: "Precious silvery-white metal" },
+      { word: "QUADRANT", clue: "Quarter of a circle" },
+      { word: "REPTILE", clue: "Class of animals with scales" },
+      { word: "SYMPHONY", clue: "Long musical composition for orchestra" },
+      { word: "TITANIUM", clue: "Strong, lightweight metal" },
+      { word: "UMBRELLA", clue: "Device providing shelter from rain" },
+      { word: "VELOCITY", clue: "Speed in a given direction" },
+      { word: "WINDMILL", clue: "Building with sails turned by wind" },
+      { word: "XENOPHOBIA", clue: "Fear of strangers or foreigners" },
+      { word: "YEARBOOK", clue: "Annual publication commemorating a school year" },
+      { word: "ZOOLOGY", clue: "Study of animals" },
+      { word: "ABSTRACT", clue: "Existing in thought rather than matter" },
+      { word: "BLUEPRINT", clue: "Detailed technical drawing" },
+      { word: "CARNIVAL", clue: "Traveling amusement show" },
+      { word: "DINOSAUR", clue: "Extinct reptile from the Mesozoic era" },
+      { word: "ENVELOPE", clue: "Paper container for a letter" },
+      { word: "FESTIVAL", clue: "Celebration or entertainment event" },
+      { word: "GEOMETRY", clue: "Branch of mathematics concerned with shapes" },
+      { word: "HARMONY", clue: "Pleasing arrangement of parts" },
+      { word: "INVASION", clue: "Military action of entering as an enemy" },
+      { word: "JURASSIC", clue: "Middle period of the Mesozoic era" },
+      { word: "KEROSENE", clue: "Fuel oil used in lamps" },
+      { word: "LABYRINTH", clue: "Complex maze-like structure" },
+      { word: "METAPHOR", clue: "Figure of speech making implied comparison" },
+      { word: "NITROGEN", clue: "Chemical element with symbol N" },
+      { word: "OPTIMIZE", clue: "Make the best use of something" },
+      { word: "PARADISE", clue: "Place of exceptional happiness" },
+      { word: "QUOTATION", clue: "Repeat of someone else's words" },
+      { word: "RADIATION", clue: "Energy emitted as waves or particles" },
+      { word: "SCULPTURE", clue: "Three-dimensional art form" },
+      { word: "TELEPHONE", clue: "Device for voice communication" },
+      { word: "ULTIMATE", clue: "Final or fundamental" },
+      { word: "VIBRATION", clue: "Rapid back-and-forth movement" },
+      { word: "WRESTLING", clue: "Combat sport with grappling techniques" },
+      { word: "XYLOPHONE", clue: "Musical instrument with wooden bars" },
+      { word: "YESTERDAY", clue: "Day before today" },
+      { word: "ZOOLOGIST", clue: "Scientist who studies animals" },
+      { word: "ADVENTURE", clue: "Exciting or daring experience" },
+      { word: "BARBEQUE", clue: "Cooking method using smoke and low heat" },
+      { word: "CARTILAGE", clue: "Flexible connective tissue" },
+      { word: "DETECTIVE", clue: "Person who investigates crimes" },
+      { word: "ECOSYSTEM", clue: "Community of living organisms" },
+      { word: "FREQUENCY", clue: "Rate of occurrence over time" },
+      { word: "GRASSLAND", clue: "Large open area covered with grass" },
+      { word: "HEMISPHERE", clue: "Half of the earth" },
+      { word: "ILLUSION", clue: "False perception of reality" },
+      { word: "JUDICIARY", clue: "Branch of government dealing with law" },
+      { word: "KILOMETER", clue: "Metric unit of distance" },
+      { word: "LONGITUDE", clue: "Geographic coordinate specifying east-west position" },
+      { word: "MYTHOLOGY", clue: "Collection of myths" },
+      { word: "NUTRITION", clue: "Process of consuming and using food" },
+      { word: "OBSIDIAN", clue: "Naturally occurring volcanic glass" },
+      { word: "PROFESSOR", clue: "Teacher at a college or university" },
+      { word: "QUALIFIED", clue: "Having appropriate training or credentials" },
+      { word: "RESILIENT", clue: "Able to recover quickly from difficulties" },
+      { word: "SAXOPHONE", clue: "Brass musical instrument with reed" },
+      { word: "TELESCOPE", clue: "Optical instrument for viewing distant objects" },
+      { word: "UNDERWEAR", clue: "Clothing worn under outer clothes" },
+      { word: "VINEYARD", clue: "Plantation of grapevines" },
+      { word: "WONDERFUL", clue: "Inspiring delight or admiration" },
+      { word: "XENOLITH", clue: "Rock fragment within igneous rock" },
+      { word: "YOGHURT", clue: "Fermented milk product" },
+      { word: "ZEALOUS", clue: "Having great energy or enthusiasm" }
+    ];
+    
+    // More advanced words for hard difficulty
+    const hardWordBank = [
+      { word: "ABACUS", clue: "Ancient calculating device with beads" },
+      { word: "ABLATION", clue: "Removal of material from a surface" },
+      { word: "ABSCISSA", clue: "X-coordinate in Cartesian system" },
+      { word: "ACCOLADE", clue: "Award or praise for achievement" },
+      { word: "ACROPHOBIA", clue: "Fear of heights" },
+      { word: "ACUMEN", clue: "Ability to make good judgments" },
+      { word: "ADAGE", clue: "Traditional saying expressing common wisdom" },
+      { word: "ADROIT", clue: "Skillful and clever" },
+      { word: "AEGIS", clue: "Protection or support" },
+      { word: "AESTHETIC", clue: "Concerned with beauty or art" },
+      { word: "AFFINITY", clue: "Natural liking or attraction" },
+      { word: "AGGREGATE", clue: "Collection of items gathered into a whole" },
+      { word: "ALCHEMY", clue: "Medieval precursor to chemistry" },
+      { word: "ALLEVIATE", clue: "Make suffering less severe" },
+      { word: "AMALGAM", clue: "Mixture of different elements" },
+      { word: "AMBIGUOUS", clue: "Open to multiple interpretations" },
+      { word: "AMORTIZE", clue: "Gradually reduce a debt" },
+      { word: "ANACHRONISM", clue: "Something out of its proper time" },
+      { word: "ANALOGY", clue: "Comparison showing similarities" },
+      { word: "ANECDOTE", clue: "Short amusing story" },
+      { word: "ANOMALY", clue: "Something that deviates from standard" },
+      { word: "ANTITHESIS", clue: "Direct opposite" },
+      { word: "APHORISM", clue: "Concise statement of principle" },
+      { word: "APLOMB", clue: "Self-confidence or assurance" },
+      { word: "APOGEE", clue: "Highest point in development" },
+      { word: "APOTHEOSIS", clue: "Perfect example or culmination" },
+      { word: "ARCHIPELAGO", clue: "Group of islands" },
+      { word: "ARDUOUS", clue: "Requiring great effort" },
+      { word: "ARTIFACT", clue: "Object made by human craft" },
+      { word: "ASKANCE", clue: "With suspicion or disapproval" },
+      { word: "ASPERITY", clue: "Harshness of tone" },
+      { word: "ASPERSION", clue: "Attack on reputation or integrity" },
+      { word: "ASSIDUOUS", clue: "Showing great care and perseverance" },
+      { word: "ASSONANCE", clue: "Resemblance of sound in words" },
+      { word: "ASTUTE", clue: "Having keen insight" },
+      { word: "AUSPICIOUS", clue: "Promising success; favorable" },
+      { word: "AUXILIARY", clue: "Providing supplementary support" },
+      { word: "AVARICE", clue: "Extreme greed for wealth" },
+      { word: "AZIMUTH", clue: "Angular measurement in a spherical coordinate system" },
+      { word: "BALDERDASH", clue: "Nonsensical talk or writing" },
+      { word: "BALUSTRADE", clue: "Row of balusters supporting a rail" },
+      { word: "BAROQUE", clue: "Elaborate ornamental style" },
+      { word: "BASTION", clue: "Projecting part of fortification" },
+      { word: "BEATIFIC", clue: "Showing or giving blessing" },
+      { word: "BEDIZEN", clue: "Dress up in a gaudy manner" },
+      { word: "BELEAGUER", clue: "To beset with difficulties" },
+      { word: "BELLICOSE", clue: "Demonstrating aggression and willingness to fight" },
+      { word: "BENEVOLENT", clue: "Well-meaning and kindly" },
+      { word: "BEWILDER", clue: "Cause to be confused or disoriented" },
+      { word: "BIOSPHERE", clue: "Regions where life exists on Earth" },
+      { word: "BOISTEROUS", clue: "Noisy, energetic, and cheerful" },
+      { word: "BREVITY", clue: "Concise and exact use of words" },
+      { word: "BUCOLIC", clue: "Relating to countryside; pastoral" },
+      { word: "BULWARK", clue: "Defensive wall or barrier" },
+      { word: "CADENCE", clue: "Rhythmic sequence or flow" },
+      { word: "CAJOLE", clue: "Persuade with flattery" },
+      { word: "CALLIGRAPHY", clue: "Decorative handwriting" },
+      { word: "CAPRICIOUS", clue: "Given to sudden changes in mood" },
+      { word: "CARTOGRAPHY", clue: "Science of map-making" },
+      { word: "CATALYST", clue: "Something that precipitates change" },
+      { word: "CAUSTIC", clue: "Capable of burning or corroding" },
+      { word: "CIRCUMSPECT", clue: "Careful to consider consequences" },
+      { word: "CLANDESTINE", clue: "Kept secret, often for illicit purposes" },
+      { word: "CLEMENCY", clue: "Mercy or leniency" },
+      { word: "COALESCE", clue: "Come together to form one mass" },
+      { word: "COGENT", clue: "Clear, logical, and convincing" },
+      { word: "COGNITION", clue: "Mental process of acquiring knowledge" },
+      { word: "COLLOQUIAL", clue: "Relating to conversational language" },
+      { word: "COMMENSURATE", clue: "Corresponding in size or degree" },
+      { word: "COMPENDIUM", clue: "Collection of concise information" },
+      { word: "CONGRUENT", clue: "In agreement or harmony" },
+      { word: "CONSTERNATION", clue: "Feelings of anxiety or dismay" },
+      { word: "CONTENTIOUS", clue: "Causing or likely to cause disagreement" },
+      { word: "CONUNDRUM", clue: "Confusing or difficult problem" },
+      { word: "CONVIVIAL", clue: "Friendly and agreeable" },
+      { word: "CORROBORATE", clue: "Confirm or give support to" },
+      { word: "CRYPTIC", clue: "Having a hidden meaning" },
+      { word: "CRYSTALLIZE", clue: "Make or become definite and clear" },
+      { word: "CUPIDITY", clue: "Greed for money or possessions" },
+      { word: "CYNOSURE", clue: "Person or thing that is the center of attention" },
+      { word: "DEARTH", clue: "Scarcity or lack of something" },
+      { word: "DEBACLE", clue: "Sudden and ignominious failure" },
+      { word: "DEFERENCE", clue: "Respectful submission or yielding" },
+      { word: "DELINEATE", clue: "Describe or portray precisely" },
+      { word: "DENOUEMENT", clue: "Final part of a narrative" },
+      { word: "DERISION", clue: "Ridicule or mockery" },
+      { word: "DESULTORY", clue: "Lacking plan or purpose" },
+      { word: "DIAPHANOUS", clue: "Light, delicate, and translucent" },
+      { word: "DIATRIBE", clue: "Bitter and violent criticism" },
+      { word: "DICHOTOMY", clue: "Division into two opposed parts" },
+      { word: "DIFFIDENT", clue: "Modest or shy due to lack of confidence" },
+      { word: "DILETTANTE", clue: "Person with superficial interest in an art" },
+      { word: "DIRGE", clue: "Mournful song, especially for funeral" },
+      { word: "DISABUSE", clue: "Free from misconception" },
+      { word: "DISCERN", clue: "Perceive or recognize" },
+      { word: "DISCOMFIT", clue: "Make uneasy or embarrassed" }
+    ];
+    
+    // Simple words for easy difficulty
+    const easyWordBank = [
+      { word: "ADD", clue: "Combine numbers" },
+      { word: "ANT", clue: "Small insect that lives in colonies" },
+      { word: "APE", clue: "Primate similar to humans" },
+      { word: "ARM", clue: "Upper limb of the body" },
+      { word: "ART", clue: "Creative expression" },
+      { word: "BAG", clue: "Container for carrying items" },
+      { word: "BAT", clue: "Flying mammal or sports equipment" },
+      { word: "BED", clue: "Furniture for sleeping" },
+      { word: "BEE", clue: "Insect that makes honey" },
+      { word: "BIG", clue: "Large in size" },
+      { word: "BOX", clue: "Container with a lid" },
+      { word: "BOY", clue: "Male child" },
+      { word: "BUG", clue: "Small insect" },
+      { word: "BUS", clue: "Large vehicle for passengers" },
+      { word: "CAR", clue: "Motor vehicle with four wheels" },
+      { word: "CAT", clue: "Small domestic feline" },
+      { word: "COW", clue: "Farm animal that produces milk" },
+      { word: "CRY", clue: "Shed tears" },
+      { word: "CUP", clue: "Drinking vessel" },
+      { word: "CUT", clue: "Make an opening with a sharp tool" },
+      { word: "DAD", clue: "Male parent" },
+      { word: "DAY", clue: "24-hour period" },
+      { word: "DIG", clue: "Make a hole in the ground" },
+      { word: "DOG", clue: "Domestic canine pet" },
+      { word: "DOT", clue: "Small round mark" },
+      { word: "EAR", clue: "Organ of hearing" },
+      { word: "EAT", clue: "Consume food" },
+      { word: "EGG", clue: "Oval reproductive body" },
+      { word: "EYE", clue: "Organ of sight" },
+      { word: "FAN", clue: "Device that moves air" },
+      { word: "FAR", clue: "At a great distance" },
+      { word: "FIT", clue: "Proper size or shape" },
+      { word: "FLY", clue: "Move through air with wings" },
+      { word: "FOG", clue: "Thick cloud near the ground" },
+      { word: "FUN", clue: "Enjoyment or amusement" },
+      { word: "GAS", clue: "Fuel for vehicles or heating" },
+      { word: "GOD", clue: "Deity or supreme being" },
+      { word: "GUM", clue: "Chewy sweet or adhesive" },
+      { word: "GUN", clue: "Weapon that shoots bullets" },
+      { word: "GYM", clue: "Place for exercise" },
+      { word: "HAT", clue: "Head covering" },
+      { word: "HEN", clue: "Female chicken" },
+      { word: "HIT", clue: "Strike forcefully" },
+      { word: "HOT", clue: "High temperature" },
+      { word: "ICE", clue: "Frozen water" },
+      { word: "INK", clue: "Colored liquid for writing" },
+      { word: "JAM", clue: "Sweet spread or traffic congestion" },
+      { word: "JAR", clue: "Glass container" },
+      { word: "JET", clue: "Fast airplane" },
+      { word: "JOB", clue: "Paid position of employment" },
+      { word: "JOG", clue: "Run at a slow pace" },
+      { word: "JOY", clue: "Feeling of happiness" },
+      { word: "KEY", clue: "Metal device for locks" },
+      { word: "KID", clue: "Young person" },
+      { word: "LAP", clue: "Circuit of a track" },
+      { word: "LAW", clue: "System of rules" },
+      { word: "LEG", clue: "Limb for walking" },
+      { word: "LID", clue: "Top covering for container" },
+      { word: "LIE", clue: "Recline or tell untruth" },
+      { word: "LIP", clue: "Edge of the mouth" },
+      { word: "LOG", clue: "Section of tree trunk" },
+      { word: "LOW", clue: "Small in height" },
+      { word: "MAP", clue: "Representation of an area" },
+      { word: "MAT", clue: "Floor covering" },
+      { word: "MEN", clue: "Adult males" },
+      { word: "MIX", clue: "Combine ingredients" },
+      { word: "MOP", clue: "Cleaning tool with absorbent head" },
+      { word: "MUD", clue: "Wet soft earth" },
+      { word: "MUG", clue: "Drinking vessel with handle" },
+      { word: "NAP", clue: "Short sleep" },
+      { word: "NET", clue: "Mesh material" },
+      { word: "NEW", clue: "Recently made" },
+      { word: "NUT", clue: "Hard-shelled fruit" },
+      { word: "ODD", clue: "Strange or unusual" },
+      { word: "OIL", clue: "Slippery liquid" },
+      { word: "OLD", clue: "Having lived for a long time" },
+      { word: "ONE", clue: "Single unit" },
+      { word: "OWL", clue: "Nocturnal bird" },
+      { word: "PAD", clue: "Soft cushion-like object" },
+      { word: "PAN", clue: "Cooking vessel" },
+      { word: "PAY", clue: "Give money for goods or services" },
+      { word: "PEN", clue: "Writing instrument" },
+      { word: "PET", clue: "Domestic animal kept for companionship" },
+      { word: "PIE", clue: "Baked dish with filling" },
+      { word: "PIG", clue: "Farm animal with curly tail" },
+      { word: "PIN", clue: "Small pointed device" },
+      { word: "PIT", clue: "Hole in the ground" },
+      { word: "POT", clue: "Deep round container" },
+      { word: "RAT", clue: "Rodent with a long tail" },
+      { word: "RED", clue: "Color of blood" },
+      { word: "RIM", clue: "Edge of a circular object" },
+      { word: "ROD", clue: "Straight narrow bar" },
+      { word: "RUG", clue: "Floor covering" },
+      { word: "RUN", clue: "Move fast on foot" },
+      { word: "SAD", clue: "Feeling unhappy" },
+      { word: "SAW", clue: "Tool for cutting" },
+      { word: "SEA", clue: "Large body of salt water" },
+      { word: "SEE", clue: "Perceive with the eyes" },
+      { word: "SET", clue: "Put in a specified position" },
+      { word: "SHY", clue: "Nervous in the company of others" },
+      { word: "SIN", clue: "Immoral act" },
+      { word: "SIP", clue: "Drink in small amounts" },
+      { word: "SIT", clue: "Rest with weight on buttocks" },
+      { word: "SKI", clue: "Glide over snow" },
+      { word: "SKY", clue: "Region above the earth" },
+      { word: "SOW", clue: "Plant seeds" },
+      { word: "SPA", clue: "Health resort" },
+      { word: "SPY", clue: "Secret agent" },
+      { word: "SUN", clue: "Star that Earth orbits" },
+      { word: "TAG", clue: "Label attached to something" },
+      { word: "TAN", clue: "Brownish color from sun" },
+      { word: "TAP", clue: "Strike lightly" },
+      { word: "TAX", clue: "Money paid to government" },
+      { word: "TEA", clue: "Hot beverage made from leaves" },
+      { word: "TIE", clue: "Fasten with string or lace" },
+      { word: "TIP", clue: "Pointed end or gratuity" },
+      { word: "TOE", clue: "Digit of the foot" },
+      { word: "TOP", clue: "Highest point" },
+      { word: "TOY", clue: "Plaything for children" },
+      { word: "TRY", clue: "Attempt to do something" },
+      { word: "TUB", clue: "Wide open container" },
+      { word: "USE", clue: "Employ for a purpose" },
+      { word: "VAN", clue: "Enclosed vehicle for transport" },
+      { word: "WAR", clue: "Armed conflict" },
+      { word: "WAX", clue: "Sticky substance from bees" },
+      { word: "WAY", clue: "Method or route" },
+      { word: "WEB", clue: "Spider's creation" },
+      { word: "WET", clue: "Covered in liquid" },
+      { word: "WIN", clue: "Be successful" },
+      { word: "ZIP", clue: "Fasten with toothed closure" },
+      { word: "ZOO", clue: "Place where animals are kept" }
+    ];
+
+    // Game variables
+    let grid = [];
+    let gridSize = 15;
+    let words = [];
+    let acrossClues = [];
+    let downClues = [];
+    let currentDirection = 'across';
+    let selectedCell = null;
+    let selectedClue = null;
+    let solution = {};
+    
+    // DOM elements
+    const crosswordGrid = document.getElementById('crossword-grid');
+    const acrossCluesList = document.getElementById('across-clues');
+    const downCluesList = document.getElementById('down-clues');
+    const newPuzzleBtn = document.getElementById('new-puzzle-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const revealBtn = document.getElementById('reveal-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const sizeSelect = document.getElementById('size-select');
+    const difficultySelect = document.getElementById('difficulty-select');
+    const messageEl = document.getElementById('message');
+    const progressText = document.getElementById('progress-text');
+    const progressFill = document.getElementById('progress-fill');
+
+    
+    document.getElementById("new-puzzle-btn").addEventListener("click", () => {
+    const gridSize = 15; // Assuming a default size, adjust as needed
+    const crosswordGrid = generateCrosswordGrid(gridSize, wordBank.concat(hardWordBank).concat(easyWordBank));
+    
+    // Nullify the previous grid
+    const gridElement = document.getElementById('crossword-grid');
+    while (gridElement.firstChild) {
+        gridElement.removeChild(gridElement.firstChild);
+    }
+    
+    // Populate new fully filled grid
+    crosswordGrid.forEach(row => {
+        row.forEach(cell => {
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('cell');
+            if (cell === '') {
+                cellElement.classList.add('black-cell');
+            }
+            cellElement.innerText = cell.toUpperCase();
+            gridElement.appendChild(cellElement);
+        });
+    });
+
+    // Update progress status
+    document.getElementById('progress-text').innerText = `Puzzle Generated`;
+});
+
+// Helper function to generate the grid
+function generateCrosswordGrid(gridSize, wordBank) {
+    // Initialize grid with empty strings
+    let grid = Array.from({ length: gridSize }, () =>
+        Array.from({ length: gridSize }, () => '')
+    );
+
+    function canPlaceWord(word, row, col, direction) {
+        const len = word.length;
+        
+        for (let i = 0; i < len; i++) {
+            const currentRow = direction === 'across' ? row : row + i;
+            const currentCol = direction === 'across' ? col + i : col;
+            
+            if (currentRow >= gridSize || currentCol >= gridSize) return false;
+            if (grid[currentRow][currentCol] !== '' && grid[currentRow][currentCol] !== word[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function placeWord(word, row, col, direction) {
+        const len = word.length;
+        for (let i = 0; i < len; i++) {
+            const currentRow = direction === 'across' ? row : row + i;
+            const currentCol = direction === 'across' ? col + i : col;
+            grid[currentRow][currentCol] = word[i];
+        }
+    }
+
+    function removeWord(word, row, col, direction) {
+        const len = word.length;
+        for (let i = 0; i < len; i++) {
+            const currentRow = direction === 'across' ? row : row + i;
+            const currentCol = direction === 'across' ? col + i : col;
+            grid[currentRow][currentCol] = '';
+        }
+    }
+
+    function solve() {
+        for (let wordObj of wordBank) {
+            const word = wordObj.word;
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (canPlaceWord(word, i, j, 'across')) {
+                        placeWord(word, i, j, 'across');
+                        if (solve()) return true; 
+                        removeWord(word, i, j, 'across');
+                    }
+                    if (canPlaceWord(word, i, j, 'down')) {
+                        placeWord(word, i, j, 'down');
+                        if (solve()) return true;
+                        removeWord(word, i, j, 'down');
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    solve();
+    return grid;
+}
+
+    // Initialize the game
+    function initGame() {
+      updateGridSize();
+      generatePuzzle();
+      
+      // Event listeners
+      newPuzzleBtn.addEventListener('click', generatePuzzle);
+      checkBtn.addEventListener('click', checkAnswers);
+      revealBtn.addEventListener('click', revealSolution);
+      clearBtn.addEventListener('click', clearGrid);
+      sizeSelect.addEventListener('change', updateGridSize);
+      difficultySelect.addEventListener('change', generatePuzzle);
+      
+      document.addEventListener('keydown', handleKeyPress);
+    }
+    
+    // Update grid size based on selection
+    function updateGridSize() {
+      const size = sizeSelect.value;
+      
+      if (size === 'small') {
+        gridSize = 10;
+      } else if (size === 'medium') {
+        gridSize = 15;
+      } else if (size === 'large') {
+        gridSize = 20;
+      }
+      
+      // Update the CSS grid template columns and rows
+      crosswordGrid.style.gridTemplateColumns = `repeat(${gridSize}, 40px)`;
+      crosswordGrid.style.gridTemplateRows = `repeat(${gridSize}, 40px)`;
+    }
+    
+    // Generate a new crossword puzzle
+    function generatePuzzle() {
+      showMessage('Generating puzzle...', 'normal');
+      
+      // Clear the grid and clues
+      crosswordGrid.innerHTML = '';
+      acrossCluesList.innerHTML = '';
+      downCluesList.innerHTML = '';
+      
+      // Initialize the grid with empty cells
+      initializeGrid();
+      
+      // Get appropriate word bank based on difficulty
+      let selectedWordBank = wordBank;
+      const difficulty = difficultySelect.value;
+      
+      if (difficulty === 'easy') {
+        selectedWordBank = easyWordBank;
+      } else if (difficulty === 'hard') {
+        selectedWordBank = [...wordBank, ...hardWordBank];
+      }
+      
+      // Shuffle the word bank to get random words
+      const shuffledWordBank = shuffleArray([...selectedWordBank]);
+      
+      // Generate the crossword puzzle
+      createCrossword(shuffledWordBank);
+      
+      // Render the grid and clues
+      renderGrid();
+      renderClues();
+      
+      // Update the progress bar
+      updateProgress();
+      
+      showMessage('Puzzle generated! Start solving.', 'success');
+    }
+    
+    // Initialize the grid with empty cells
+    function initializeGrid() {
+      grid = [];
+      for (let i = 0; i < gridSize; i++) {
+        grid[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+          grid[i][j] = {
+            letter: null,
+            number: null,
+            isBlack: false,
+            acrossClue: null,
+            downClue: null
+          };
+        }
+      }
+      
+      // Reset game variables
+      words = [];
+      acrossClues = [];
+      downClues = [];
+      solution = {};
+    }
+    
+    // Create a crossword puzzle with random shape
+    function createCrossword(wordBank) {
+      // Initialize with a random word in the middle
+      const startWord = wordBank[0];
+      const middleRow = Math.floor(gridSize / 2);
+      
+      // Place the first word horizontally in the middle
+      if (startWord.word.length <= gridSize) {
+        const startCol = Math.floor((gridSize - startWord.word.length) / 2);
+        placeWord(startWord.word, middleRow, startCol, 'across', startWord.clue);
+      }
+      
+      // Try to place more words
+      let attempts = 0;
+      let maxAttempts = 1000;
+      let wordIndex = 1;
+      
+      while (attempts < maxAttempts && wordIndex < wordBank.length) {
+        const word = wordBank[wordIndex].word;
+        const clue = wordBank[wordIndex].clue;
+        
+        // Try to place the word
+        if (tryPlaceWord(word, clue)) {
+          wordIndex++;
+        }
+        
+        attempts++;
+      }
+      
+      // Add random black cells to make the shape more interesting
+      addRandomBlackCells();
+      
+      // Number the grid cells for clues
+      numberGrid();
+    }
+    
+    // Try to place a word in the grid
+    function tryPlaceWord(word, clue) {
+      // Find all possible placements
+      const placements = findPossiblePlacements(word);
+      
+      if (placements.length === 0) {
+        return false;
+      }
+      
+      // Choose a random placement
+      const placement = placements[Math.floor(Math.random() * placements.length)];
+      
+      // Place the word
+      placeWord(word, placement.row, placement.col, placement.direction, clue);
+      
+      return true;
+    }
+    
+    // Find all possible placements for a word
+    function findPossiblePlacements(word) {
+      const placements = [];
+      
+      // Check if we can place the word on the grid
+      if (word.length > gridSize) {
+        return placements;
+      }
+      
+      // Try all possible positions and directions
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          // Try placing horizontally
+          if (col + word.length <= gridSize) {
+            if (canPlaceWord(word, row, col, 'across')) {
+              placements.push({ row, col, direction: 'across' });
+            }
+          }
+          
+          // Try placing vertically
+          if (row + word.length <= gridSize) {
+            if (canPlaceWord(word, row, col, 'down')) {
+              placements.push({ row, col, direction: 'down' });
+            }
+          }
+        }
+      }
+      
+      return placements;
+    }
+    
+    // Check if a word can be placed at a specific position and direction
+    function canPlaceWord(word, row, col, direction) {
+      let intersections = 0;
+      
+      for (let i = 0; i < word.length; i++) {
+        const letter = word[i];
+        let currentRow = row;
+        let currentCol = col;
+        
+        if (direction === 'across') {
+          currentCol = col + i;
+        } else {
+          currentRow = row + i;
+        }
+        
+        // Check if the cell is out of bounds
+        if (currentRow < 0 || currentRow >= gridSize || currentCol < 0 || currentCol >= gridSize) {
+          return false;
+        }
+        
+        // Check if the cell already has a letter
+        if (grid[currentRow][currentCol].letter !== null) {
+          // If the letters don't match, can't place the word
+          if (grid[currentRow][currentCol].letter !== letter) {
+            return false;
+          }
+          
+          // Count this as an intersection
+          intersections++;
+        } else if (grid[currentRow][currentCol].isBlack) {
+          // Can't place on a black cell
+          return false;
+        }
+        
+        // Check adjacent cells (no touching words except at intersections)
+        const checkAdjacentCells = (r, c) => {
+          if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) {
+            return true;
+          }
+          
+          // If this is a cell of the word we're placing, it's ok
+          if ((direction === 'across' && r === currentRow && c >= col && c < col + word.length) ||
+              (direction === 'down' && c === currentCol && r >= row && r < row + word.length)) {
+            return true;
+          }
+          
+          // If the adjacent cell has a letter, it's only ok if it's an intersection
+          if (grid[r][c].letter !== null && !isIntersection(r, c, currentRow, currentCol)) {
+            return false;
+          }
+          
+          return true;
+        };
+        
+        // Check cells before and after the word
+        if (direction === 'across') {
+          if (col > 0 && grid[currentRow][col - 1].letter !== null) {
+            return false;
+          }
+          if (col + word.length < gridSize && grid[currentRow][col + word.length].letter !== null) {
+            return false;
+          }
+        } else {
+          if (row > 0 && grid[row - 1][currentCol].letter !== null) {
+            return false;
+          }
+          if (row + word.length < gridSize && grid[row + word.length][currentCol].letter !== null) {
+            return false;
+          }
+        }
+      }
+      
+      // Ensure there's at least one intersection with existing words (except for the first word)
+      if (words.length > 0 && intersections === 0) {
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Check if there's an intersection at the given coordinates
+    function isIntersection(r1, c1, r2, c2) {
+      return r1 === r2 && c1 === c2;
+    }
+    
+    // Place a word in the grid
+    function placeWord(word, row, col, direction, clue) {
+      // Add the word to the list
+      words.push({
+        word,
+        row,
+        col,
+        direction,
+        clue
+      });
+      
+      // Place the letters in the grid
+      for (let i = 0; i < word.length; i++) {
+        const letter = word[i];
+        const currentRow = (direction === 'across') ? row : row + i;
+        const currentCol = (direction === 'across') ? col + i : col;
+        
+        grid[currentRow][currentCol].letter = letter;
+        
+        // Add the clue reference
+        if (direction === 'across') {
+          grid[currentRow][currentCol].acrossClue = word;
+        } else {
+          grid[currentRow][currentCol].downClue = word;
+        }
+      }
+    }
+    
+    // Add random black cells to make the puzzle more interesting
+    function addRandomBlackCells() {
+      // Calculate how many black cells to add based on grid size
+      const blackCellPercentage = 0.15; // 15% of cells will be black
+      const totalCells = gridSize * gridSize;
+      const blackCellTarget = Math.floor(totalCells * blackCellPercentage);
+      
+      let blackCellCount = 0;
+      let attempts = 0;
+      const maxAttempts = totalCells * 2;
+      
+      while (blackCellCount < blackCellTarget && attempts < maxAttempts) {
+        const row = Math.floor(Math.random() * gridSize);
+        const col = Math.floor(Math.random() * gridSize);
+        
+        // Don't make a cell black if it has a letter or is already black
+        if (grid[row][col].letter !== null || grid[row][col].isBlack) {
+          attempts++;
+          continue;
+        }
+        
+        // Don't create isolated white cells
+        if (wouldCreateIsolatedCell(row, col)) {
+          attempts++;
+          continue;
+        }
+        
+        // Make the cell black
+        grid[row][col].isBlack = true;
+        blackCellCount++;
+        
+        // For symmetry, also make the opposite cell black
+        const oppositeRow = gridSize - 1 - row;
+        const oppositeCol = gridSize - 1 - col;
+        
+        if (oppositeRow !== row || oppositeCol !== col) {
+          if (grid[oppositeRow][oppositeCol].letter === null && !grid[oppositeRow][oppositeCol].isBlack) {
+            grid[oppositeRow][oppositeCol].isBlack = true;
+            blackCellCount++;
+          }
+        }
+        
+        attempts++;
+      }
+    }
+    
+    // Check if making a cell black would create an isolated white cell
+    function wouldCreateIsolatedCell(row, col) {
+      const checkCell = (r, c) => {
+        if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) {
+          return false;
+        }
+        return !grid[r][c].isBlack && grid[r][c].letter === null;
+      };
+      
+      // Check adjacent cells
+      const adjacentWhiteCells = [
+        checkCell(row - 1, col), // Above
+        checkCell(row + 1, col), // Below
+        checkCell(row, col - 1), // Left
+        checkCell(row, col + 1)  // Right
+      ];
+      
+      // If there's only one adjacent white cell, adding a black cell would isolate it
+      return adjacentWhiteCells.filter(Boolean).length <= 1;
+    }
+    
+    // Number the grid cells for clues
+    function numberGrid() {
+      let number = 1;
+      
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          // Skip black cells
+          if (grid[row][col].isBlack) {
+            continue;
+          }
+          
+          let needsNumber = false;
+          
+          // Check if this cell starts an across clue
+          if ((col === 0 || grid[row][col - 1].isBlack) && 
+              col < gridSize - 1 && 
+              !grid[row][col + 1].isBlack) {
+            
+            // Find the word
+            let word = '';
+            let c = col;
+            while (c < gridSize && !grid[row][c].isBlack && grid[row][c].letter !== null) {
+              word += grid[row][c].letter;
+              c++;
+            }
+            
+            if (word.length > 1) {
+              // Add to across clues
+              const wordObj = words.find(w => w.word === word && w.row === row && w.col === col);
+              
+              if (wordObj) {
+                acrossClues.push({
+                  number,
+                  word,
+                  clue: wordObj.clue,
+                  row,
+                  col
+                });
+                
+                needsNumber = true;
+              }
+            }
+          }
+          
+          // Check if this cell starts a down clue
+          if ((row === 0 || grid[row - 1][col].isBlack) && 
+              row < gridSize - 1 && 
+              !grid[row + 1][col].isBlack) {
+            
+            // Find the word
+            let word = '';
+            let r = row;
+            while (r < gridSize && !grid[r][col].isBlack && grid[r][col].letter !== null) {
+              word += grid[r][col].letter;
+              r++;
+            }
+            
+            if (word.length > 1) {
+              // Add to down clues
+              const wordObj = words.find(w => w.word === word && w.row === row && w.col === col);
+              
+              if (wordObj) {
+                downClues.push({
+                  number,
+                  word,
+                  clue: wordObj.clue,
+                  row,
+                  col
+                });
+                
+                needsNumber = true;
+              }
+            }
+          }
+          
+          if (needsNumber) {
+            grid[row][col].number = number;
+            number++;
+          }
+        }
+      }
+      
+      // Store the solution
+      storeSolution();
+    }
+    
+    // Store the solution for checking
+    function storeSolution() {
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          if (!grid[row][col].isBlack && grid[row][col].letter !== null) {
+            solution[`${row}-${col}`] = grid[row][col].letter;
+          }
+        }
+      }
+    }
+    // Render the grid cells
+function renderGrid() {
+  crosswordGrid.innerHTML = '';
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.row = row;
+      cell.dataset.col = col;
+      
+      if (grid[row][col].isBlack) {
+        cell.classList.add('black-cell');
+      } else {
+        // Add cell number if it exists
+        if (grid[row][col].number !== null) {
+          const numberSpan = document.createElement('span');
+          numberSpan.className = 'cell-number';
+          numberSpan.textContent = grid[row][col].number;
+          cell.appendChild(numberSpan);
+        }
+        
+        // Add input field for user to enter letters
+        const input = document.createElement('input');
+        input.className = 'cell-input';
+        input.type = 'text';
+        input.maxLength = 1;
+        input.dataset.row = row;
+        input.dataset.col = col;
+        cell.appendChild(input);
+        
+        // Add event listeners
+        input.addEventListener('focus', () => selectCell(row, col));
+        input.addEventListener('input', (e) => handleInput(e, row, col));
+        input.addEventListener('click', () => toggleDirection());
+      }
+      
+      crosswordGrid.appendChild(cell);
+    }
+  }
+}
+
+// Render the clues
+function renderClues() {
+  // Clear existing clues
+  acrossCluesList.innerHTML = '';
+  downCluesList.innerHTML = '';
+  
+  // Add across clues
+  const acrossHeading = document.createElement('h3');
+  acrossHeading.textContent = 'Across';
+  acrossCluesList.appendChild(acrossHeading);
+  
+  acrossClues.forEach(clue => {
+    const clueElement = document.createElement('div');
+    clueElement.className = 'clue';
+    clueElement.dataset.number = clue.number;
+    clueElement.dataset.direction = 'across';
+    clueElement.dataset.row = clue.row;
+    clueElement.dataset.col = clue.col;
+    clueElement.textContent = `${clue.number}. ${clue.clue}`;
+    
+    clueElement.addEventListener('click', () => selectClue(clue.number, 'across'));
+    
+    acrossCluesList.appendChild(clueElement);
+  });
+  
+  // Add down clues
+  const downHeading = document.createElement('h3');
+  downHeading.textContent = 'Down';
+  downCluesList.appendChild(downHeading);
+  
+  downClues.forEach(clue => {
+    const clueElement = document.createElement('div');
+    clueElement.className = 'clue';
+    clueElement.dataset.number = clue.number;
+    clueElement.dataset.direction = 'down';
+    clueElement.dataset.row = clue.row;
+    clueElement.dataset.col = clue.col;
+    clueElement.textContent = `${clue.number}. ${clue.clue}`;
+    
+    clueElement.addEventListener('click', () => selectClue(clue.number, 'down'));
+    
+    downCluesList.appendChild(clueElement);
+  });
+}
+
+// Select a cell
+function selectCell(row, col) {
+  // Deselect previously selected cell
+  if (selectedCell) {
+    const prevInput = document.querySelector(`.cell-input[data-row="${selectedCell.row}"][data-col="${selectedCell.col}"]`);
+    if (prevInput) {
+      prevInput.parentElement.classList.remove('selected');
+    }
+    
+    // Remove highlight from current word
+    highlightWord(false);
+  }
+  
+  // Select the new cell
+  selectedCell = { row, col };
+  const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+  if (input) {
+    input.parentElement.classList.add('selected');
+    input.focus();
+  }
+  
+  // Find and highlight the current word
+  highlightWord(true);
+  
+  // Find and select the corresponding clue
+  selectClueFromCell(row, col);
+}
+
+// Toggle between across and down direction
+function toggleDirection() {
+  if (selectedCell) {
+    currentDirection = currentDirection === 'across' ? 'down' : 'across';
+    highlightWord(true);
+    selectClueFromCell(selectedCell.row, selectedCell.col);
+  }
+}
+
+// Highlight the current word
+function highlightWord(highlight) {
+  if (!selectedCell) return;
+  
+  const { row, col } = selectedCell;
+  
+  // Find the start and end of the word
+  let startRow = row;
+  let startCol = col;
+  let endRow = row;
+  let endCol = col;
+  
+  if (currentDirection === 'across') {
+    // Find the start of the word (leftmost cell)
+    while (startCol > 0 && !grid[row][startCol - 1].isBlack) {
+      startCol--;
+    }
+    
+    // Find the end of the word (rightmost cell)
+    while (endCol < gridSize - 1 && !grid[row][endCol + 1].isBlack) {
+      endCol++;
+    }
+    
+    // Highlight all cells in the word
+    for (let c = startCol; c <= endCol; c++) {
+      const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${c}"]`);
+      if (input) {
+        input.parentElement.classList.toggle('highlighted', highlight);
+      }
+    }
+  } else { // down
+    // Find the start of the word (topmost cell)
+    while (startRow > 0 && !grid[startRow - 1][col].isBlack) {
+      startRow--;
+    }
+    
+    // Find the end of the word (bottommost cell)
+    while (endRow < gridSize - 1 && !grid[endRow + 1][col].isBlack) {
+      endRow++;
+    }
+    
+    // Highlight all cells in the word
+    for (let r = startRow; r <= endRow; r++) {
+      const input = document.querySelector(`.cell-input[data-row="${r}"][data-col="${col}"]`);
+      if (input) {
+        input.parentElement.classList.toggle('highlighted', highlight);
+      }
+    }
+  }
+}
+
+// Select a clue
+function selectClue(number, direction) {
+  // Deselect previously selected clue
+  if (selectedClue) {
+    const prevClue = document.querySelector(`.clue[data-number="${selectedClue.number}"][data-direction="${selectedClue.direction}"]`);
+    if (prevClue) {
+      prevClue.classList.remove('selected-clue');
+    }
+  }
+  
+  // Select the new clue
+  selectedClue = { number, direction };
+  const clue = document.querySelector(`.clue[data-number="${number}"][data-direction="${direction}"]`);
+  if (clue) {
+    clue.classList.add('selected-clue');
+    clue.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    
+    // Select the first cell of the clue
+    const row = parseInt(clue.dataset.row);
+    const col = parseInt(clue.dataset.col);
+    currentDirection = direction;
+    selectCell(row, col);
+  }
+}
+
+// Select the clue corresponding to the current cell
+function selectClueFromCell(row, col) {
+  if (!grid[row][col]) return;
+  
+  let number = null;
+  let foundClue = false;
+  
+  if (currentDirection === 'across') {
+    // Find the start of the across word
+    let startCol = col;
+    while (startCol > 0 && !grid[row][startCol - 1].isBlack) {
+      startCol--;
+    }
+    
+    // Get the number from the starting cell
+    number = grid[row][startCol].number;
+    
+    if (number !== null) {
+      // Find the corresponding across clue
+      const clue = acrossClues.find(c => c.number === number);
+      if (clue) {
+        selectClue(number, 'across');
+        foundClue = true;
+      }
+    }
+    
+    // If no across clue found, try down clue
+    if (!foundClue) {
+      currentDirection = 'down';
+      selectClueFromCell(row, col);
+    }
+  } else { // down
+    // Find the start of the down word
+    let startRow = row;
+    while (startRow > 0 && !grid[startRow - 1][col].isBlack) {
+      startRow--;
+    }
+    
+    // Get the number from the starting cell
+    number = grid[startRow][col].number;
+    
+    if (number !== null) {
+      // Find the corresponding down clue
+      const clue = downClues.find(c => c.number === number);
+      if (clue) {
+        selectClue(number, 'down');
+        foundClue = true;
+      }
+    }
+    
+    // If no down clue found, try across clue
+    if (!foundClue) {
+      currentDirection = 'across';
+      selectClueFromCell(row, col);
+    }
+  }
+}
+
+// Handle user input in a cell
+function handleInput(event, row, col) {
+  const input = event.target;
+  
+  // Convert input to uppercase
+  input.value = input.value.toUpperCase();
+  
+  // Move to the next cell if a letter was entered
+  if (input.value && selectedCell) {
+    moveToNextCell();
+  }
+  
+  // Update the progress bar
+  updateProgress();
+}
+
+// Move to the next cell based on the current direction
+function moveToNextCell() {
+  if (!selectedCell) return;
+  
+  const { row, col } = selectedCell;
+  
+  if (currentDirection === 'across') {
+    // Move to the next cell to the right
+    if (col < gridSize - 1 && !grid[row][col + 1].isBlack) {
+      selectCell(row, col + 1);
+    }
+  } else { // down
+    // Move to the next cell below
+    if (row < gridSize - 1 && !grid[row + 1][col].isBlack) {
+      selectCell(row + 1, col);
+    }
+  }
+}
+
+// Handle keyboard navigation
+function handleKeyPress(event) {
+  if (!selectedCell) return;
+  
+  const { row, col } = selectedCell;
+  
+  switch (event.key) {
+    case 'ArrowRight':
+      if (col < gridSize - 1) {
+        selectCell(row, col + 1);
+      }
+      event.preventDefault();
+      break;
+    
+    case 'ArrowLeft':
+      if (col > 0) {
+        selectCell(row, col - 1);
+      }
+      event.preventDefault();
+      break;
+    
+    case 'ArrowDown':
+      if (row < gridSize - 1) {
+        selectCell(row + 1, col);
+      }
+      event.preventDefault();
+      break;
+    
+    case 'ArrowUp':
+      if (row > 0) {
+        selectCell(row - 1, col);
+      }
+      event.preventDefault();
+      break;
+    
+    case 'Tab':
+      // Move to the next clue
+      moveToNextClue(event.shiftKey);
+      event.preventDefault();
+      break;
+    
+    case 'Backspace':
+      // Clear the current cell and move to the previous cell
+      const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+      if (input && input.value === '') {
+        // Move to the previous cell if the current cell is empty
+        moveToPreviousCell();
+      } else if (input) {
+        // Clear the current cell
+        input.value = '';
+      }
+      updateProgress();
+      break;
+    
+    case ' ':
+      // Toggle direction
+      toggleDirection();
+      event.preventDefault();
+      break;
+  }
+}
+
+// Move to the previous cell based on the current direction
+function moveToPreviousCell() {
+  if (!selectedCell) return;
+  
+  const { row, col } = selectedCell;
+  
+  if (currentDirection === 'across') {
+    // Move to the previous cell to the left
+    if (col > 0 && !grid[row][col - 1].isBlack) {
+      selectCell(row, col - 1);
+    }
+  } else { // down
+    // Move to the previous cell above
+    if (row > 0 && !grid[row - 1][col].isBlack) {
+      selectCell(row - 1, col);
+    }
+  }
+}
+
+// Move to the next clue
+function moveToNextClue(backwards = false) {
+  if (!selectedClue) return;
+  
+  const { number, direction } = selectedClue;
+  
+  // Get the list of clues for the current direction
+  const cluesList = direction === 'across' ? acrossClues : downClues;
+  
+  // Find the index of the current clue
+  const currentIndex = cluesList.findIndex(c => c.number === number);
+  
+  if (currentIndex === -1) return;
+  
+  if (!backwards) {
+    // Move to the next clue
+    if (currentIndex < cluesList.length - 1) {
+      selectClue(cluesList[currentIndex + 1].number, direction);
+    } else {
+      // If at the end of across clues, move to the first down clue
+      // If at the end of down clues, move to the first across clue
+      if (direction === 'across' && downClues.length > 0) {
+        selectClue(downClues[0].number, 'down');
+      } else if (direction === 'down' && acrossClues.length > 0) {
+        selectClue(acrossClues[0].number, 'across');
+      }
+    }
+  } else {
+    // Move to the previous clue
+    if (currentIndex > 0) {
+      selectClue(cluesList[currentIndex - 1].number, direction);
+    } else {
+      // If at the start of across clues, move to the last down clue
+      // If at the start of down clues, move to the last across clue
+      if (direction === 'across' && downClues.length > 0) {
+        selectClue(downClues[downClues.length - 1].number, 'down');
+      } else if (direction === 'down' && acrossClues.length > 0) {
+        selectClue(acrossClues[acrossClues.length - 1].number, 'across');
+      }
+    }
+  }
+}
+
+// Update the progress bar
+function updateProgress() {
+  // Count the number of filled cells
+  let filledCells = 0;
+  let totalCells = 0;
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      if (!grid[row][col].isBlack && solution[`${row}-${col}`] !== undefined) {
+        totalCells++;
+        
+        const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+        if (input && input.value) {
+          filledCells++;
+        }
+      }
+    }
+  }
+  
+  // Calculate the progress percentage
+  const progress = totalCells > 0 ? Math.floor((filledCells / totalCells) * 100) : 0;
+  
+  // Update the progress bar
+  progressText.textContent = `${progress}% Complete`;
+  progressFill.style.width = `${progress}%`;
+}
+
+// Check user's answers
+function checkAnswers() {
+  let allCorrect = true;
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      if (!grid[row][col].isBlack && solution[`${row}-${col}`] !== undefined) {
+        const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+        
+        if (input) {
+          if (input.value && input.value.toUpperCase() === solution[`${row}-${col}`].toUpperCase()) {
+            // Correct answer
+            input.classList.add('correct');
+            input.classList.remove('incorrect');
+          } else if (input.value) {
+            // Incorrect answer
+            input.classList.add('incorrect');
+            input.classList.remove('correct');
+            allCorrect = false;
+          } else {
+            // Empty cell
+            input.classList.remove('correct', 'incorrect');
+            allCorrect = false;
+          }
+        }
+      }
+    }
+  }
+  
+  if (allCorrect) {
+    showMessage('Congratulations! You solved the puzzle!', 'success');
+  } else {
+    showMessage('Keep trying! Some answers are incorrect.', 'error');
+  }
+}
+
+// Reveal the solution
+function revealSolution() {
+  if (!confirm('Are you sure you want to reveal the solution?')) {
+    return;
+  }
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      if (!grid[row][col].isBlack && solution[`${row}-${col}`] !== undefined) {
+        const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+        
+        if (input) {
+          input.value = solution[`${row}-${col}`].toUpperCase();
+          input.classList.add('revealed');
+        }
+      }
+    }
+  }
+  
+  updateProgress();
+  showMessage('Solution revealed.', 'normal');
+}
+
+// Clear the grid
+function clearGrid() {
+  if (!confirm('Are you sure you want to clear the grid?')) {
+    return;
+  }
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      if (!grid[row][col].isBlack) {
+        const input = document.querySelector(`.cell-input[data-row="${row}"][data-col="${col}"]`);
+        
+        if (input) {
+          input.value = '';
+          input.classList.remove('correct', 'incorrect', 'revealed');
+        }
+      }
+    }
+  }
+  
+  updateProgress();
+  showMessage('Grid cleared.', 'normal');
+}
+
+// Display a message to the user
+function showMessage(message, type) {
+  messageEl.textContent = message;
+  messageEl.className = 'message';
+  
+  if (type === 'success') {
+    messageEl.classList.add('success');
+  } else if (type === 'error') {
+    messageEl.classList.add('error');
+  }
+  
+  // Clear the message after 3 seconds
+  setTimeout(() => {
+    messageEl.textContent = '';
+    messageEl.className = 'message';
+  }, 3000);
+}
+
+// Utility function to shuffle an array randomly
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Initialize the game when the page loads
+window.addEventListener('DOMContentLoaded', initGame);
+</script>
+</body>
+</html>

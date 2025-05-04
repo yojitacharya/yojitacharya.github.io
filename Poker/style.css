@@ -1,0 +1,274 @@
+:root {
+    --table-color: #0a7242;
+    --card-width: 70px;
+    --card-height: 98px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #232323;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.game-message {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    min-height: 40px;
+}
+
+.table {
+    background-color: var(--table-color);
+    border-radius: 200px;
+    padding: 40px;
+    position: relative;
+    border: 10px solid #063b22;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pot {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: gold;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border: 2px solid gold;
+}
+
+.community-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.card.placeholder {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+}
+
+.players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.player {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 15px;
+    width: 220px;
+    margin: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.player.active {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    border: 2px solid gold;
+}
+
+.player.folded {
+    opacity: 0.6;
+}
+
+.player.winner-highlight {
+    animation: winner-pulse 2s infinite;
+}
+
+@keyframes winner-pulse {
+    0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+    50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+    100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.player-points {
+    color: gold;
+    margin-bottom: 10px;
+}
+
+.player-cards {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.player-cards .card {
+    width: calc(var(--card-width) * 0.9);
+    height: calc(var(--card-height) * 0.9);
+}
+
+.player-status {
+    text-align: center;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.hand-ranking {
+    margin-top: 10px;
+    text-align: center;
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.dealer-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    color: black;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid black;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#dealBtn {
+    background-color: #4caf50;
+    color: white;
+}
+
+#foldBtn {
+    background-color: #f44336;
+    color: white;
+}
+
+#checkCallBtn {
+    background-color: #2196f3;
+    color: white;
+}
+
+#betRaiseBtn {
+    background-color: #ff9800;
+    color: white;
+}
+
+.bet-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+input[type="range"] {
+    width: 150px;
+}
+
+.bet-amount {
+    font-weight: bold;
+    color: gold;
+    min-width: 40px;
+    text-align: center;
+}
+
+.action-timer {
+    height: 5px;
+    background-color: gold;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform-origin: left;
+}
+
+@media (max-width: 768px) {
+    .table {
+        padding: 20px;
+        border-radius: 100px;
+    }
+    
+    .player {
+        width: 45%;
+    }
+    
+    .card {
+        width: calc(var(--card-width) * 0.7);
+        height: calc(var(--card-height) * 0.7);
+    }
+    
+    .player-cards .card {
+        width: calc(var(--card-width) * 0.6);
+        height: calc(var(--card-height) * 0.6);
+    }
+}

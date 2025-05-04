@@ -1,86 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-54M6JKXS');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Texas Hold'em Poker</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54M6JKXS"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <div class="game-container">
-        <div class="game-message" id="gameMessage">Welcome to Texas Hold'em! Click 'Deal' to start.</div>
         <div class="table">
-            <div class="pot" id="pot">Pot: 0</div>
-            <div class="community-cards" id="communityCards">
-                <div class="card placeholder"></div>
-                <div class="card placeholder"></div>
-                <div class="card placeholder"></div>
-                <div class="card placeholder"></div>
-                <div class="card placeholder"></div>
+            <div class="community-area">
+                <div class="pot-display" id="pot">Pot: 0</div>
+                <div class="community-cards" id="communityCards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                </div>
             </div>
-            <div class="players">
-                <div class="player" id="player1">
-                    <div class="player-name">You</div>
-                    <div class="player-points">Points: 1000</div>
-                    <div class="player-cards">
-                        <div class="card placeholder"></div>
-                        <div class="card placeholder"></div>
-                    </div>
-                    <div class="player-status">Waiting</div>
-                    <div class="hand-ranking" id="playerHandRank"></div>
+            
+            <!-- Player positions -->
+            <div class="player" id="player1">
+                <div class="player-name">You</div>
+                <div class="player-cards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
                 </div>
-                <div class="player" id="player2">
-                    <div class="player-name">Robot 1</div>
-                    <div class="player-points">Points: 1000</div>
-                    <div class="player-cards">
-                        <div class="card placeholder"></div>
-                        <div class="card placeholder"></div>
-                    </div>
-                    <div class="player-status">Waiting</div>
+                <div class="player-status">Waiting</div>
+                <div class="player-points">Points: 1000</div>
+            </div>
+            
+            <div class="player" id="player2">
+                <div class="player-name">Tight Tina</div>
+                <div class="player-cards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
                 </div>
-                <div class="player" id="player3">
-                    <div class="player-name">Robot 2</div>
-                    <div class="player-points">Points: 1000</div>
-                    <div class="player-cards">
-                        <div class="card placeholder"></div>
-                        <div class="card placeholder"></div>
-                    </div>
-                    <div class="player-status">Waiting</div>
+                <div class="player-status">Waiting</div>
+                <div class="player-points">Points: 1000</div>
+            </div>
+            
+            <div class="player" id="player3">
+                <div class="player-name">Loose Larry</div>
+                <div class="player-cards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
                 </div>
-                <div class="player" id="player4">
-                    <div class="player-name">Robot 3</div>
-                    <div class="player-points">Points: 1000</div>
-                    <div class="player-cards">
-                        <div class="card placeholder"></div>
-                        <div class="card placeholder"></div>
-                    </div>
-                    <div class="player-status">Waiting</div>
+                <div class="player-status">Waiting</div>
+                <div class="player-points">Points: 1000</div>
+            </div>
+            
+            <div class="player" id="player4">
+                <div class="player-name">Aggressive Amy</div>
+                <div class="player-cards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
                 </div>
+                <div class="player-status">Waiting</div>
+                <div class="player-points">Points: 1000</div>
             </div>
         </div>
+        
         <div class="controls">
-            <button id="dealBtn">Deal</button>
-            <button id="foldBtn" disabled>Fold</button>
-            <button id="checkCallBtn" disabled>Check/Call</button>
-            <div class="bet-input">
-                <button id="betRaiseBtn" disabled>Bet/Raise</button>
-                <input type="range" id="betSlider" min="0" max="1000" value="0">
-                <div class="bet-amount" id="betAmount">0</div>
+            <div class="action-buttons">
+                <button id="dealBtn">Deal</button>
+                <button id="foldBtn" disabled>Fold</button>
+                <button id="checkCallBtn" disabled>Check</button>
+                <button id="betRaiseBtn" disabled>Bet</button>
             </div>
+            <div class="bet-controls">
+                <input type="range" id="betSlider" min="10" max="1000" value="10" disabled>
+                <div>Bet amount: <span id="betAmount">10</span></div>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div id="gameMessage">Welcome to Texas Hold'em! Press 'Deal' to start.</div>
+            <div>Your hand: <span id="playerHandRank"></span></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="poker.js"></script>
 </body>
 </html>
