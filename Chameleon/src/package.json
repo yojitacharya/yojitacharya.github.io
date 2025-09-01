@@ -9,6 +9,7 @@
     "build": "mkdir -p build && cp *.html *.css *.js build/ 2>/dev/null || true",
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "build": "echo 'Build complete'",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
