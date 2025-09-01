@@ -14,10 +14,10 @@ const io = socketIO(server, {
 
 app.use(cors());
 const path = require('path');
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Game state management
@@ -73,17 +73,17 @@ class Room {
 
         // Set game state
         this.gameState = {
-        phase: 'clues', // clues, voting, guessing, ended
-        category,
-        secretWord,
-        wordList,
-        chameleonId,
-        currentTurnIndex: 0,
-        turnOrder: this.shuffleArray(playerIds),
-        playerCountForRound: this.players.size // this hopefully will fix it pls fix it
-    };
+            phase: 'clues', // clues, voting, guessing, ended
+            category,
+            secretWord,
+            wordList,
+            chameleonId,
+            currentTurnIndex: 0,
+            turnOrder: this.shuffleArray(playerIds),
+            playerCountForRound: this.players.size // this hopefully will fix it pls fix it
+        };
 
-    return this.gameState;
+        return this.gameState;
     }
 
     shuffleArray(array) {
