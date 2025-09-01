@@ -11,210 +11,109 @@
     <title>Home - Yojit Acharya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
-    
     <link rel="stylesheet" href="style.css">
-
     <script>
-        // Global image loading state management
-        window.imageLoadingState = {
-            loadedImages: new Set(),
-            failedImages: new Set(),
-            retryAttempts: new Map()
-        };
+        // Simplified and more reliable image loading system
+        const gameData = [
+            { img: 'Imgs/Chameleon.png', icon: '🦎', link: 'Chameleon/public/index.html', name: 'Chameleon (Multiplayer)' },
+            { img: 'Imgs/Tetris.png', icon: '🧱', link: 'Tetris/index.html', name: 'Tetris' },
+            { img: 'Imgs/snake.png', icon: '🐍', link: 'Snake/index.html', name: 'Snake' },
+            { img: 'Chess/Chess_Pieces/N.png', icon: '♞', link: 'Chess/index.html', name: 'Chess' },
+            { img: 'Imgs/blackjack.png', icon: '🃏', link: 'Blackjack/index.html', name: 'Blackjack' },
+            { img: 'Imgs/Wordle.png', icon: '📝', link: 'Wordle/index.html', name: 'Wordle' },
+            { img: 'Imgs/BlockBlast.png', icon: '💥', link: 'BlockBlast/index.html', name: 'Block Blast' },
+            { img: 'Imgs/Sudoku.png', icon: '🔢', link: 'Sudoku/index.html', name: 'Sudoku' }
+        ];
 
-        // Robust image preloader with better error handling
-        function preloadImages() {
-            const imageUrls = [
-                'Imgs/Chameleon.png',
-                'Imgs/Tetris.png', 
-                'Imgs/snake.png',
-                'Chess/Chess_Pieces/N.png',
-                'Imgs/blackjack.png',
-                'Imgs/Wordle.png',
-                'Imgs/BlockBlast.png',
-                'Imgs/Sudoku.png'
-            ];
-
-            const preloadPromises = imageUrls.map(url => {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    
-                    img.onload = () => {
-                        window.imageLoadingState.loadedImages.add(url);
-                        console.log(`📦 Preloaded: ${url}`);
-                        resolve(url);
-                    };
-                    
-                    img.onerror = () => {
-                        window.imageLoadingState.failedImages.add(url);
-                        console.warn(`⚠️ Preload failed: ${url}`);
-                        // Don't reject - we'll handle this later
-                        resolve(url);
-                    };
-                    
-                    // Set a timeout for very slow loading
-                    setTimeout(() => {
-                        if (!window.imageLoadingState.loadedImages.has(url)) {
-                            console.warn(`⏱️ Preload timeout: ${url}`);
-                            resolve(url);
-                        }
-                    }, 5000);
-                    
-                    img.src = url;
-                });
-            });
-
-            return Promise.all(preloadPromises);
-        }
-
-        // Enhanced image loader with multiple fallback strategies
-        function loadImageWithFallbacks(imgElement) {
-            const originalSrc = imgElement.getAttribute('src') || imgElement.dataset.src;
-            if (!originalSrc) return;
-
-            const maxRetries = 3;
-            let currentAttempt = window.imageLoadingState.retryAttempts.get(originalSrc) || 0;
-            
-            // Skip if already loaded successfully
-            if (window.imageLoadingState.loadedImages.has(originalSrc)) {
-                imgElement.src = originalSrc;
-                imgElement.classList.add('loaded');
-                return;
-            }
-
+        function loadImageWithFallback(imgElement, imagePath, fallbackIcon) {
+            // Set up the image element with proper attributes
+            imgElement.style.background = 'linear-gradient(45deg, rgba(64, 224, 208, 0.2), rgba(255, 105, 180, 0.2))';
             imgElement.classList.add('loading');
-            console.log(`🔄 Loading image: ${originalSrc} (attempt ${currentAttempt + 1})`);
+            
+            console.log(`🔄 Attempting to load: ${imagePath}`);
 
-            function tryLoad(src, attempt = 0) {
-                const tempImg = new Image();
+            // Create a test image
+            const testImg = new Image();
+            
+            testImg.onload = function() {
+                // Image loaded successfully
+                imgElement.src = this.src;
+                imgElement.classList.remove('loading');
+                imgElement.classList.remove('placeholder');
+                console.log(`✅ Successfully loaded: ${imagePath}`);
+            };
+
+            testImg.onerror = function() {
+                // Image failed to load - use placeholder
+                console.log(`❌ Failed to load: ${imagePath}, using fallback`);
+                imgElement.classList.remove('loading');
+                imgElement.classList.add('placeholder');
+                imgElement.setAttribute('data-icon', fallbackIcon);
+                imgElement.removeAttribute('src');
                 
-                tempImg.onload = function() {
-                    imgElement.src = this.src;
-                    imgElement.classList.remove('loading');
-                    imgElement.classList.add('loaded');
-                    window.imageLoadingState.loadedImages.add(originalSrc);
-                    console.log(`✅ Successfully loaded: ${this.src}`);
-                };
+                // Set placeholder styling
+                imgElement.style.background = 'linear-gradient(45deg, rgba(64, 224, 208, 0.3), rgba(255, 105, 180, 0.3))';
+                imgElement.style.border = '2px dashed rgba(255, 255, 255, 0.3)';
+                imgElement.style.display = 'flex';
+                imgElement.style.alignItems = 'center';
+                imgElement.style.justifyContent = 'center';
+                imgElement.style.fontSize = '3em';
+                imgElement.style.color = 'rgba(255, 255, 255, 0.7)';
+                imgElement.textContent = fallbackIcon;
+            };
 
-                tempImg.onerror = function() {
-                    console.error(`❌ Failed to load: ${this.src} (attempt ${attempt + 1})`);
-                    
-                    if (attempt < maxRetries) {
-                        window.imageLoadingState.retryAttempts.set(originalSrc, attempt + 1);
-                        
-                        // Progressive fallback strategies
-                        setTimeout(() => {
-                            let fallbackSrc = originalSrc;
-                            
-                            switch(attempt + 1) {
-                                case 1:
-                                    // Try with cache buster
-                                    fallbackSrc = `${originalSrc}?v=${Date.now()}`;
-                                    break;
-                                case 2:
-                                    // Try different case
-                                    fallbackSrc = originalSrc.replace('Imgs/', 'imgs/');
-                                    break;
-                                case 3:
-                                    // Try different extension
-                                    fallbackSrc = originalSrc.replace('.png', '.jpg').replace('.jpg', '.png');
-                                    break;
-                            }
-                            
-                            console.log(`🔄 Retry ${attempt + 1}: ${fallbackSrc}`);
-                            tryLoad(fallbackSrc, attempt + 1);
-                        }, Math.pow(2, attempt) * 1000); // Exponential backoff
-                    } else {
-                        // All attempts failed
-                        imgElement.classList.remove('loading');
-                        window.imageLoadingState.failedImages.add(originalSrc);
-                        console.error(`💥 All attempts failed for: ${originalSrc}`);
-                        
-                        // Set fallback styling
-                        imgElement.style.background = 'linear-gradient(45deg, rgba(255, 69, 69, 0.2), rgba(255, 105, 180, 0.2))';
-                        imgElement.alt = `Image failed to load`;
-                        
-                        // Add retry button overlay
-                        const retryButton = document.createElement('div');
-                        retryButton.innerHTML = '🔄';
-                        retryButton.style.cssText = `
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            background: rgba(64, 224, 208, 0.8);
-                            border-radius: 50%;
-                            width: 30px;
-                            height: 30px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            z-index: 10;
-                        `;
-                        retryButton.onclick = () => {
-                            retryButton.remove();
-                            window.imageLoadingState.retryAttempts.delete(originalSrc);
-                            loadImageWithFallbacks(imgElement);
-                        };
-                        
-                        imgElement.parentElement.style.position = 'relative';
-                        imgElement.parentElement.appendChild(retryButton);
-                    }
-                };
+            // Set timeout for slow connections
+            setTimeout(() => {
+                if (imgElement.classList.contains('loading')) {
+                    testImg.src = ''; // Cancel loading
+                    testImg.onerror(); // Trigger error handler
+                }
+            }, 3000);
 
-                // Critical: Set source last to trigger loading
-                tempImg.src = src;
-            }
-
-            tryLoad(originalSrc, currentAttempt);
+            // Start loading
+            testImg.src = imagePath;
         }
 
-        // Wait for DOM and ensure everything is ready
-        function initializeWhenReady() {
-            const headerElement = document.querySelector('header');
-            const navListItems = document.querySelectorAll('nav li');
-            const mainElement = document.querySelector('main');
-            const figureElements = document.querySelectorAll('.games figure');
-            const imageElements = document.querySelectorAll('.games img');
+        function initializeApp() {
+            console.log('🚀 Initializing application...');
+            
+            // Add slide-in classes to elements
+            const header = document.querySelector('header');
+            const navItems = document.querySelectorAll('nav li');
+            const main = document.querySelector('main');
+            const figures = document.querySelectorAll('.games figure');
 
-            console.log(`🚀 Found ${imageElements.length} images to load`);
+            // Start animations
+            if (header) header.classList.add('slide-in');
+            
+            setTimeout(() => {
+                navItems.forEach(item => item.classList.add('slide-in'));
+            }, 400);
 
-            // Start preloading images immediately
-            preloadImages().then(() => {
-                console.log('📦 Preloading phase complete');
-                
-                // Load images with staggered timing to prevent overwhelming
-                imageElements.forEach((img, index) => {
+            setTimeout(() => {
+                if (main) main.classList.add('slide-in');
+            }, 800);
+
+            setTimeout(() => {
+                figures.forEach((figure, index) => {
                     setTimeout(() => {
-                        loadImageWithFallbacks(img);
-                    }, index * 100); // Stagger by 100ms each
+                        figure.classList.add('slide-in');
+                    }, index * 100);
                 });
+            }, 1200);
+
+            // Load all images with proper fallbacks
+            const images = document.querySelectorAll('.games img');
+            images.forEach((img, index) => {
+                if (gameData[index]) {
+                    setTimeout(() => {
+                        loadImageWithFallback(img, gameData[index].img, gameData[index].icon);
+                    }, index * 200); // Stagger loading
+                }
             });
 
-            // Staggered UI animations - only start after images begin loading
-            setTimeout(() => {
-                headerElement.classList.add('slide-in');
-            }, 200);
-
-            setTimeout(() => {
-                navListItems.forEach(item => item.classList.add('slide-in'));
-            }, 600);
-
-            setTimeout(() => {
-                mainElement.classList.add('slide-in');
-            }, 1000);
-
-            setTimeout(() => {
-                figureElements.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.classList.add('slide-in');
-                    }, index * 150);
-                });
-            }, 1400);
-
-            // Add interactive hover effects
-            figureElements.forEach(figure => {
+            // Add hover effects
+            figures.forEach(figure => {
                 figure.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-10px) scale(1.02)';
                 });
@@ -225,36 +124,23 @@
             });
         }
 
-        // Multiple initialization strategies to handle different loading states
+        // Initialize when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeWhenReady);
-        } else if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            // DOM already loaded
-            initializeWhenReady();
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
         }
 
-        // Fallback: Also try when window fully loads
+        // Fallback initialization
         window.addEventListener('load', () => {
-            // Double-check any images that might have failed
             const stillLoadingImages = document.querySelectorAll('.games img.loading');
             if (stillLoadingImages.length > 0) {
-                console.log(`🔄 Window loaded, retrying ${stillLoadingImages.length} failed images`);
-                stillLoadingImages.forEach(img => {
-                    img.classList.remove('loading');
-                    loadImageWithFallbacks(img);
+                console.log(`🔄 Retrying ${stillLoadingImages.length} images that are still loading...`);
+                stillLoadingImages.forEach((img, index) => {
+                    if (gameData[index]) {
+                        loadImageWithFallback(img, gameData[index].img, gameData[index].icon);
+                    }
                 });
-            }
-        });
-
-        // Handle visibility change (when user switches tabs)
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                // Page became visible again - retry any failed images
-                const failedImages = document.querySelectorAll('.games img:not(.loaded):not(.loading)');
-                if (failedImages.length > 0) {
-                    console.log(`👁️ Page visible again, retrying ${failedImages.length} failed images`);
-                    failedImages.forEach(img => loadImageWithFallbacks(img));
-                }
             }
         });
     </script>
@@ -285,7 +171,7 @@
             <div class ="games">
                 <figure>
                     <a href="Chameleon/public/index.html">
-                        <img src="Imgs/Chameleon.png" alt="Chameleon game screenshot" loading="eager">
+                        <img alt="Chameleon game screenshot">
                     </a>
                     <figcaption><a href="Chameleon/public/index.html">Chameleon (Multiplayer)</a></figcaption>
                 </figure>
@@ -294,21 +180,21 @@
         <div class="games">
             <figure>
                 <a href="Tetris/index.html">
-                    <img src="Imgs/Tetris.png" alt="Tetris game screenshot" loading="eager">
+                    <img alt="Tetris game screenshot">
                 </a>
                 <figcaption><a href="Tetris/index.html">Tetris</a></figcaption>
             </figure>
 
             <figure>
                 <a href="Snake/index.html">
-                    <img src="Imgs/snake.png" alt="Snake game screenshot" loading="eager">
+                    <img alt="Snake game screenshot">
                 </a>
                 <figcaption><a href="Snake/index.html">Snake</a></figcaption>
             </figure>
             
             <figure>
                <a href="Chess/index.html">
-                   <img src="Chess/Chess_Pieces/N.png" alt="Chess knight piece" loading="eager">
+                   <img alt="Chess knight piece">
                </a>
                 <figcaption><a href="Chess/index.html">Chess</a></figcaption>
             </figure>
@@ -316,21 +202,21 @@
         <div class="games">
             <figure>
                 <a href="Blackjack/index.html">
-                    <img src="Imgs/blackjack.png" alt="Blackjack game screenshot" loading="eager">
+                    <img alt="Blackjack game screenshot">
                 </a>
                 <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
             </figure>
             
             <figure>
                 <a href="Wordle/index.html">
-                    <img src="Imgs/Wordle.png" alt="Wordle game screenshot" loading="eager">
+                    <img alt="Wordle game screenshot">
                 </a>
                 <figcaption><a href="Wordle/index.html">Wordle</a></figcaption>
             </figure>
             
             <figure>
                 <a href="BlockBlast/index.html">
-                    <img src="Imgs/BlockBlast.png" alt="Block Blast game screenshot" loading="eager">
+                    <img alt="Block Blast game screenshot">
                 </a>
                 <figcaption><a href="BlockBlast/index.html">Block Blast</a></figcaption>
             </figure>
@@ -339,7 +225,7 @@
         <div class="games">
             <figure>
                 <a href="Sudoku/index.html">
-                    <img src="Imgs/Sudoku.png" alt="Sudoku game screenshot" loading="eager">
+                    <img alt="Sudoku game screenshot">
                 </a>
                 <figcaption><a href="Sudoku/index.html">Sudoku</a></figcaption>
             </figure>

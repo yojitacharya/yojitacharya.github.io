@@ -35,7 +35,7 @@ body::before {
     50% { opacity: 0.8; transform: scale(1.1); }
 }
 
-/* Header slide-in animation */
+/* Header animations */
 header {
     background: rgba(34, 34, 34, 0.95);
     backdrop-filter: blur(15px);
@@ -43,19 +43,18 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    transform: translateY(-100%);
     opacity: 0;
-    animation: headerSlideIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+    transform: translateY(-100%);
+    animation: slideIn 1.2s ease-out 0.3s forwards;
 }
 
-@keyframes headerSlideIn {
+@keyframes slideIn {
     to {
         transform: translateY(0);
         opacity: 1;
     }
 }
 
-/* Navigation items slide-in */
 nav ul {
     list-style-type: none;
     padding: 20px 0;
@@ -66,17 +65,16 @@ nav ul {
 nav li {
     display: inline-block;
     margin: 0 15px;
-    transform: translateX(-100px);
     opacity: 0;
-    animation: navItemSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform: translateX(-100px);
+    animation: slideInNav 0.8s ease-out forwards;
 }
 
-/* Staggered navigation animation */
 nav li:nth-child(1) { animation-delay: 0.8s; }
 nav li:nth-child(2) { animation-delay: 1.0s; }
 nav li:nth-child(3) { animation-delay: 1.2s; }
 
-@keyframes navItemSlideIn {
+@keyframes slideInNav {
     to {
         transform: translateX(0);
         opacity: 1;
@@ -98,7 +96,6 @@ nav li a {
     border: 2px solid transparent;
 }
 
-/* Shimmer effect on nav links */
 nav li a::before {
     content: '';
     position: absolute;
@@ -122,23 +119,14 @@ nav li a:hover {
     color: #fff;
 }
 
-/* Main content slide-in */
 main {
     padding: 60px 20px;
     text-align: center;
-    transform: translateY(50px);
     opacity: 0;
-    animation: mainSlideIn 1s ease-out 1.8s forwards;
+    transform: translateY(50px);
+    animation: slideIn 1s ease-out 1.8s forwards;
 }
 
-@keyframes mainSlideIn {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Headings with gradient animation */
 h2 {
     font-size: 2.5em;
     margin: 40px 0 20px;
@@ -149,16 +137,6 @@ h2 {
     -webkit-text-fill-color: transparent;
     animation: gradientFlow 4s ease-in-out infinite;
     text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
-    transform: translateX(-50px);
-    opacity: 0;
-    animation: headingSlideIn 1s ease-out 2.2s forwards, gradientFlow 4s ease-in-out 2.2s infinite;
-}
-
-@keyframes headingSlideIn {
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
 }
 
 @keyframes gradientFlow {
@@ -166,21 +144,18 @@ h2 {
     50% { background-position: 100% 50%; }
 }
 
-/* Special animation for "NEW!" text */
 h2:first-of-type {
-    animation: headingSlideIn 1s ease-out 2.2s forwards, 
-               gradientFlow 4s ease-in-out 2.2s infinite,
-               pulse 2s ease-in-out 3s infinite;
+    animation: gradientFlow 4s ease-in-out infinite, pulse 2s ease-in-out 3s infinite;
 }
 
 @keyframes pulse {
     0%, 100% { 
         text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
-        transform: translateX(0) scale(1);
+        transform: scale(1);
     }
     50% { 
         text-shadow: 0 0 40px rgba(255, 105, 180, 0.8), 0 0 60px rgba(64, 224, 208, 0.5);
-        transform: translateX(0) scale(1.05);
+        transform: scale(1.05);
     }
 }
 
@@ -188,16 +163,6 @@ h3 {
     font-size: 1.3em;
     color: #c0c0c0;
     margin-bottom: 30px;
-    transform: translateY(30px);
-    opacity: 0;
-    animation: fadeSlideUp 1s ease-out 2.6s forwards;
-}
-
-@keyframes fadeSlideUp {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 h3 a {
@@ -227,7 +192,6 @@ h3 a:hover {
     transform: translateY(-2px);
 }
 
-/* Games grid with staggered card animations */
 .games {
     display: flex;
     flex-wrap: wrap;
@@ -247,30 +211,26 @@ h3 a:hover {
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
-    
-    /* Initial state for slide-in animation */
-    transform: translateY(80px) rotateX(20deg);
     opacity: 0;
-    animation: cardSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform: translateY(50px);
+    animation: slideUp 0.8s ease-out forwards;
 }
 
-/* Staggered animation delays for each card */
-.games figure:nth-child(1) { animation-delay: 3.0s; }
-.games figure:nth-child(2) { animation-delay: 3.2s; }
-.games figure:nth-child(3) { animation-delay: 3.4s; }
-.games figure:nth-child(4) { animation-delay: 3.6s; }
-.games figure:nth-child(5) { animation-delay: 3.8s; }
-.games figure:nth-child(6) { animation-delay: 4.0s; }
-.games figure:nth-child(7) { animation-delay: 4.2s; }
+.games figure:nth-child(1) { animation-delay: 2.5s; }
+.games figure:nth-child(2) { animation-delay: 2.7s; }
+.games figure:nth-child(3) { animation-delay: 2.9s; }
+.games figure:nth-child(4) { animation-delay: 3.1s; }
+.games figure:nth-child(5) { animation-delay: 3.3s; }
+.games figure:nth-child(6) { animation-delay: 3.5s; }
+.games figure:nth-child(7) { animation-delay: 3.7s; }
 
-@keyframes cardSlideIn {
+@keyframes slideUp {
     to {
-        transform: translateY(0) rotateX(0);
+        transform: translateY(0);
         opacity: 1;
     }
 }
 
-/* Shimmer effect on cards */
 .games figure::before {
     content: '';
     position: absolute;
@@ -287,9 +247,8 @@ h3 a:hover {
     left: 100%;
 }
 
-/* Enhanced hover effects */
 .games figure:hover {
-    transform: translateY(-20px) scale(1.05) rotateY(5deg);
+    transform: translateY(-20px) scale(1.05);
     box-shadow: 
         0 25px 50px rgba(64, 224, 208, 0.3),
         0 0 0 1px rgba(64, 224, 208, 0.2),
@@ -298,7 +257,6 @@ h3 a:hover {
     border-color: rgba(64, 224, 208, 0.4);
 }
 
-/* Image loading improvements */
 .games img {
     width: 120px;
     height: 120px;
@@ -310,42 +268,22 @@ h3 a:hover {
     z-index: 2;
     object-fit: cover;
     display: block;
-    /* Prevent layout shift during loading */
-    background-color: rgba(255, 255, 255, 0.1);
-    /* Preload hint */
-    loading: eager;
+    background: linear-gradient(45deg, rgba(64, 224, 208, 0.2), rgba(255, 105, 180, 0.2));
 }
 
-/* Fallback placeholder while loading */
-.games img:not([src]) {
-    background: linear-gradient(45deg, rgba(64, 224, 208, 0.2), rgba(255, 105, 180, 0.2));
+/* Placeholder styling for missing images */
+.games img.placeholder {
+    background: linear-gradient(45deg, rgba(64, 224, 208, 0.3), rgba(255, 105, 180, 0.3));
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.games img:not([src])::after {
-    content: "🎮";
     font-size: 3em;
-    opacity: 0.5;
+    color: rgba(255, 255, 255, 0.7);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
 }
 
-/* Loading state styling */
-.games img.loading {
-    opacity: 0.5;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
-    background-size: 200% 100%;
-    animation: imageLoading 1.5s infinite;
-}
-
-@keyframes imageLoading {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.games img.loaded {
-    opacity: 1;
-    animation: none;
+.games img.placeholder::before {
+    content: "🎮";
 }
 
 .games figure:hover img {
@@ -392,21 +330,6 @@ h3 a:hover {
     width: 100%;
 }
 
-/* Error state for broken images */
-.games img[src=""], .games img:not([src]) {
-    background: linear-gradient(45deg, rgba(255, 69, 69, 0.2), rgba(255, 105, 180, 0.2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.games img[src=""]::after, .games img:not([src])::after {
-    content: "❌";
-    font-size: 2em;
-    opacity: 0.7;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .games {
         flex-direction: column;
@@ -419,51 +342,17 @@ h3 a:hover {
     
     nav li {
         margin: 5px;
-        transform: translateY(-50px);
-        animation: navItemSlideInMobile 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    
-    @keyframes navItemSlideInMobile {
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
     }
 }
 
-/* Scroll-triggered animations for late-loading content */
-@media (prefers-reduced-motion: no-preference) {
-    .games figure {
-        animation-play-state: paused;
-    }
-    
-    .games figure.animate {
-        animation-play-state: running;
-    }
+/* Loading animation */
+.loading {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
 
-/* Additional sparkle effect for enhanced visual appeal */
-.games figure:hover::after {
-    content: '✨';
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.2em;
-    opacity: 0;
-    animation: sparkle 0.6s ease-out forwards;
-}
-
-@keyframes sparkle {
-    0% {
-        opacity: 0;
-        transform: scale(0) rotate(0deg);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2) rotate(180deg);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0) rotate(360deg);
-    }
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
