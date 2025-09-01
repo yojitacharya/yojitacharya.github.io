@@ -16,10 +16,9 @@ app.use(cors());
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-
 
 // Game state management
 const rooms = new Map();
@@ -445,3 +444,4 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Chameleon Game Server running on port ${PORT}`);
 });
+
