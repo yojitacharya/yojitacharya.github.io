@@ -10,20 +10,49 @@
     <!-- End Google Tag Manager -->
     <title>Home - Yojit Acharya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const headerElement = document.querySelector('header');
             const navListItems = document.querySelectorAll('nav li');
             const mainElement = document.querySelector('main');
-            const figureElements = document.querySelectorAll('.games figure'); // Updated selector
+            const figureElements = document.querySelectorAll('.games figure');
 
-            headerElement.classList.add('slide-in');
-            navListItems.forEach(item => item.classList.add('slide-in'));
-            mainElement.classList.add('slide-in');
-            figureElements.forEach(item => item.classList.add('slide-in'));
+            // Staggered animation
+            setTimeout(() => {
+                headerElement.classList.add('slide-in');
+            }, 200);
+
+            setTimeout(() => {
+                navListItems.forEach(item => item.classList.add('slide-in'));
+            }, 600);
+
+            setTimeout(() => {
+                mainElement.classList.add('slide-in');
+            }, 1000);
+
+            setTimeout(() => {
+                figureElements.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('slide-in');
+                    }, index * 150);
+                });
+            }, 1400);
+
+            // Add interactive hover effects
+            figureElements.forEach(figure => {
+                figure.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                figure.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
         });
     </script>
 </head>
@@ -42,26 +71,41 @@
         </nav>
     </header>
     <main>
+        <h2> NEW! </h2>
+        <h3> Do you need tutoring for the ACT, AP classes, or anything in school?
+            <br>
+            Are you interested in honing your teaching and communication skills through tutoring?
+            <br>
+         Click <a href="Tutoring/index.html">HERE</a> to learn more about tutoring </h3>
+            <br>
+            <h2> Current Works </h2>
+            <div class ="games">
+                <figure>
+                    <a href="Chameleon/public/index.html"><img src="Imgs/Chameleon.png" alt="chameleon"></a>
+                    <figcaption><a href="Chameleon/public/index.html">Chameleon (Multiplayer)</a></figcaption>
+                </figure>
+            </div>
         <h2>Apps & Projects</h2>
         <div class="games">
+
             <figure>
-                <a href="Blackjack/index.html"><img src="Imgs/blackjack.png" alt="blackjack"></a>
-                <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
+                <a href="Tetris/index.html"><img src="Imgs/Tetris.png" alt="tetris"></a>
+                <figcaption><a href="Tetris/index.html">Tetris</a></figcaption>
             </figure>
+
             <figure>
                 <a href="Snake/index.html"><img src="Imgs/snake.png" alt="snake"></a>
                 <figcaption><a href="Snake/index.html">Snake</a></figcaption>
             </figure>
             <figure>
-                <a href="Chess/index.html"><img src="Chess/Chess_Pieces/N.png" alt="chess"></a>
+               <a href="Chess/index.html"><img src="Chess/Chess_Pieces/N.png" alt="chess"></a>
                 <figcaption><a href="Chess/index.html">Chess</a></figcaption>
             </figure>
         </div>
-        <br>
         <div class="games">
             <figure>
-                <a href="Tetris/index.html"><img src="Imgs/Tetris.png" alt="tetris"></a>
-                <figcaption><a href="Tetris/index.html">Tetris</a></figcaption>
+                <a href="Blackjack/index.html"><img src="Imgs/blackjack.png" alt="blackjack"></a>
+                <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
             </figure>
             <figure>
                 <a href="Wordle/index.html"><img src="Imgs/Wordle.png" alt="wordle"></a>
@@ -78,12 +122,7 @@
                 <a href="Sudoku/index.html"><img src="Imgs/Sudoku.png" alt="sudoku"></a>
                 <figcaption><a href="Sudoku/index.html">Sudoku</a></figcaption>
             </figure>
-        <!--
-            <figure>
-                <a href="Crossword/index.html"><img src="Imgs/Crossword.png" alt="crossword"></a>
-                <figcaption><a href="Crossword/index.html">Crossword Puzzles</a></figcaption>
-            </figure>
-        -->
+
         </div>
     </main>
 </body>
