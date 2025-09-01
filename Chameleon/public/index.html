@@ -863,7 +863,7 @@
 
         function connectToServer() {
             // replace with actual domain when i deploy
-            socket = io('localhost', {
+            socket = io('/', {
                 transports: ['websocket', 'polling']
             });
 
