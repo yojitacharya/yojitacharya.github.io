@@ -692,7 +692,7 @@
             </div>
 
             <div id="clueInput" style="display: none;">
-                <input type="text" id="clueWord" placeholder="Enter your one-word clue" maxlength="30">
+                <input type="text" id="clueWord" placeholder="It is your Turn. Enter your one-word clue" maxlength="30">
                 <button onclick="submitClue()">Submit Clue</button>
             </div>
 
@@ -712,7 +712,7 @@
 
         <div class="chat-section" id="chatSection" style="display: none;">
             <div id="chatMessages"></div>
-            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()">
+            <input type="text" id="chatInput" placeholder="Type a message... (NOT FOR GIVING CLUES)" onkeypress="if(event.key==='Enter') sendChat()">
             <button onclick="sendChat()">Send</button>
         </div>
     </div>
