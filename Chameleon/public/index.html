@@ -310,6 +310,38 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Tutorial Button */
+        .tutorial-button {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .tutorial-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #7c8ee8, #8a5bb8);
+        }
+
+        .tutorial-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* From Uiverse.io by vinodjangid07 */ 
         /* The switch - the box around the speaker*/
         .toggleSwitch {
@@ -505,6 +537,16 @@
             color: #ffffff;
         }
 
+        body.dark-mode .tutorial-button {
+            background: linear-gradient(135deg, #4a4a6a, #3a3a5a);
+            box-shadow: 0 4px 15px rgba(74, 74, 106, 0.3);
+        }
+
+        body.dark-mode .tutorial-button:hover {
+            background: linear-gradient(135deg, #5a5a7a, #4a4a6a);
+            box-shadow: 0 8px 25px rgba(74, 74, 106, 0.5);
+        }
+
         /* From Uiverse.io by Madflows */ 
         .toggle-switch {
             --light: #d8dbe0;
@@ -587,6 +629,15 @@
     </style>
 </head>
 <body>
+    <!-- Tutorial Button -->
+    <a href="tutorial.html" class="tutorial-button" target="_blank" title="How to Play">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+    </a>
+
     <!-- From Uiverse.io by Madflows --> 
     <div class="toggle-switch">
         <label class="switch-label">

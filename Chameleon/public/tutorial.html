@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play Chameleon - Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.6s ease;
+            position: relative;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 25px 25px 0 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 30px;
+            font-size: 3em;
+            font-weight: 800;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.3)); }
+            100% { filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.6)); }
+        }
+
+        .tutorial-section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin: 20px 0 10px 0;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .role-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .role-card {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .role-card.chameleon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .role-card.regular {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .role-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .word-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding-left: 60px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #667eea10, #764ba220);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .tip-card h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .example-clues {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .clue-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .clue-example {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ff6b6b20, #feca5720);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box h4 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .play-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .role-demo {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            .step-list li {
+                padding-left: 50px;
+            }
+            
+            .step-list li::before {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦎 How to Play Chameleon</h1>
+
+        <div class="tutorial-section">
+            <h2>🎯 Game Overview</h2>
+            <p>Chameleon is a social deduction game where one player is secretly the "Chameleon" who doesn't know the secret word. The Chameleon must blend in with the other players while trying to figure out what the secret word is, while everyone else tries to identify who the Chameleon is!</p>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>👥 Setup & Players</h2>
+            <ul class="step-list">
+                <li><strong>Players:</strong> 3-8 players work best</li>
+                <li><strong>Join a Room:</strong> Enter your name and either join an existing room with a code or create a new one</li>
+                <li><strong>Wait for Players:</strong> The host can start the game once everyone has joined</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>🎭 Player Roles</h2>
+            <div class="role-demo">
+                <div class="role-card regular">
+                    <h4>Regular Players</h4>
+                    <p>Category: Animals</p>
+                    <div class="word-display">Lion</div>
+                    <p>You know the secret word and must give clues while finding the Chameleon</p>
+                </div>
+                <div class="role-card chameleon">
+                    <h4>The Chameleon</h4>
+                    <p>Category: Animals</p>
+                    <div class="word-display">???</div>
+                    <p>You only know the category. Blend in and figure out the secret word!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>🎮 How to Play</h2>
+            
+            <h3>Phase 1: Giving Clues</h3>
+            <ul class="step-list">
+                <li>Each player takes turns giving a <strong>one-word clue</strong> related to the secret word</li>
+                <li>Regular players should give clues that relate to the secret word but aren't too obvious</li>
+                <li>The Chameleon must give a clue that sounds related without knowing the actual word</li>
+                <li>All clues are displayed for everyone to see</li>
+            </ul>
+
+            <div class="example-clues">
+                <h4>Example Clue Round:</h4>
+                <p><strong>Secret Word:</strong> Lion | <strong>Category:</strong> Animals</p>
+                <div class="clue-examples">
+                    <div class="clue-example">King</div>
+                    <div class="clue-example">Mane</div>
+                    <div class="clue-example">Roar</div>
+                    <div class="clue-example">Fierce</div>
+                    <div class="clue-example">Jungle</div>
+                </div>
+                <p><em>Can you spot which clue might be from the Chameleon?</em></p>
+            </div>
+
+            <h3>Phase 2: Voting</h3>
+            <ul class="step-list">
+                <li>After everyone gives their clue, players vote for who they think is the Chameleon</li>
+                <li>You cannot vote for yourself</li>
+                <li>The player with the most votes is suspected to be the Chameleon</li>
+            </ul>
+
+            <h3>Phase 3: The Reveal</h3>
+            <ul class="step-list">
+                <li>If the Chameleon receives the most votes, they get one chance to guess the secret word</li>
+                <li>If they guess correctly, the Chameleon wins!</li>
+                <li>If they guess wrong, the regular players win</li>
+                <li>If someone else gets the most votes, the Chameleon wins by avoiding detection</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>🏆 Winning Conditions</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>🦎 Chameleon Wins If:</h4>
+                    <p>• They avoid getting the most votes</p>
+                    <p>• They get caught but guess the secret word correctly</p>
+                </div>
+                <div class="tip-card">
+                    <h4>👥 Regular Players Win If:</h4>
+                    <p>• They correctly identify the Chameleon</p>
+                    <p>• The Chameleon fails to guess the secret word</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>💡 Strategy Tips</h2>
+            
+            <h3>For Regular Players:</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>Give Smart Clues</h4>
+                    <p>Make your clues specific enough that other regular players know you have the word, but not so obvious that the Chameleon can easily guess it.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Watch for Vague Clues</h4>
+                    <p>Look for clues that could apply to many words in the category - these might come from the Chameleon.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Build on Others</h4>
+                    <p>Reference previous clues to show you understand the connections, making it harder for the Chameleon to follow.</p>
+                </div>
+            </div>
+
+            <h3>For the Chameleon:</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>Listen Carefully</h4>
+                    <p>Pay attention to all clues given before your turn. Look for patterns and common themes.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Stay General</h4>
+                    <p>Give clues that could reasonably apply to multiple things in the category. Avoid being too specific.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Act Natural</h4>
+                    <p>Don't hesitate too much or act suspiciously. Confidence can help you blend in.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h4>⚠️ Important Rules</h4>
+            <p>• Clues must be exactly <strong>one word</strong></p>
+            <p>• No gestures, sounds, or hints outside of your word</p>
+            <p>• You cannot say any part of the secret word</p>
+            <p>• No proper nouns (like brand names or specific people)</p>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>🎪 Game Categories</h2>
+            <p>The game includes various categories like:</p>
+            <div class="clue-examples">
+                <div class="clue-example">Animals</div>
+                <div class="clue-example">Food</div>
+                <div class="clue-example">Movies</div>
+                <div class="clue-example">Countries</div>
+                <div class="clue-example">Sports</div>
+                <div class="clue-example">Professions</div>
+                <div class="clue-example">Technology</div>
+                <div class="clue-example">Nature</div>
+            </div>
+        </div>
+
+        <div class="tutorial-section" style="text-align: center;">
+            <h2>🚀 Ready to Play?</h2>
+            <p>Now that you know the rules, it's time to test your blending skills!</p>
+            <a href="#" class="play-button" onclick="window.close(); return false;">Start Playing!</a>
+        </div>
+    </div>
+</body>
+</html>
