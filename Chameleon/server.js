@@ -171,16 +171,25 @@ class Room {
         // Find player with most votes
         let maxVotes = 0;
         let mostVoted = null;
+        let tiedPlayers = [];
         
         voteCounts.forEach((count, playerId) => {
             if (count > maxVotes) {
                 maxVotes = count;
                 mostVoted = playerId;
+                tiedPlayers = [playerId];
+            } else if (count === maxVotes && count > 0) {
+                tiedPlayers.push(playerId);
             }
         });
         
-        // Check if chameleon was caught
-        const chameleonCaught = mostVoted === this.gameState.chameleonId;
+        // Check if there's a tie and if chameleon is involved in the tie
+        const isTie = tiedPlayers.length > 1;
+        const chameleonInTie = isTie && tiedPlayers.includes(this.gameState.chameleonId);
+        
+        // Chameleon is caught if they have the most votes AND it's not a tie
+        // OR if they are involved in a tie (chameleon loses ties)
+        const chameleonCaught = (mostVoted === this.gameState.chameleonId && !isTie) || chameleonInTie;
         
         if (chameleonCaught) {
             this.gameState.phase = 'guessing';
@@ -189,9 +198,11 @@ class Room {
         }
         
         return {
-            mostVoted,
+            mostVoted: isTie ? null : mostVoted, // Return null if there's a tie
             chameleonCaught,
-            voteCounts: Array.from(voteCounts.entries())
+            voteCounts: Array.from(voteCounts.entries()),
+            isTie,
+            tiedPlayers
         };
     }
 
