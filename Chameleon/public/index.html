@@ -123,6 +123,11 @@
             color: white;
         }
 
+        .role-card.chameleon-hard {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: white;
+        }
+
         .word-display {
             font-size: 2em;
             font-weight: bold;
@@ -429,8 +434,6 @@
             50% { transform: translateY(-5px); }
         }
 
-
-
         .notification {
             position: fixed;
             top: 20px;
@@ -623,9 +626,115 @@
             opacity: 1;
         }
 
+        /* Hard Mode Checkbox Styles - From Uiverse.io by sssynk */
+        .hard-mode-container {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
 
+        .hard-mode-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+            border-radius: 5px;
+        }
 
+        .hard-mode-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 0px rgb(183, 183, 183);
+        }
 
+        .checkmark {
+            position: relative;
+            top: 0;
+            left: 0;
+            height: 1.3em;
+            width: 1.3em;
+            background-color: #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .hard-mode-container input:checked ~ .checkmark {
+            box-shadow: 3px 3px 0px rgb(183, 183, 183);
+            transition: all 0.2s;
+            opacity: 1;
+            background-image: linear-gradient(45deg, rgb(100, 61, 219) 0%, rgb(217, 21, 239) 100%);
+        }
+
+        .hard-mode-container input ~ .checkmark {
+            transition: all 0.2s;
+            opacity: 1;
+            box-shadow: 1px 1px 0px rgb(183, 183, 183);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .hard-mode-container input:checked ~ .checkmark:after {
+            opacity: 1;
+            transition: all 0.2s;
+        }
+
+        .hard-mode-container .checkmark:after {
+            left: 0.45em;
+            top: 0.25em;
+            width: 0.25em;
+            height: 0.5em;
+            border: solid white;
+            border-width: 0 0.15em 0.15em 0;
+            transform: rotate(45deg);
+        }
+
+        .hard-mode-label {
+            color: white;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hard-mode-warning {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        body.dark-mode .hard-mode-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .hard-mode-label {
+            color: #ffffff;
+        }
+
+        /* Hide hard mode controls initially */
+        #hardModeControls {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -649,18 +758,15 @@
     <!-- From Uiverse.io by vinodjangid07 --> 
     <input type="checkbox" id="checkboxInput" onchange="toggleSound()">
     <label for="checkboxInput" class="toggleSwitch">
-
-    <div class="speaker"><svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
-    <path d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z" style="stroke:#fff;stroke-width:5;stroke-linejoin:round;fill:#fff;"></path>
-    <path d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6" style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"></path>
-    </svg></div>
-
-    <div class="mute-speaker"><svg version="1.0" viewBox="0 0 75 75" stroke="#fff" stroke-width="5">
-    <path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round"></path>
-    <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
-    </svg></div>
-
-        </label>
+        <div class="speaker"><svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
+        <path d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z" style="stroke:#fff;stroke-width:5;stroke-linejoin:round;fill:#fff;"></path>
+        <path d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6" style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"></path>
+        </svg></div>
+        <div class="mute-speaker"><svg version="1.0" viewBox="0 0 75 75" stroke="#fff" stroke-width="5">
+        <path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round"></path>
+        <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
+        </svg></div>
+    </label>
     
     <div class="container">
         <h1>🦎 Chameleon </h1>
@@ -675,6 +781,19 @@
             <div class="game-info">
                 Room Code: <span id="roomCodeDisplay"></span> | Players: <span id="playerCount">0</span>
             </div>
+            
+            <!-- Hard Mode Controls -->
+            <div id="hardModeControls">
+                <label class="hard-mode-container">
+                    <input type="checkbox" id="hardModeCheckbox" onchange="toggleHardMode()">
+                    <div class="checkmark"></div>
+                    <span class="hard-mode-label">Hard Mode (Chameleon gets NO category info!)</span>
+                </label>
+                <div id="hardModeWarning" style="display: none;" class="hard-mode-warning">
+                    ⚠️ HARD MODE ENABLED - The Chameleon will receive NO information at all!
+                </div>
+            </div>
+            
             <div class="players-list" id="lobbyPlayers"></div>
             <button id="startGameBtn" onclick="startGame()" style="display: none;">Start Game</button>
         </div>
@@ -728,72 +847,71 @@
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         // Game word categories and words
-    const gameData = {
-    "Animals": [
-        "Lion", "Elephant", "Penguin", "Giraffe", "Dolphin", "Eagle", "Tiger",
-        "Zebra", "Kangaroo", "Panda", "Crocodile", "Shark", "Horse", "Wolf", "Fox",
-        "Octopus", "Bear", "Owl", "Monkey"
-    ],
-    "Fruits": [
-        "Apple", "Banana", "Orange", "Strawberry", "Mango", "Pineapple", "Grape", "Watermelon",
-        "Cherry", "Kiwi", "Blueberry", "Lemon", "Lime", "Raspberry"
-    ],
-    "Countries": [
-        "France", "Japan", "Brazil", "Canada", "Egypt", "Australia", "India", "Mexico",
-        "Germany", "China", "Spain", "Russia", "Argentina",
-        "Greece"
-    ],
-    "Movies": [
-        "Frozen", "Jaws", "Shrek",
-        "Star Wars", "Jurassic Park", "The Dark Knight", "Toy Story",
-        "Forrest Gump", "Finding Nemo", "Back to the Future", "The Lion King",
-        "Avengers", "Harry Potter", "Titanic"
-    ],
-    "Sports": [
-        "Soccer", "Basketball", "Tennis", "Swimming", "Golf", "Baseball", "Hockey",
-        "Volleyball", "Boxing", "Wrestling", "Skiing",
-        "Track"
-    ],
-    "Food": [
-        "Pizza", "Burger", "Sushi", "Pasta", "Tacos", "Salad", "Soup", "Sandwich",
-        "Steak", "Fried Rice", "Ramen", "Burrito",
-        "Pancakes", "Ice Cream"
-    ],
-    "Professions": [
-        "Doctor", "Teacher", "Engineer", "Artist", "Chef", "Pilot", "Lawyer", "Firefighter",
-        "Nurse", "Scientist", "Farmer", "Architect", "Soldier", "Actor", "Musician",
-        "Writer", "Athlete", "Police Officer", "Judge"
-    ],
-    "Vehicles": [
-        "Car", "Airplane", "Boat", "Train", "Motorcycle", "Bus", "Truck",
-        "Helicopter", "Submarine", "Van", 
-        "Ambulance", "Taxi", "Cruise Ship"
-    ],
-    "Musical Instruments": [
-        "Guitar", "Piano", "Drums", "Violin", "Flute", "Saxophone", "Trumpet", "Cello",
-        "Harp", "Clarinet", "Trombone", "Banjo", "Accordion",
-        "Xylophone"
-    ],
-    "Clothing": [
-        "Shirt", "Pants", "Dress", "Jacket", "Hat", "Shoes", "Scarf", "Gloves",
-        "Sweater", "Shorts", "Socks", "Tie", "Belt", "Skirt",
-    ],
-    "Household Items": [
-        "Chair", "Table", "Lamp", "Sofa", "Bed", "Clock", "Mirror", "Curtains",
-        "Television", "Bookshelf", "Carpet", "Fan", "Microwave", "Fridge",
-        "Oven", "Vacuum", "Toaster", "Washing Machine"
-    ],
-    "Nature": [
-        "Tree", "River", "Mountain", "Ocean", "Flower", "Desert", "Rain", "Snow",
-        "Volcano", "Forest", "Lake", "Waterfall", "Island"
-    ],
-    "Technology": [
-        "Computer", "Phone", "Tablet", "Camera", "Printer", "Router", "Headphones", "Smartwatch",
-        "Television", "Drone", "Keyboard", "Mouse", "Microphone",
-        "Game Console", "Smart Speaker", "Charger", "Projector", "Monitor"
-    ]
-    };
-
+        const gameData = {
+            "Animals": [
+                "Lion", "Elephant", "Penguin", "Giraffe", "Dolphin", "Eagle", "Tiger",
+                "Zebra", "Kangaroo", "Panda", "Crocodile", "Shark", "Horse", "Wolf", "Fox",
+                "Octopus", "Bear", "Owl", "Monkey"
+            ],
+            "Fruits": [
+                "Apple", "Banana", "Orange", "Strawberry", "Mango", "Pineapple", "Grape", "Watermelon",
+                "Cherry", "Kiwi", "Blueberry", "Lemon", "Lime", "Raspberry"
+            ],
+            "Countries": [
+                "France", "Japan", "Brazil", "Canada", "Egypt", "Australia", "India", "Mexico",
+                "Germany", "China", "Spain", "Russia", "Argentina",
+                "Greece"
+            ],
+            "Movies": [
+                "Frozen", "Jaws", "Shrek",
+                "Star Wars", "Jurassic Park", "The Dark Knight", "Toy Story",
+                "Forrest Gump", "Finding Nemo", "Back to the Future", "The Lion King",
+                "Avengers", "Harry Potter", "Titanic"
+            ],
+            "Sports": [
+                "Soccer", "Basketball", "Tennis", "Swimming", "Golf", "Baseball", "Hockey",
+                "Volleyball", "Boxing", "Wrestling", "Skiing",
+                "Track"
+            ],
+            "Food": [
+                "Pizza", "Burger", "Sushi", "Pasta", "Tacos", "Salad", "Soup", "Sandwich",
+                "Steak", "Fried Rice", "Ramen", "Burrito",
+                "Pancakes", "Ice Cream"
+            ],
+            "Professions": [
+                "Doctor", "Teacher", "Engineer", "Artist", "Chef", "Pilot", "Lawyer", "Firefighter",
+                "Nurse", "Scientist", "Farmer", "Architect", "Soldier", "Actor", "Musician",
+                "Writer", "Athlete", "Police Officer", "Judge"
+            ],
+            "Vehicles": [
+                "Car", "Airplane", "Boat", "Train", "Motorcycle", "Bus", "Truck",
+                "Helicopter", "Submarine", "Van", 
+                "Ambulance", "Taxi", "Cruise Ship"
+            ],
+            "Musical Instruments": [
+                "Guitar", "Piano", "Drums", "Violin", "Flute", "Saxophone", "Trumpet", "Cello",
+                "Harp", "Clarinet", "Trombone", "Banjo", "Accordion",
+                "Xylophone"
+            ],
+            "Clothing": [
+                "Shirt", "Pants", "Dress", "Jacket", "Hat", "Shoes", "Scarf", "Gloves",
+                "Sweater", "Shorts", "Socks", "Tie", "Belt", "Skirt",
+            ],
+            "Household Items": [
+                "Chair", "Table", "Lamp", "Sofa", "Bed", "Clock", "Mirror", "Curtains",
+                "Television", "Bookshelf", "Carpet", "Fan", "Microwave", "Fridge",
+                "Oven", "Vacuum", "Toaster", "Washing Machine"
+            ],
+            "Nature": [
+                "Tree", "River", "Mountain", "Ocean", "Flower", "Desert", "Rain", "Snow",
+                "Volcano", "Forest", "Lake", "Waterfall", "Island"
+            ],
+            "Technology": [
+                "Computer", "Phone", "Tablet", "Camera", "Printer", "Router", "Headphones", "Smartwatch",
+                "Television", "Drone", "Keyboard", "Mouse", "Microphone",
+                "Game Console", "Smart Speaker", "Charger", "Projector", "Monitor"
+            ]
+        };
 
         let socket;
         let currentPlayer = null;
@@ -803,6 +921,7 @@
         let totalPlayersAtVoteStart = 0;
         let soundEnabled = true;
         let darkMode = false;
+        let hardModeEnabled = false;
 
         // Sound effects using Web Audio API for better quality
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -853,7 +972,6 @@
                     createSound(1000, 0.1);
                     setTimeout(() => createSound(1200, 0.1), 100);
                     break;
-
             }
         }
 
@@ -863,6 +981,26 @@
             checkbox.checked = !soundEnabled; // Invert because checked = muted
             showNotification(soundEnabled ? 'Sound enabled 🔊' : 'Sound disabled 🔇');
             playSound('notification');
+        }
+
+        function toggleHardMode() {
+            if (!isHost) return;
+            
+            hardModeEnabled = !hardModeEnabled;
+            const warning = document.getElementById('hardModeWarning');
+            
+            if (hardModeEnabled) {
+                warning.style.display = 'block';
+                showNotification('Hard Mode enabled! 🔥');
+            } else {
+                warning.style.display = 'none';
+                showNotification('Hard Mode disabled');
+            }
+            
+            playSound('notification');
+            
+            // Emit hard mode status to server
+            socket.emit('toggleHardMode', hardModeEnabled);
         }
 
         function showNotification(message) {
@@ -910,8 +1048,6 @@
             }
         }
 
-        // Track total players when voting starts
-
         function connectToServer() {
             // replace with actual domain when i deploy
             socket = io('https://yojit-org-134258260293.us-south1.run.app', {
@@ -933,6 +1069,7 @@
                 document.getElementById('chatSection').style.display = 'block';
                 if (isHost) {
                     document.getElementById('startGameBtn').style.display = 'block';
+                    document.getElementById('hardModeControls').style.display = 'block';
                 }
                 playSound('join');
                 showNotification(`Joined room ${data.roomCode} 🎮`);
@@ -943,6 +1080,19 @@
                 // Update the vote counter if we're in voting phase and player count changes
                 if (gameState && gameState.phase === 'voting') {
                     updateVoteCounter();
+                }
+            });
+
+            socket.on('hardModeUpdate', (enabled) => {
+                hardModeEnabled = enabled;
+                const warning = document.getElementById('hardModeWarning');
+                const checkbox = document.getElementById('hardModeCheckbox');
+                
+                checkbox.checked = enabled;
+                warning.style.display = enabled ? 'block' : 'none';
+                
+                if (!isHost) {
+                    showNotification(enabled ? 'Host enabled Hard Mode! 🔥' : 'Host disabled Hard Mode');
                 }
             });
 
@@ -1014,7 +1164,6 @@
             socket.on('error', (error) => {
                 alert('Error: ' + error);
             });
-
         }
 
         function joinGame() {
@@ -1039,7 +1188,7 @@
                 const words = gameData[category];
                 const secretWord = words[Math.floor(Math.random() * words.length)];
                 
-                socket.emit('startGame', { category, secretWord, words });
+                socket.emit('startGame', { category, secretWord, words, hardMode: hardModeEnabled });
             }
         }
 
@@ -1051,12 +1200,23 @@
             const roleInfo = document.getElementById('roleInfo');
             
             if (gameState.role === 'chameleon') {
-                roleCard.className = 'role-card chameleon';
-                roleInfo.innerHTML = `
-                    <h2>You are the CHAMELEON! 🦎</h2>
-                    <p>Category: <span class="word-display">${gameState.category}</span></p>
-                    <p>Blend in and figure out the secret word!</p>
-                `;
+                if (gameState.hardMode) {
+                    // Hard mode - no information at all
+                    roleCard.className = 'role-card chameleon-hard';
+                    roleInfo.innerHTML = `
+                        <h2>You are the CHAMELEON! 🦎</h2>
+                        <div class="hard-mode-warning">🔥 HARD MODE - NO INFORMATION!</div>
+                        <p>You have no clues - listen carefully and blend in!</p>
+                    `;
+                } else {
+                    // Normal mode - show category
+                    roleCard.className = 'role-card chameleon';
+                    roleInfo.innerHTML = `
+                        <h2>You are the CHAMELEON! 🦎</h2>
+                        <p>Category: <span class="word-display">${gameState.category}</span></p>
+                        <p>Blend in and figure out the secret word!</p>
+                    `;
+                }
             } else {
                 roleCard.className = 'role-card regular';
                 roleInfo.innerHTML = `
@@ -1064,6 +1224,7 @@
                     <p>Category: ${gameState.category}</p>
                     <p>Secret Word: <span class="word-display">${gameState.secretWord}</span></p>
                     <p>Find the Chameleon!</p>
+                    ${gameState.hardMode ? '<div class="hard-mode-warning">🔥 HARD MODE - Chameleon has no info!</div>' : ''}
                 `;
             }
             
@@ -1234,8 +1395,6 @@
             totalPlayersAtVoteStart = 0;
         }
 
-
-
         // Initialize connection when page loads
         window.onload = () => {
             loadThemePreference();
@@ -1243,5 +1402,5 @@
         };
     </script>
 </body>
-
 </html>
+                "

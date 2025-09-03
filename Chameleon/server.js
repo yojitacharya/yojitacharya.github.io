@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-
 // Game state management
 const rooms = new Map();
 const playerRooms = new Map();
@@ -33,6 +32,7 @@ class Room {
         this.gameState = null;
         this.votes = new Map();
         this.clues = [];
+        this.hardMode = false;
     }
 
     addPlayer(id, name) {
@@ -56,15 +56,44 @@ class Room {
         }
     }
 
-    startGame(category, secretWord, wordList) {
-        // Reset game state
+    // Accept boolean or string "true"/"false"; keep gameState in sync if present.
+    setHardMode(enabled) {
+        let parsed;
+        if (typeof enabled === 'boolean') {
+            parsed = enabled;
+        } else if (typeof enabled === 'string') {
+            parsed = enabled.toLowerCase() === 'true';
+        } else {
+            parsed = Boolean(enabled);
+        }
+
+        this.hardMode = parsed;
+
+        if (this.gameState) {
+            this.gameState.hardMode = parsed;
+        }
+    }
+
+    // Start game. hardMode param may be boolean, string, or omitted.
+    startGame(category, secretWord, wordList, hardMode) {
+        // Normalize incoming hardMode param (boolean/string). If omitted (null), use room setting.
+        let parsedParam = null;
+        if (typeof hardMode === 'boolean') {
+            parsedParam = hardMode;
+        } else if (typeof hardMode === 'string') {
+            parsedParam = hardMode.toLowerCase() === 'true';
+        }
+
+        const hm = (parsedParam === null) ? this.hardMode : parsedParam;
+
         this.clues = [];
         this.votes.clear();
-        
+        this.hardMode = hm; // store resolved value on room
+
         // Randomly select chameleon
         const playerIds = Array.from(this.players.keys());
         const chameleonId = playerIds[Math.floor(Math.random() * playerIds.length)];
-        
+
         // Set roles
         this.players.forEach((player, id) => {
             player.role = id === chameleonId ? 'chameleon' : 'regular';
@@ -74,17 +103,18 @@ class Room {
 
         // Set game state
         this.gameState = {
-        phase: 'clues', // clues, voting, guessing, ended
-        category,
-        secretWord,
-        wordList,
-        chameleonId,
-        currentTurnIndex: 0,
-        turnOrder: this.shuffleArray(playerIds),
-        playerCountForRound: this.players.size // this hopefully will fix it pls fix it
-    };
+            phase: 'clues',
+            category,
+            secretWord,
+            wordList,
+            chameleonId,
+            currentTurnIndex: 0,
+            turnOrder: this.shuffleArray(playerIds),
+            playerCountForRound: this.players.size,
+            hardMode: hm
+        };
 
-    return this.gameState;
+        return this.gameState;
     }
 
     shuffleArray(array) {
@@ -103,44 +133,41 @@ class Room {
 
     nextTurn() {
         if (!this.gameState) return null;
-        
+
         this.gameState.currentTurnIndex++;
-        
+
         // Check if all players have given clues
         if (this.gameState.currentTurnIndex >= this.gameState.turnOrder.length) {
             this.gameState.phase = 'voting';
             return null;
         }
-        
+
         return this.getCurrentTurn();
     }
 
     addClue(playerId, clue) {
         const player = this.players.get(playerId);
         if (!player || player.hasGivenClue) return false;
-        
+
         player.hasGivenClue = true;
         this.clues.push({
             playerId,
             player: player.name,
             clue
         });
-        
+
         return true;
     }
 
-
-    // In the Room class
-
     vote(voterId, suspectId) {
         if (this.gameState.phase !== 'voting') return false;
-        
+
         const voter = this.players.get(voterId);
         if (!voter || voter.hasVoted) return false;
-        
+
         voter.hasVoted = true;
         this.votes.set(voterId, suspectId);
-        
+
         // Check if all players have voted
         const totalPlayers = this.gameState.playerCountForRound;
         const totalVotes = this.votes.size;
@@ -148,7 +175,7 @@ class Room {
         // Determine vote progress
         const votingComplete = totalVotes === totalPlayers;
         const result = {
-            voteProgress: !votingComplete, 
+            voteProgress: !votingComplete,
             totalVotes,
             totalPlayers
         };
@@ -163,16 +190,16 @@ class Room {
 
     tallyVotes() {
         const voteCounts = new Map();
-        
+
         this.votes.forEach((suspectId) => {
             voteCounts.set(suspectId, (voteCounts.get(suspectId) || 0) + 1);
         });
-        
+
         // Find player with most votes
         let maxVotes = 0;
         let mostVoted = null;
         let tiedPlayers = [];
-        
+
         voteCounts.forEach((count, playerId) => {
             if (count > maxVotes) {
                 maxVotes = count;
@@ -182,23 +209,23 @@ class Room {
                 tiedPlayers.push(playerId);
             }
         });
-        
+
         // Check if there's a tie and if chameleon is involved in the tie
         const isTie = tiedPlayers.length > 1;
         const chameleonInTie = isTie && tiedPlayers.includes(this.gameState.chameleonId);
-        
+
         // Chameleon is caught if they have the most votes AND it's not a tie
         // OR if they are involved in a tie (chameleon loses ties)
         const chameleonCaught = (mostVoted === this.gameState.chameleonId && !isTie) || chameleonInTie;
-        
+
         if (chameleonCaught) {
             this.gameState.phase = 'guessing';
         } else {
             this.gameState.phase = 'ended';
         }
-        
+
         return {
-            mostVoted: isTie ? null : mostVoted, // Return null if there's a tie
+            mostVoted: isTie ? null : mostVoted,
             chameleonCaught,
             voteCounts: Array.from(voteCounts.entries()),
             isTie,
@@ -208,10 +235,10 @@ class Room {
 
     checkGuess(guess) {
         if (!this.gameState || this.gameState.phase !== 'guessing') return null;
-        
+
         const correct = guess.toLowerCase() === this.gameState.secretWord.toLowerCase();
         this.gameState.phase = 'ended';
-        
+
         return {
             correct,
             secretWord: this.gameState.secretWord,
@@ -225,27 +252,32 @@ class Room {
 
     getGameStateForPlayer(playerId) {
         if (!this.gameState) return null;
-        
+
         const player = this.players.get(playerId);
         const state = {
             phase: this.gameState.phase,
-            category: this.gameState.category,
             role: player.role,
             currentTurn: this.getCurrentTurn(),
             clues: this.clues,
-            players: this.getPlayerList()
+            players: this.getPlayerList(),
+            hardMode: this.gameState.hardMode
         };
-        
-        // Only show secret word to non-chameleons
+
+        // For regular players, always show the secret word and category
         if (player.role !== 'chameleon') {
+            state.category = this.gameState.category;
             state.secretWord = this.gameState.secretWord;
+        } else {
+            // For chameleon - handle hard mode vs normal mode
+            if (this.gameState.hardMode) {
+                state.category = "A Secret";
+            } else {
+                // Normal mode: chameleon gets category but not the secret word
+                state.category = this.gameState.category;
+                state.wordList = this.gameState.wordList;
+            }
         }
-        
-        // Show word list to chameleon for reference
-        if (player.role === 'chameleon') {
-            state.wordList = this.gameState.wordList;
-        }
-        
+
         return state;
     }
 }
@@ -283,7 +315,7 @@ io.on('connection', (socket) => {
         // Add player to room
         room.addPlayer(socket.id, playerName);
         playerRooms.set(socket.id, room.code);
-        
+
         // Join socket room
         socket.join(room.code);
 
@@ -298,6 +330,20 @@ io.on('connection', (socket) => {
         io.to(room.code).emit('playersUpdate', room.getPlayerList());
     });
 
+    // Handle hard mode toggle
+    socket.on('toggleHardMode', (enabled) => {
+        const roomCode = playerRooms.get(socket.id);
+        if (!roomCode) return;
+
+        const room = rooms.get(roomCode);
+        if (!room || room.hostId !== socket.id) return; // Only host can toggle
+
+        room.setHardMode(enabled);
+
+        // Broadcast hard mode status to all players
+        io.to(room.code).emit('hardModeUpdate', room.hardMode);
+    });
+
     socket.on('startGame', (data) => {
         const roomCode = playerRooms.get(socket.id);
         if (!roomCode) return;
@@ -305,8 +351,22 @@ io.on('connection', (socket) => {
         const room = rooms.get(roomCode);
         if (!room || room.hostId !== socket.id) return;
 
-        const { category, secretWord, words } = data;
-        room.startGame(category, secretWord, words);
+        // Accept either 'words' or 'wordList' from the client
+        const { category, secretWord, words, wordList, hardMode } = data;
+        const resolvedWordList = Array.isArray(wordList) ? wordList : (Array.isArray(words) ? words : []);
+
+        // Normalize hardMode param (boolean or string) and fall back to room.hardMode
+        let parsedParam = null;
+        if (typeof hardMode === 'boolean') {
+            parsedParam = hardMode;
+        } else if (typeof hardMode === 'string') {
+            parsedParam = hardMode.toLowerCase() === 'true';
+        }
+        const effectiveHardMode = (parsedParam === null) ? room.hardMode : parsedParam;
+
+        console.log(`[startGame] room=${roomCode} host=${socket.id} effectiveHardMode=${effectiveHardMode}`);
+
+        room.startGame(category, secretWord, resolvedWordList, effectiveHardMode);
 
         // Send game state to each player
         room.players.forEach((player, playerId) => {
@@ -341,7 +401,7 @@ io.on('connection', (socket) => {
 
             // Move to next turn
             const nextPlayer = room.nextTurn();
-            
+
             if (nextPlayer) {
                 io.to(room.code).emit('turnUpdate', nextPlayer);
             } else {
@@ -360,7 +420,7 @@ io.on('connection', (socket) => {
         if (!room || !room.gameState) return;
 
         const result = room.vote(socket.id, suspectId);
-        
+
         if (result) {
             if (result.voteProgress) {
                 // Still collecting votes - update progress
@@ -432,7 +492,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('Player disconnected:', socket.id);
-        
+
         const roomCode = playerRooms.get(socket.id);
         if (roomCode) {
             const room = rooms.get(roomCode);
@@ -456,7 +516,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Chameleon Game Server running on port ${PORT}`);
 });
-
-
-
-
