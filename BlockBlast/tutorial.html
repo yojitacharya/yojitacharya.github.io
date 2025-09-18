@@ -1,143 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-54M6JKXS');</script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-3373032658684210">
-    <title>Block Blaster - Tutorial</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #88d3ce, #6e45e2);
-            color: white;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh; /* Ensure body takes at least the full viewport height */
-            box-sizing: border-box;
-            overflow-y: auto; /* Enable vertical scrolling when content overflows */
-        }
+    <head>
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != "dataLayer" ? "&l=" + l : "";
+                j.async = true;
+                j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, "script", "dataLayer", "GTM-54M6JKXS");
+        </script>
+        <!-- End Google Tag Manager -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="google-adsense-account" content="ca-pub-3373032658684210" />
+        <title>Block Blaster - Tutorial</title>
+        <link rel="stylesheet" href="style.css" />
+        <style>
+            body {
+                background: linear-gradient(135deg, #88d3ce, #6e45e2);
+                color: white;
+                font-family: "Arial", sans-serif;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh; /* Ensure body takes at least the full viewport height */
+                box-sizing: border-box;
+                overflow-y: auto; /* Enable vertical scrolling when content overflows */
+            }
 
-        .tutorial-container {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
+            .tutorial-container {
+                background-color: rgba(255, 255, 255, 0.15);
+                border-radius: 15px;
+                padding: 30px;
+                max-width: 600px;
+                width: 100%;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+                margin-bottom: 20px;
+            }
 
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #ff9ff3;
-        }
+            h1,
+            h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #ff9ff3;
+            }
 
-        p {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
+            p {
+                line-height: 1.6;
+                margin-bottom: 15px;
+            }
 
-        .tutorial-list {
-            list-style-type: disc;
-            padding-left: 25px;
-            margin-bottom: 15px;
-        }
+            .tutorial-list {
+                list-style-type: disc;
+                padding-left: 25px;
+                margin-bottom: 15px;
+            }
 
-        .tutorial-list li {
-            margin-bottom: 10px;
-        }
+            .tutorial-list li {
+                margin-bottom: 10px;
+            }
 
-        .back-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #f368e0;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
+            .back-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                background-color: #f368e0;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.2s ease;
+                text-decoration: none;
+            }
 
-        .back-button:hover {
-            transform: scale(1.05);
-            background-color: #ff9ff3;
-        }
-    </style>
-</head>
-<body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54M6JKXS"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="tutorial-container">
-        <h1>Block Blaster - Tutorial</h1>
-        <p>Welcome to Block Blaster! This tutorial will guide you through the basics of the game.</p>
+            .back-button:hover {
+                transform: scale(1.05);
+                background-color: #ff9ff3;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54M6JKXS" height="0" width="0" style="display: none; visibility: hidden"></iframe
+        ></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <div class="tutorial-container">
+            <h1>Block Blaster - Tutorial</h1>
+            <p>Welcome to Block Blaster! This tutorial will guide you through the basics of the game.</p>
 
-        <h2>How to Play</h2>
-        <p>The goal of Block Blaster is to clear as many rows and columns of blocks as possible by strategically placing the given block shapes onto the game board.</p>
+            <h2>How to Play</h2>
+            <p>
+                The goal of Block Blaster is to clear as many rows and columns of blocks as possible by strategically placing the given block shapes onto the
+                game board.
+            </p>
 
-        <h2>Placing Blocks</h2>
-        <ul class="tutorial-list">
-            <li>You will be presented with three different block shapes at the bottom of the screen.</li>
-            <li>Click on a block shape to select it. A translucent version of the block will follow your cursor.</li>
-            <li>Drag the selected block over the game board. Highlighted cells indicate where the block would be placed.</li>
-            <li>Click on the board to place the block in the highlighted position. The block must fit entirely within the board and cannot overlap existing blocks.</li>
-            <li>If you change your mind before placing, click on the selected block again (in the options area or the floating block) or click away from the board to cancel the placement.</li>
-        </ul>
+            <h2>Placing Blocks</h2>
+            <ul class="tutorial-list">
+                <li>You will be presented with three different block shapes at the bottom of the screen.</li>
+                <li>Click on a block shape to select it. A translucent version of the block will follow your cursor.</li>
+                <li>Drag the selected block over the game board. Highlighted cells indicate where the block would be placed.</li>
+                <li>
+                    Click on the board to place the block in the highlighted position. The block must fit entirely within the board and cannot overlap existing
+                    blocks.
+                </li>
+                <li>
+                    If you change your mind before placing, click on the selected block again (in the options area or the floating block) or click away from the
+                    board to cancel the placement.
+                </li>
+            </ul>
 
-        <h2>Clearing Lines</h2>
-        <ul class="tutorial-list">
-            <li>When a complete row or a complete column of cells is filled with blocks, that entire line will be cleared.</li>
-            <li>Cleared lines disappear, and you earn points.</li>
-            <li>Try to clear multiple lines at once for a higher score!</li>
-        </ul>
+            <h2>Clearing Lines</h2>
+            <ul class="tutorial-list">
+                <li>When a complete row or a complete column of cells is filled with blocks, that entire line will be cleared.</li>
+                <li>Cleared lines disappear, and you earn points.</li>
+                <li>Try to clear multiple lines at once for a higher score!</li>
+            </ul>
 
-        <h2>Combos</h2>
-        <ul class="tutorial-list">
-            <li>If you clear lines within a short period of time (a few turns), you will start a combo.</li>
-            <li>The combo level will increase with each consecutive line clear.</li>
-            <li>You will earn bonus points for clearing lines during a combo. The higher the combo level, the more bonus points you receive.</li>
-            <li>If you don't clear any lines for a few turns, your combo will reset.</li>
-        </ul>
+            <h2>Combos</h2>
+            <ul class="tutorial-list">
+                <li>If you clear lines within a short period of time (a few turns), you will start a combo.</li>
+                <li>The combo level will increase with each consecutive line clear.</li>
+                <li>You will earn bonus points for clearing lines during a combo. The higher the combo level, the more bonus points you receive.</li>
+                <li>If you don't clear any lines for a few turns, your combo will reset.</li>
+            </ul>
 
-        <h2>Game Over</h2>
-        <ul class="tutorial-list">
-            <li>The game ends when you are given three new block shapes that cannot be placed anywhere on the game board.</li>
-            <li>Your final score will be displayed.</li>
-            <li>Click the "Play Again" button to start a new game.</li>
-        </ul>
+            <h2>Game Over</h2>
+            <ul class="tutorial-list">
+                <li>The game ends when you are given three new block shapes that cannot be placed anywhere on the game board.</li>
+                <li>Your final score will be displayed.</li>
+                <li>Click the "Play Again" button to start a new game.</li>
+            </ul>
 
-        <h2>Tips</h2>
-        <ul class="tutorial-list">
-            <li>Plan your moves carefully! Think about how each block placement will affect future possibilities.</li>
-            <li>Try to leave space for larger blocks.</li>
-            <li>Focus on clearing complete lines whenever possible to maximize your score and maintain a combo.</li>
-        </ul>
+            <h2>Tips</h2>
+            <ul class="tutorial-list">
+                <li>Plan your moves carefully! Think about how each block placement will affect future possibilities.</li>
+                <li>Try to leave space for larger blocks.</li>
+                <li>Focus on clearing complete lines whenever possible to maximize your score and maintain a combo.</li>
+            </ul>
 
-        <h2>More Tips and Tricks</h2>
-        <ul class="tutorial-list">
-            <li>Consider the shapes of all three available blocks before making a move. Sometimes it's better to wait for a more suitable piece.</li>
-            <li>Empty corners can be valuable for fitting in smaller, awkward shapes later in the game.</li>
-            <li>Don't be afraid to create temporary single gaps if it sets you up for clearing a full line on the next turn.</li>
-            <li>Think several steps ahead. How will placing this block now affect your ability to place the other available blocks?</li>
-        </ul>
+            <h2>More Tips and Tricks</h2>
+            <ul class="tutorial-list">
+                <li>Consider the shapes of all three available blocks before making a move. Sometimes it's better to wait for a more suitable piece.</li>
+                <li>Empty corners can be valuable for fitting in smaller, awkward shapes later in the game.</li>
+                <li>Don't be afraid to create temporary single gaps if it sets you up for clearing a full line on the next turn.</li>
+                <li>Think several steps ahead. How will placing this block now affect your ability to place the other available blocks?</li>
+            </ul>
 
-        <p>We hope this tutorial helps you enjoy Block Blast! Have fun!</p>
-    </div>
-    <a href="index.html" class="back-button">Back to Game</a>
-</body>
+            <p>We hope this tutorial helps you enjoy Block Blast! Have fun!</p>
+        </div>
+        <a href="index.html" class="back-button">Back to Game</a>
+    </body>
 </html>

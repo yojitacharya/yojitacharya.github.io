@@ -1,1671 +1,1903 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chameleon - Yojit Acharya</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != "dataLayer" ? "&l=" + l : "";
+                j.async = true;
+                j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, "script", "dataLayer", "GTM-54M6JKXS");
+        </script>
+        <!-- End Google Tag Manager -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chameleon - Yojit Acharya</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                position: relative;
+                overflow-x: hidden;
+            }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background:
+                    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+                pointer-events: none;
+                z-index: -1;
+            }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 40px;
-            max-width: 900px;
-            width: 100%;
-            box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            animation: slideIn 0.6s ease;
-            position: relative;
-            overflow: hidden;
-        }
+            .container {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 25px;
+                padding: 40px;
+                max-width: 900px;
+                width: 100%;
+                box-shadow:
+                    0 25px 80px rgba(0, 0, 0, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.1);
+                animation: slideIn 0.6s ease;
+                position: relative;
+                overflow: hidden;
+            }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
-            border-radius: 25px 25px 0 0;
-        }
+            .container::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+                border-radius: 25px 25px 0 0;
+            }
 
-        @keyframes slideIn {
-            from {
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            h1 {
+                text-align: center;
+                color: #764ba2;
+                margin-bottom: 30px;
+                font-size: 3em;
+                font-weight: 800;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                animation: titleGlow 3s ease-in-out infinite alternate;
+            }
+
+            @keyframes titleGlow {
+                0% {
+                    filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.3));
+                }
+                100% {
+                    filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.6));
+                }
+            }
+
+            .game-info {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                text-align: center;
+                font-size: 1.1em;
+            }
+
+            .role-card {
+                background: #f0f0f0;
+                padding: 20px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+
+            .role-card.chameleon {
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                color: white;
+            }
+
+            .role-card.regular {
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                color: white;
+            }
+
+            .role-card.chameleon-hard {
+                background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+                color: white;
+            }
+
+            .word-display {
+                font-size: 2em;
+                font-weight: bold;
+                margin: 10px 0;
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+
+            .players-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+                margin: 20px 0;
+            }
+
+            .player-card {
+                background: white;
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .player-card.current-turn {
+                background: #ffd700;
+                transform: scale(1.05);
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+
+            .player-card.voted {
+                border: 3px solid #f5576c;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                font-size: 1.1em;
+                transition: border-color 0.3s ease;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"]:focus {
+                outline: none;
+                border-color: #667eea;
+            }
+
+            button {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 8px;
+                font-size: 1.1em;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin: 5px;
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            }
+
+            button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .give-clue-btn {
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                color: white;
+                border: none;
+                padding: 15px 40px;
+                border-radius: 12px;
+                font-size: 1.2em;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
+                animation: pulse 2s infinite;
+            }
+
+            .give-clue-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(240, 147, 251, 0.5);
+                background: linear-gradient(135deg, #f5a4ff 0%, #f7677c 100%);
+            }
+
+            .clues-section {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+
+            .clue-item {
+                display: inline-block;
+                background: white;
+                padding: 8px 15px;
+                margin: 5px;
+                border-radius: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .voting-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .vote-button {
+                background: white;
+                border: 2px solid #667eea;
+                color: #667eea;
+                padding: 15px;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .vote-button:hover {
+                background: #667eea;
+                color: white;
+                transform: scale(1.05);
+            }
+
+            .vote-button.selected {
+                background: #764ba2;
+                color: white;
+                border-color: #764ba2;
+            }
+
+            .chat-section {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 20px;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .chat-message {
+                padding: 5px 10px;
+                margin: 5px 0;
+                background: white;
+                border-radius: 5px;
+            }
+
+            .timer {
+                font-size: 1.5em;
+                font-weight: bold;
+                color: #f5576c;
+                text-align: center;
+                margin: 10px 0;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .modal-content {
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                text-align: center;
+                max-width: 500px;
+                animation: slideIn 0.3s ease;
+            }
+
+            .clue-modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                justify-content: center;
+                align-items: center;
+                z-index: 1001;
+            }
+
+            .clue-modal-content {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 600px;
+                width: 90%;
+                animation: slideIn 0.4s ease;
+                box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            }
+
+            .clue-modal h2 {
+                color: white;
+                margin-bottom: 20px;
+                font-size: 2.2em;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .clue-modal p {
+                font-size: 1.2em;
+                margin-bottom: 25px;
+                opacity: 0.9;
+            }
+
+            .clue-modal input[type="text"] {
+                width: 100%;
+                padding: 15px 20px;
+                border: none;
+                border-radius: 10px;
+                font-size: 1.3em;
+                text-align: center;
+                margin-bottom: 20px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .clue-modal input[type="text"]:focus {
+                outline: none;
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+
+            .clue-modal .modal-buttons {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .clue-modal button {
+                background: rgba(255, 255, 255, 0.2);
+                border: 2px solid white;
+                color: white;
+                padding: 12px 30px;
+                border-radius: 10px;
+                font-size: 1.1em;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .clue-modal button:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .clue-modal button.primary {
+                background: white;
+                color: #667eea;
+            }
+
+            .clue-modal button.primary:hover {
+                background: #f0f0f0;
+                color: #5566d6;
+            }
+
+            .modal-role-info {
+                background: rgba(255, 255, 255, 0.15);
+                padding: 15px;
+                border-radius: 10px;
+                margin: 15px 0;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .modal-role-info h3 {
+                margin-bottom: 10px;
+                font-size: 1.1em;
+            }
+
+            .modal-role-info .word-display {
+                font-size: 1.4em;
+                font-weight: bold;
+                margin: 5px 0;
+                color: #ffeb3b;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            }
+
+            .modal-role-info.chameleon {
+                background: rgba(240, 147, 251, 0.2);
+                border-color: rgba(240, 147, 251, 0.3);
+            }
+
+            .modal-role-info.chameleon-hard {
+                background: rgba(255, 71, 87, 0.2);
+                border-color: rgba(255, 71, 87, 0.3);
+            }
+
+            .loading {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid #667eea;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Tutorial Button */
+            .tutorial-button {
+                position: fixed;
+                top: 20px;
+                right: 90px;
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                text-decoration: none;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                transition: all 0.3s ease;
+                z-index: 1000;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            .tutorial-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+                background: linear-gradient(135deg, #7c8ee8, #8a5bb8);
+            }
+
+            .tutorial-button svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* From Uiverse.io by vinodjangid07 */
+            /* The switch - the box around the speaker*/
+            .toggleSwitch {
+                width: 50px;
+                height: 50px;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgb(39, 39, 39);
+                border-radius: 50%;
+                cursor: pointer;
+                transition-duration: 0.3s;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.13);
+                overflow: hidden;
+                z-index: 1000;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            /* Hide default HTML checkbox */
+            #checkboxInput {
+                display: none;
+            }
+
+            .bell {
+                width: 18px;
+            }
+
+            .bell path {
+                fill: white;
+            }
+
+            .speaker {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+                transition-duration: 0.3s;
+            }
+
+            .speaker svg {
+                width: 18px;
+            }
+
+            .mute-speaker {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 opacity: 0;
-                transform: translateY(-20px);
+                z-index: 3;
+                transition-duration: 0.3s;
             }
-            to {
+
+            .mute-speaker svg {
+                width: 18px;
+            }
+
+            #checkboxInput:checked + .toggleSwitch .speaker {
+                opacity: 0;
+                transition-duration: 0.3s;
+            }
+
+            #checkboxInput:checked + .toggleSwitch .mute-speaker {
                 opacity: 1;
-                transform: translateY(0);
+                transition-duration: 0.3s;
             }
-        }
-
-        h1 {
-            text-align: center;
-            color: #764ba2;
-            margin-bottom: 30px;
-            font-size: 3em;
-            font-weight: 800;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            0% { filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.3)); }
-            100% { filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.6)); }
-        }
-
-        .game-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        .role-card {
-            background: #f0f0f0;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .role-card.chameleon {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .role-card.regular {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .role-card.chameleon-hard {
-            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
-            color: white;
-        }
-
-        .word-display {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 10px 0;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .players-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .player-card {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .player-card.current-turn {
-            background: #ffd700;
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .player-card.voted {
-            border: 3px solid #f5576c;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1.1em;
-            transition: border-color 0.3s ease;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 5px;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .give-clue-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 12px;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        .give-clue-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.5);
-            background: linear-gradient(135deg, #f5a4ff 0%, #f7677c 100%);
-        }
-
-        .clues-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .clue-item {
-            display: inline-block;
-            background: white;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .voting-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .vote-button {
-            background: white;
-            border: 2px solid #667eea;
-            color: #667eea;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .vote-button:hover {
-            background: #667eea;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .vote-button.selected {
-            background: #764ba2;
-            color: white;
-            border-color: #764ba2;
-        }
-
-        .chat-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .chat-message {
-            padding: 5px 10px;
-            margin: 5px 0;
-            background: white;
-            border-radius: 5px;
-        }
-
-        .timer {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #f5576c;
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 500px;
-            animation: slideIn 0.3s ease;
-        }
-
-        .clue-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-
-        .clue-modal-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
-            animation: slideIn 0.4s ease;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
-        }
-
-        .clue-modal h2 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 2.2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .clue-modal p {
-            font-size: 1.2em;
-            margin-bottom: 25px;
-            opacity: 0.9;
-        }
-
-        .clue-modal input[type="text"] {
-            width: 100%;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.3em;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .clue-modal input[type="text"]:focus {
-            outline: none;
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .clue-modal .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .clue-modal button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .clue-modal button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .clue-modal button.primary {
-            background: white;
-            color: #667eea;
-        }
-
-        .clue-modal button.primary:hover {
-            background: #f0f0f0;
-            color: #5566d6;
-        }
-
-        .modal-role-info {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-role-info h3 {
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .modal-role-info .word-display {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin: 5px 0;
-            color: #ffeb3b;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-role-info.chameleon {
-            background: rgba(240, 147, 251, 0.2);
-            border-color: rgba(240, 147, 251, 0.3);
-        }
-
-        .modal-role-info.chameleon-hard {
-            background: rgba(255, 71, 87, 0.2);
-            border-color: rgba(255, 71, 87, 0.3);
-        }
-
-        .loading {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Tutorial Button */
-        .tutorial-button {
-            position: fixed;
-            top: 20px;
-            right: 90px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .tutorial-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-            background: linear-gradient(135deg, #7c8ee8, #8a5bb8);
-        }
-
-        .tutorial-button svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* From Uiverse.io by vinodjangid07 */
-        /* The switch - the box around the speaker*/
-        .toggleSwitch {
-            width: 50px;
-            height: 50px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgb(39, 39, 39);
-            border-radius: 50%;
-            cursor: pointer;
-            transition-duration: .3s;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.13);
-            overflow: hidden;
-            z-index: 1000;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Hide default HTML checkbox */
-        #checkboxInput {
-            display: none;
-        }
-
-        .bell {
-            width: 18px;
-        }
-
-        .bell path {
-            fill: white;
-        }
-
-        .speaker {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            transition-duration: .3s;
-        }
-
-        .speaker svg {
-            width: 18px;
-        }
-
-        .mute-speaker {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            z-index: 3;
-            transition-duration: .3s;
-        }
-
-        .mute-speaker svg {
-            width: 18px;
-        }
-
-        #checkboxInput:checked + .toggleSwitch .speaker {
-            opacity: 0;
-            transition-duration: .3s;
-        }
-
-        #checkboxInput:checked + .toggleSwitch .mute-speaker {
-            opacity: 1;
-            transition-duration: .3s;
-        }
-
-        #checkboxInput:active + .toggleSwitch {
-            transform: scale(0.7);
-        }
-
-        #checkboxInput:hover + .toggleSwitch {
-            background-color: rgb(61, 61, 61);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 25px;
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
-            z-index: 1001;
-            animation: slideDown 0.4s ease;
-            font-weight: 600;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
-        }
-
-        /* Dark mode styles */
-        body.dark-mode {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
-        body.dark-mode::before {
-            background:
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-        }
-
-        body.dark-mode .container {
-            background: rgba(30, 30, 50, 0.95);
-            color: #ffffff;
-        }
-
-        body.dark-mode h1 {
-            color: #a8a8ff;
-        }
-
-        body.dark-mode .game-info {
-            background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
-        }
-
-        body.dark-mode .role-card {
-            background: #2a2a4a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .role-card.regular {
-            background: linear-gradient(135deg, #2a4a6a 0%, #1a3a5a 100%);
-        }
-
-        body.dark-mode .player-card {
-            background: #2a2a4a;
-            color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        body.dark-mode input[type="text"] {
-            background: #2a2a4a;
-            color: #ffffff;
-            border-color: #4a4a6a;
-        }
-
-        body.dark-mode input[type="text"]:focus {
-            border-color: #667eea;
-        }
-
-        body.dark-mode .clues-section {
-            background: #2a2a4a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .clue-item {
-            background: #3a3a5a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .vote-button {
-            background: #2a2a4a;
-            color: #ffffff;
-            border-color: #4a4a6a;
-        }
-
-        body.dark-mode .vote-button:hover {
-            background: #667eea;
-            color: #ffffff;
-        }
-
-        body.dark-mode .chat-section {
-            background: #2a2a4a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .chat-message {
-            background: #3a3a5a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .modal-content {
-            background: #2a2a4a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .clue-modal-content {
-            background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
-            color: #ffffff;
-        }
-
-        body.dark-mode .clue-modal h2 {
-            color: #ffffff;
-        }
-
-        body.dark-mode .clue-modal input[type="text"] {
-            background: #3a3a5a;
-            color: #ffffff;
-        }
-
-        body.dark-mode .clue-modal input[type="text"]::placeholder {
-            color: #cccccc;
-        }
-
-        body.dark-mode .clue-modal button.primary {
-            background: #ffffff;
-            color: #3a3a5a;
-        }
-
-        body.dark-mode .clue-modal button.primary:hover {
-            background: #f0f0f0;
-            color: #2a2a4a;
-        }
-
-        body.dark-mode .modal-role-info {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        body.dark-mode .modal-role-info .word-display {
-            color: #ffeb3b;
-        }
-
-        body.dark-mode .tutorial-button {
-            background: linear-gradient(135deg, #4a4a6a, #3a3a5a);
-            box-shadow: 0 4px 15px rgba(74, 74, 106, 0.3);
-        }
-
-        body.dark-mode .tutorial-button:hover {
-            background: linear-gradient(135deg, #5a5a7a, #4a4a6a);
-            box-shadow: 0 8px 25px rgba(74, 74, 106, 0.5);
-        }
-
-        /* From Uiverse.io by Madflows */
-        .toggle-switch {
-            --light: #d8dbe0;
-            --dark: #28292c;
-            --link: rgb(27, 129, 112);
-            --link-hover: rgb(24, 94, 82);
-
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            width: 100px;
-            height: 50px;
-        }
-
-        .switch-label {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--light);
-            border: 3px solid var(--light);
-            border-radius: 25px;
-            cursor: pointer;
-        }
-
-        .checkbox {
-            display: none;
-        }
-
-        .slider {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 25px;
-            transition: 0.3s;
-        }
-
-        .checkbox:checked ~ .slider {
-            background-color: var(--dark);
-        }
-
-        .slider::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 25px;
-            height: 25px;
-            background-color: var(--dark);
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .slider::after {
-            content: "";
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 21px;
-            height: 21px;
-            background-color: var(--dark);
-            border-radius: 50%;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .checkbox:checked ~ .slider::before {
-            transform: translateX(50px);
-            background-color: var(--light);
-        }
-
-        .checkbox:checked ~ .slider::after {
-            transform: translateX(-50px);
-            opacity: 1;
-        }
-
-        /* Hard Mode Checkbox Styles - From Uiverse.io by sssynk */
-        .hard-mode-container {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .hard-mode-container input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-            border-radius: 5px;
-        }
-
-        .hard-mode-container {
-            display: flex;
-            align-items: center;
-            position: relative;
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
-            border-radius: 5px;
-            box-shadow: 2px 2px 0px rgb(183, 183, 183);
-        }
-
-        .checkmark {
-            position: relative;
-            top: 0;
-            left: 0;
-            height: 1.3em;
-            width: 1.3em;
-            background-color: #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .hard-mode-container input:checked ~ .checkmark {
-            box-shadow: 3px 3px 0px rgb(183, 183, 183);
-            transition: all 0.2s;
-            opacity: 1;
-            background-image: linear-gradient(45deg, rgb(100, 61, 219) 0%, rgb(217, 21, 239) 100%);
-        }
-
-        .hard-mode-container input ~ .checkmark {
-            transition: all 0.2s;
-            opacity: 1;
-            box-shadow: 1px 1px 0px rgb(183, 183, 183);
-        }
-
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            opacity: 0;
-            transition: all 0.2s;
-        }
-
-        .hard-mode-container input:checked ~ .checkmark:after {
-            opacity: 1;
-            transition: all 0.2s;
-        }
-
-        .hard-mode-container .checkmark:after {
-            left: 0.45em;
-            top: 0.25em;
-            width: 0.25em;
-            height: 0.5em;
-            border: solid white;
-            border-width: 0 0.15em 0.15em 0;
-            transform: rotate(45deg);
-        }
-
-        .hard-mode-label {
-            color: white;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .hard-mode-warning {
-            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            text-align: center;
-            font-weight: 600;
-            animation: pulse 2s infinite;
-        }
-
-        body.dark-mode .hard-mode-container {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode .hard-mode-label {
-            color: #ffffff;
-        }
-
-        /* Hide hard mode controls initially */
-        #hardModeControls {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <!-- Tutorial Button -->
-    <a href="tutorial.html" class="tutorial-button" target="_blank" title="How to Play">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-        </svg>
-    </a>
-
-    <!-- From Uiverse.io by Madflows -->
-    <div class="toggle-switch">
-        <label class="switch-label">
-            <input type="checkbox" class="checkbox" id="themeCheckbox" onchange="toggleTheme()">
-            <span class="slider"></span>
-        </label>
-    </div>
-
-    <!-- From Uiverse.io by vinodjangid07 -->
-    <input type="checkbox" id="checkboxInput" onchange="toggleSound()">
-    <label for="checkboxInput" class="toggleSwitch">
-        <div class="speaker"><svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
-        <path d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z" style="stroke:#fff;stroke-width:5;stroke-linejoin:round;fill:#fff;"></path>
-        <path d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6" style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"></path>
-        </svg></div>
-        <div class="mute-speaker"><svg version="1.0" viewBox="0 0 75 75" stroke="#fff" stroke-width="5">
-        <path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round"></path>
-        <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
-        </svg></div>
-    </label>
-
-    <div class="container">
-        <h1>🦎 Chameleon </h1>
-
-        <div id="joinSection">
-            <input type="text" id="playerName" placeholder="Enter your name" maxlength="20">
-            <input type="text" id="roomCode" placeholder="Enter room code (or leave blank to create)">
-            <button onclick="joinGame()">Join/Create Game</button>
+
+            #checkboxInput:active + .toggleSwitch {
+                transform: scale(0.7);
+            }
+
+            #checkboxInput:hover + .toggleSwitch {
+                background-color: rgb(61, 61, 61);
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            .notification {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #4caf50, #45a049);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 25px;
+                box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+                z-index: 1001;
+                animation: slideDown 0.4s ease;
+                font-weight: 600;
+            }
+
+            @keyframes slideDown {
+                from {
+                    transform: translateX(-50%) translateY(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(-50%) translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Dark mode styles */
+            body.dark-mode {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+
+            body.dark-mode::before {
+                background:
+                    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            }
+
+            body.dark-mode .container {
+                background: rgba(30, 30, 50, 0.95);
+                color: #ffffff;
+            }
+
+            body.dark-mode h1 {
+                color: #a8a8ff;
+            }
+
+            body.dark-mode .game-info {
+                background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
+            }
+
+            body.dark-mode .role-card {
+                background: #2a2a4a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .role-card.regular {
+                background: linear-gradient(135deg, #2a4a6a 0%, #1a3a5a 100%);
+            }
+
+            body.dark-mode .player-card {
+                background: #2a2a4a;
+                color: #ffffff;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            body.dark-mode input[type="text"] {
+                background: #2a2a4a;
+                color: #ffffff;
+                border-color: #4a4a6a;
+            }
+
+            body.dark-mode input[type="text"]:focus {
+                border-color: #667eea;
+            }
+
+            body.dark-mode .clues-section {
+                background: #2a2a4a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .clue-item {
+                background: #3a3a5a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .vote-button {
+                background: #2a2a4a;
+                color: #ffffff;
+                border-color: #4a4a6a;
+            }
+
+            body.dark-mode .vote-button:hover {
+                background: #667eea;
+                color: #ffffff;
+            }
+
+            body.dark-mode .chat-section {
+                background: #2a2a4a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .chat-message {
+                background: #3a3a5a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .modal-content {
+                background: #2a2a4a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .clue-modal-content {
+                background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
+                color: #ffffff;
+            }
+
+            body.dark-mode .clue-modal h2 {
+                color: #ffffff;
+            }
+
+            body.dark-mode .clue-modal input[type="text"] {
+                background: #3a3a5a;
+                color: #ffffff;
+            }
+
+            body.dark-mode .clue-modal input[type="text"]::placeholder {
+                color: #cccccc;
+            }
+
+            body.dark-mode .clue-modal button.primary {
+                background: #ffffff;
+                color: #3a3a5a;
+            }
+
+            body.dark-mode .clue-modal button.primary:hover {
+                background: #f0f0f0;
+                color: #2a2a4a;
+            }
+
+            body.dark-mode .modal-role-info {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.15);
+            }
+
+            body.dark-mode .modal-role-info .word-display {
+                color: #ffeb3b;
+            }
+
+            body.dark-mode .tutorial-button {
+                background: linear-gradient(135deg, #4a4a6a, #3a3a5a);
+                box-shadow: 0 4px 15px rgba(74, 74, 106, 0.3);
+            }
+
+            body.dark-mode .tutorial-button:hover {
+                background: linear-gradient(135deg, #5a5a7a, #4a4a6a);
+                box-shadow: 0 8px 25px rgba(74, 74, 106, 0.5);
+            }
+
+            /* From Uiverse.io by Madflows */
+            .toggle-switch {
+                --light: #d8dbe0;
+                --dark: #28292c;
+                --link: rgb(27, 129, 112);
+                --link-hover: rgb(24, 94, 82);
+
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1000;
+                width: 100px;
+                height: 50px;
+            }
+
+            .switch-label {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: var(--light);
+                border: 3px solid var(--light);
+                border-radius: 25px;
+                cursor: pointer;
+            }
+
+            .checkbox {
+                display: none;
+            }
+
+            .slider {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 25px;
+                transition: 0.3s;
+            }
+
+            .checkbox:checked ~ .slider {
+                background-color: var(--dark);
+            }
+
+            .slider::before {
+                content: "";
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 25px;
+                height: 25px;
+                background-color: var(--dark);
+                border-radius: 50%;
+                transition: 0.3s;
+            }
+
+            .slider::after {
+                content: "";
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                width: 21px;
+                height: 21px;
+                background-color: var(--dark);
+                border-radius: 50%;
+                opacity: 0;
+                transition: 0.3s;
+            }
+
+            .checkbox:checked ~ .slider::before {
+                transform: translateX(50px);
+                background-color: var(--light);
+            }
+
+            .checkbox:checked ~ .slider::after {
+                transform: translateX(-50px);
+                opacity: 1;
+            }
+
+            /* Hard Mode Checkbox Styles - From Uiverse.io by sssynk */
+            .hard-mode-container {
+                margin: 15px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .hard-mode-container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+                border-radius: 5px;
+            }
+
+            .hard-mode-container {
+                display: flex;
+                align-items: center;
+                position: relative;
+                cursor: pointer;
+                font-size: 18px;
+                user-select: none;
+                border-radius: 5px;
+                box-shadow: 2px 2px 0px rgb(183, 183, 183);
+            }
+
+            .checkmark {
+                position: relative;
+                top: 0;
+                left: 0;
+                height: 1.3em;
+                width: 1.3em;
+                background-color: #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+
+            .hard-mode-container input:checked ~ .checkmark {
+                box-shadow: 3px 3px 0px rgb(183, 183, 183);
+                transition: all 0.2s;
+                opacity: 1;
+                background-image: linear-gradient(45deg, rgb(100, 61, 219) 0%, rgb(217, 21, 239) 100%);
+            }
+
+            .hard-mode-container input ~ .checkmark {
+                transition: all 0.2s;
+                opacity: 1;
+                box-shadow: 1px 1px 0px rgb(183, 183, 183);
+            }
+
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                opacity: 0;
+                transition: all 0.2s;
+            }
+
+            .hard-mode-container input:checked ~ .checkmark:after {
+                opacity: 1;
+                transition: all 0.2s;
+            }
+
+            .hard-mode-container .checkmark:after {
+                left: 0.45em;
+                top: 0.25em;
+                width: 0.25em;
+                height: 0.5em;
+                border: solid white;
+                border-width: 0 0.15em 0.15em 0;
+                transform: rotate(45deg);
+            }
+
+            .hard-mode-label {
+                color: white;
+                font-weight: 600;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            }
+
+            .hard-mode-warning {
+                background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                margin: 10px 0;
+                text-align: center;
+                font-weight: 600;
+                animation: pulse 2s infinite;
+            }
+
+            body.dark-mode .hard-mode-container {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            body.dark-mode .hard-mode-label {
+                color: #ffffff;
+            }
+
+            /* Hide hard mode controls initially */
+            #hardModeControls {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54M6JKXS" height="0" width="0" style="display: none; visibility: hidden"></iframe
+        ></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <!-- Tutorial Button -->
+        <a href="tutorial.html" class="tutorial-button" target="_blank" title="How to Play">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </a>
+
+        <!-- From Uiverse.io by Madflows -->
+        <div class="toggle-switch">
+            <label class="switch-label">
+                <input type="checkbox" class="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
+                <span class="slider"></span>
+            </label>
         </div>
 
-        <div id="lobbySection" style="display: none;">
-            <div class="game-info">
-                Room Code: <span id="roomCodeDisplay"></span> | Players: <span id="playerCount">0</span>
+        <!-- From Uiverse.io by vinodjangid07 -->
+        <input type="checkbox" id="checkboxInput" onchange="toggleSound()" />
+        <label for="checkboxInput" class="toggleSwitch">
+            <div class="speaker">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
+                    <path
+                        d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z"
+                        style="stroke: #fff; stroke-width: 5; stroke-linejoin: round; fill: #fff"
+                    ></path>
+                    <path
+                        d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6"
+                        style="fill: none; stroke: #fff; stroke-width: 5; stroke-linecap: round"
+                    ></path>
+                </svg>
+            </div>
+            <div class="mute-speaker">
+                <svg version="1.0" viewBox="0 0 75 75" stroke="#fff" stroke-width="5">
+                    <path d="m39,14-17,15H6V48H22l17,15z" fill="#fff" stroke-linejoin="round"></path>
+                    <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
+                </svg>
+            </div>
+        </label>
+
+        <div class="container">
+            <h1>🦎 Chameleon</h1>
+
+            <div id="joinSection">
+                <input type="text" id="playerName" placeholder="Enter your name" maxlength="20" />
+                <input type="text" id="roomCode" placeholder="Enter room code (or leave blank to create)" />
+                <button onclick="joinGame()">Join/Create Game</button>
             </div>
 
-            <!-- Hard Mode Controls -->
-            <div id="hardModeControls">
-                <label class="hard-mode-container">
-                    <input type="checkbox" id="hardModeCheckbox" onchange="toggleHardMode()">
-                    <div class="checkmark"></div>
-                    <span class="hard-mode-label">Hard Mode (Chameleon gets NO category info!)</span>
-                </label>
-                <div id="hardModeWarning" style="display: none;" class="hard-mode-warning">
-                    ⚠️ HARD MODE ENABLED - The Chameleon will receive NO information at all!
+            <div id="lobbySection" style="display: none">
+                <div class="game-info">Room Code: <span id="roomCodeDisplay"></span> | Players: <span id="playerCount">0</span></div>
+
+                <!-- Hard Mode Controls -->
+                <div id="hardModeControls">
+                    <label class="hard-mode-container">
+                        <input type="checkbox" id="hardModeCheckbox" onchange="toggleHardMode()" />
+                        <div class="checkmark"></div>
+                        <span class="hard-mode-label">Hard Mode (Chameleon gets NO category info!)</span>
+                    </label>
+                    <div id="hardModeWarning" style="display: none" class="hard-mode-warning">
+                        ⚠️ HARD MODE ENABLED - The Chameleon will receive NO information at all!
+                    </div>
+                </div>
+
+                <div class="players-list" id="lobbyPlayers"></div>
+                <button id="startGameBtn" onclick="startGame()" style="display: none">Start Game</button>
+            </div>
+
+            <div id="gameSection" style="display: none">
+                <div class="role-card" id="roleCard">
+                    <div id="roleInfo"></div>
+                </div>
+
+                <div class="timer" id="timer" style="display: none"></div>
+
+                <div class="clues-section" id="cluesSection" style="display: none">
+                    <h3>Clues Given:</h3>
+                    <div id="cluesList"></div>
+                </div>
+
+                <div id="giveClueButton" style="display: none; text-align: center; margin: 20px 0">
+                    <button onclick="showClueModal()" class="give-clue-btn">Give Your Clue</button>
+                </div>
+
+                <div class="voting-section" id="votingSection" style="display: none">
+                    <h3>Vote for who you think is the Chameleon:</h3>
+                    <p id="voteCounter"></p>
+                </div>
+
+                <div id="guessSection" style="display: none">
+                    <h3>You've been caught! Guess the word to win:</h3>
+                    <input type="text" id="guessWord" placeholder="Enter your guess" />
+                    <button onclick="submitGuess()">Submit Guess</button>
+                </div>
+
+                <div class="players-list" id="gamePlayers"></div>
+            </div>
+
+            <div class="chat-section" id="chatSection" style="display: none">
+                <div id="chatMessages"></div>
+                <input type="text" id="chatInput" placeholder="Type a message... (NOT FOR GIVING CLUES)" onkeypress="if(event.key==='Enter') sendChat()" />
+                <button onclick="sendChat()">Send</button>
+            </div>
+        </div>
+
+        <div class="modal" id="gameModal">
+            <div class="modal-content">
+                <h2 id="modalTitle">Game Result</h2>
+                <p id="modalMessage"></p>
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>
+
+        <div class="clue-modal" id="clueModal">
+            <div class="clue-modal-content">
+                <h2>Your Turn!</h2>
+                <div id="modalRoleInfo" class="modal-role-info"></div>
+                <p>Give a one-word clue related to the secret word</p>
+                <input type="text" id="clueWord" placeholder="Enter your clue here..." maxlength="30" autofocus />
+                <div class="modal-buttons">
+                    <button onclick="submitClue()" class="primary">Submit Clue</button>
+                    <button onclick="closeClueModal()">Cancel</button>
                 </div>
             </div>
-
-            <div class="players-list" id="lobbyPlayers"></div>
-            <button id="startGameBtn" onclick="startGame()" style="display: none;">Start Game</button>
         </div>
 
-        <div id="gameSection" style="display: none;">
-            <div class="role-card" id="roleCard">
-                <div id="roleInfo"></div>
-            </div>
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script>
+            // Game word categories and words
+            const gameData = {
+                Animals: [
+                    "Lion",
+                    "Elephant",
+                    "Penguin",
+                    "Giraffe",
+                    "Dolphin",
+                    "Eagle",
+                    "Tiger",
+                    "Zebra",
+                    "Kangaroo",
+                    "Panda",
+                    "Crocodile",
+                    "Shark",
+                    "Horse",
+                    "Wolf",
+                    "Fox",
+                    "Octopus",
+                    "Bear",
+                    "Owl",
+                    "Monkey",
+                    "Camel",
+                    "Rabbit",
+                    "Deer",
+                    "Goat",
+                    "Sheep",
+                    "Snake",
+                    "Frog",
+                    "Whale",
+                    "Bat",
+                    "Parrot",
+                    "Dog",
+                    "Cat",
+                ],
+                Fruits: [
+                    "Apple",
+                    "Banana",
+                    "Orange",
+                    "Strawberry",
+                    "Mango",
+                    "Pineapple",
+                    "Grape",
+                    "Watermelon",
+                    "Cherry",
+                    "Kiwi",
+                    "Blueberry",
+                    "Lemon",
+                    "Lime",
+                    "Raspberry",
+                    "Peach",
+                    "Pear",
+                    "Plum",
+                    "Coconut",
+                ],
+                Countries: [
+                    "France",
+                    "Japan",
+                    "Brazil",
+                    "Canada",
+                    "Egypt",
+                    "Australia",
+                    "India",
+                    "Mexico",
+                    "Germany",
+                    "China",
+                    "Spain",
+                    "Russia",
+                    "Argentina",
+                    "Greece",
+                    "Italy",
+                    "South Korea",
+                    "United Kingdom",
+                    "Turkey",
+                    "South Africa",
+                    "Thailand",
+                    "Sweden",
+                ],
+                Movies: [
+                    "Frozen",
+                    "Jaws",
+                    "Shrek",
+                    "Star Wars",
+                    "Jurassic Park",
+                    "The Dark Knight",
+                    "Toy Story",
+                    "Forrest Gump",
+                    "Finding Nemo",
+                    "Back to the Future",
+                    "The Lion King",
+                    "Avengers",
+                    "Harry Potter",
+                    "Titanic",
+                    "The Matrix",
+                    "Inception",
+                    "The Godfather",
+                    "E.T.",
+                    "Rocky",
+                    "The Incredibles",
+                ],
+                Sports: [
+                    "Soccer",
+                    "Basketball",
+                    "Tennis",
+                    "Swimming",
+                    "Golf",
+                    "Baseball",
+                    "Hockey",
+                    "Volleyball",
+                    "Boxing",
+                    "Wrestling",
+                    "Skiing",
+                    "Track",
+                    "Cricket",
+                    "Rugby",
+                    "Badminton",
+                    "Table Tennis",
+                    "Cycling",
+                ],
+                Food: [
+                    "Pizza",
+                    "Burger",
+                    "Sushi",
+                    "Pasta",
+                    "Tacos",
+                    "Salad",
+                    "Soup",
+                    "Sandwich",
+                    "Steak",
+                    "Fried Rice",
+                    "Ramen",
+                    "Burrito",
+                    "Pancakes",
+                    "Ice Cream",
+                    "Curry",
+                    "Hot Dog",
+                    "Dumplings",
+                    "Chili",
+                    "Lasagna",
+                    "Nachos",
+                    "Donuts",
+                    "Popcorn",
+                ],
+                Professions: [
+                    "Doctor",
+                    "Teacher",
+                    "Engineer",
+                    "Artist",
+                    "Chef",
+                    "Pilot",
+                    "Lawyer",
+                    "Firefighter",
+                    "Nurse",
+                    "Scientist",
+                    "Farmer",
+                    "Architect",
+                    "Soldier",
+                    "Actor",
+                    "Musician",
+                    "Writer",
+                    "Athlete",
+                    "Police Officer",
+                    "Judge",
+                    "Dentist",
+                    "Librarian",
+                    "Mechanic",
+                    "Photographer",
+                    "Plumber",
+                ],
+                Vehicles: [
+                    "Car",
+                    "Airplane",
+                    "Boat",
+                    "Train",
+                    "Motorcycle",
+                    "Bus",
+                    "Truck",
+                    "Helicopter",
+                    "Submarine",
+                    "Van",
+                    "Ambulance",
+                    "Taxi",
+                    "Cruise Ship",
+                    "Bicycle",
+                    "Tractor",
+                    "Limo",
+                ],
+                "Musical Instruments": [
+                    "Guitar",
+                    "Piano",
+                    "Drums",
+                    "Violin",
+                    "Flute",
+                    "Saxophone",
+                    "Trumpet",
+                    "Cello",
+                    "Harp",
+                    "Clarinet",
+                    "Trombone",
+                    "Accordion",
+                    "Xylophone",
+                    "Ukulele",
+                ],
+                Clothing: ["Shirt", "Pants", "Dress", "Jacket", "Hat", "Shoes", "Scarf", "Gloves", "Shorts", "Socks", "Tie", "Belt", "Skirt", "Jeans"],
+                Appliances: [
+                    "Microwave",
+                    "Fridge",
+                    "Oven",
+                    "Toaster",
+                    "Blender",
+                    "Washing Machine",
+                    "Dryer",
+                    "Dishwasher",
+                    "Stove",
+                    "Vacuum",
+                    "Fan",
+                    "Heater",
+                    "Air Conditioner",
+                    "Coffee Maker",
+                ],
+                Technology: [
+                    "Computer",
+                    "Phone",
+                    "Tablet",
+                    "Camera",
+                    "Printer",
+                    "Router",
+                    "Headphones",
+                    "Smartwatch",
+                    "TV",
+                    "Drone",
+                    "Keyboard",
+                    "Mouse",
+                    "Microphone",
+                    "Charger",
+                    "Monitor",
+                ],
+                Colors: ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Black", "White", "Gray", "Gold"],
+                Planets: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+                "Jobs in a School": ["Principal", "Teacher", "Janitor", "Librarian", "Counselor", "Coach", "Secretary", "Nurse"],
+                Drinks: ["Water", "Coffee", "Tea", "Milk", "Juice", "Soda", "Lemonade", "Smoothie", "Hot Chocolate", "Milkshake", "Energy Drink"],
+            };
 
-            <div class="timer" id="timer" style="display: none;"></div>
+            let socket;
+            let currentPlayer = null;
+            let currentRoom = null;
+            let gameState = null;
+            let isHost = false;
+            let totalPlayersAtVoteStart = 0;
+            let soundEnabled = true;
+            let darkMode = false;
+            let hardModeEnabled = false;
 
-            <div class="clues-section" id="cluesSection" style="display: none;">
-                <h3>Clues Given:</h3>
-                <div id="cluesList"></div>
-            </div>
+            // Sound effects using Web Audio API for better quality
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-            <div id="giveClueButton" style="display: none; text-align: center; margin: 20px 0;">
-                <button onclick="showClueModal()" class="give-clue-btn">Give Your Clue</button>
-            </div>
+            function createSound(frequency, duration, type = "sine") {
+                if (!soundEnabled) return;
 
-            <div class="voting-section" id="votingSection" style="display: none;">
-                <h3>Vote for who you think is the Chameleon:</h3>
-                <p id="voteCounter"></p>
-            </div>
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
 
-            <div id="guessSection" style="display: none;">
-                <h3>You've been caught! Guess the word to win:</h3>
-                <input type="text" id="guessWord" placeholder="Enter your guess">
-                <button onclick="submitGuess()">Submit Guess</button>
-            </div>
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
 
-            <div class="players-list" id="gamePlayers"></div>
-        </div>
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = type;
 
-        <div class="chat-section" id="chatSection" style="display: none;">
-            <div id="chatMessages"></div>
-            <input type="text" id="chatInput" placeholder="Type a message... (NOT FOR GIVING CLUES)" onkeypress="if(event.key==='Enter') sendChat()">
-            <button onclick="sendChat()">Send</button>
-        </div>
-    </div>
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
 
-    <div class="modal" id="gameModal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Game Result</h2>
-            <p id="modalMessage"></p>
-            <button onclick="closeModal()">OK</button>
-        </div>
-    </div>
-
-    <div class="clue-modal" id="clueModal">
-        <div class="clue-modal-content">
-            <h2>Your Turn!</h2>
-            <div id="modalRoleInfo" class="modal-role-info"></div>
-            <p>Give a one-word clue related to the secret word</p>
-            <input type="text" id="clueWord" placeholder="Enter your clue here..." maxlength="30" autofocus>
-            <div class="modal-buttons">
-                <button onclick="submitClue()" class="primary">Submit Clue</button>
-                <button onclick="closeClueModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
-        // Game word categories and words
-        const gameData = {
-            "Animals": [
-                "Lion", "Elephant", "Penguin", "Giraffe", "Dolphin", "Eagle", "Tiger", "Zebra",
-                "Kangaroo", "Panda", "Crocodile", "Shark", "Horse", "Wolf", "Fox", "Octopus",
-                "Bear", "Owl", "Monkey", "Camel", "Rabbit", "Deer", "Goat", "Sheep",
-                "Snake", "Frog", "Whale", "Bat", "Parrot", "Dog", "Cat"
-            ],
-            "Fruits": [
-                "Apple", "Banana", "Orange", "Strawberry", "Mango", "Pineapple", "Grape",
-                "Watermelon", "Cherry", "Kiwi", "Blueberry", "Lemon", "Lime", "Raspberry",
-                "Peach", "Pear", "Plum", "Coconut"
-            ],
-            "Countries": [
-                "France", "Japan", "Brazil", "Canada", "Egypt", "Australia", "India", "Mexico",
-                "Germany", "China", "Spain", "Russia", "Argentina", "Greece", "Italy",
-                "South Korea", "United Kingdom", "Turkey", "South Africa", "Thailand", "Sweden"
-            ],
-            "Movies": [
-                "Frozen", "Jaws", "Shrek", "Star Wars", "Jurassic Park", "The Dark Knight",
-                "Toy Story", "Forrest Gump", "Finding Nemo", "Back to the Future", "The Lion King",
-                "Avengers", "Harry Potter", "Titanic", "The Matrix", "Inception",
-                "The Godfather", "E.T.", "Rocky", "The Incredibles"
-            ],
-            "Sports": [
-                "Soccer", "Basketball", "Tennis", "Swimming", "Golf", "Baseball", "Hockey",
-                "Volleyball", "Boxing", "Wrestling", "Skiing", "Track", "Cricket", "Rugby",
-                "Badminton", "Table Tennis", "Cycling"
-            ],
-            "Food": [
-                "Pizza", "Burger", "Sushi", "Pasta", "Tacos", "Salad", "Soup", "Sandwich",
-                "Steak", "Fried Rice", "Ramen", "Burrito", "Pancakes", "Ice Cream", "Curry",
-                "Hot Dog", "Dumplings", "Chili", "Lasagna", "Nachos", "Donuts", "Popcorn"
-            ],
-            "Professions": [
-                "Doctor", "Teacher", "Engineer", "Artist", "Chef", "Pilot", "Lawyer", "Firefighter",
-                "Nurse", "Scientist", "Farmer", "Architect", "Soldier", "Actor", "Musician",
-                "Writer", "Athlete", "Police Officer", "Judge", "Dentist", "Librarian", "Mechanic",
-                "Photographer", "Plumber"
-            ],
-            "Vehicles": [
-                "Car", "Airplane", "Boat", "Train", "Motorcycle", "Bus", "Truck", "Helicopter",
-                "Submarine", "Van", "Ambulance", "Taxi", "Cruise Ship", "Bicycle", "Tractor",
-                "Limo"
-            ],
-            "Musical Instruments": [
-                "Guitar", "Piano", "Drums", "Violin", "Flute", "Saxophone", "Trumpet", "Cello",
-                "Harp", "Clarinet", "Trombone", "Accordion", "Xylophone", "Ukulele"
-            ],
-            "Clothing": [
-                "Shirt", "Pants", "Dress", "Jacket", "Hat", "Shoes", "Scarf", "Gloves",
-                "Shorts", "Socks", "Tie", "Belt", "Skirt", "Jeans"
-            ],
-            "Appliances": [
-                "Microwave", "Fridge", "Oven", "Toaster", "Blender", "Washing Machine", "Dryer",
-                "Dishwasher", "Stove", "Vacuum", "Fan", "Heater", "Air Conditioner", "Coffee Maker"
-            ],
-            "Technology": [
-                "Computer", "Phone", "Tablet", "Camera", "Printer", "Router", "Headphones",
-                "Smartwatch", "TV", "Drone", "Keyboard", "Mouse", "Microphone", "Charger", "Monitor"
-            ],
-            "Colors": [
-                "Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Black", "White",
-                "Gray", "Gold"
-            ],
-            "Planets": [
-                "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"
-            ],
-            "Jobs in a School": [
-                "Principal", "Teacher", "Janitor", "Librarian", "Counselor", "Coach",
-                "Secretary", "Nurse"
-            ],
-            "Drinks": [
-                "Water", "Coffee", "Tea", "Milk", "Juice", "Soda", "Lemonade", "Smoothie",
-                "Hot Chocolate", "Milkshake", "Energy Drink"
-            ]
-        };
-
-        let socket;
-        let currentPlayer = null;
-        let currentRoom = null;
-        let gameState = null;
-        let isHost = false;
-        let totalPlayersAtVoteStart = 0;
-        let soundEnabled = true;
-        let darkMode = false;
-        let hardModeEnabled = false;
-
-        // Sound effects using Web Audio API for better quality
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-        function createSound(frequency, duration, type = 'sine') {
-            if (!soundEnabled) return;
-
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            oscillator.type = type;
-
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-
-        function playSound(soundType) {
-            if (!soundEnabled) return;
-
-            switch(soundType) {
-                case 'join':
-                    createSound(800, 0.2);
-                    setTimeout(() => createSound(1000, 0.2), 100);
-                    break;
-                case 'vote':
-                    createSound(600, 0.1);
-                    setTimeout(() => createSound(800, 0.1), 50);
-                    setTimeout(() => createSound(1000, 0.1), 100);
-                    break;
-                case 'win':
-                    createSound(523, 0.1); // C
-                    setTimeout(() => createSound(659, 0.1), 100); // E
-                    setTimeout(() => createSound(784, 0.1), 200); // G
-                    setTimeout(() => createSound(1047, 0.3), 300); // C high
-                    break;
-                case 'lose':
-                    createSound(200, 0.3);
-                    setTimeout(() => createSound(150, 0.3), 100);
-                    break;
-                case 'notification':
-                    createSound(1000, 0.1);
-                    setTimeout(() => createSound(1200, 0.1), 100);
-                    break;
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
             }
-        }
 
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const checkbox = document.getElementById('checkboxInput');
-            checkbox.checked = !soundEnabled; // Invert because checked = muted
-            showNotification(soundEnabled ? 'Sound enabled 🔊' : 'Sound disabled 🔇');
-            playSound('notification');
-        }
+            function playSound(soundType) {
+                if (!soundEnabled) return;
 
-        function toggleHardMode() {
-            if (!isHost) return;
-
-            hardModeEnabled = !hardModeEnabled;
-            const warning = document.getElementById('hardModeWarning');
-
-            if (hardModeEnabled) {
-                warning.style.display = 'block';
-                showNotification('Hard Mode enabled! 🔥');
-            } else {
-                warning.style.display = 'none';
-                showNotification('Hard Mode disabled');
+                switch (soundType) {
+                    case "join":
+                        createSound(800, 0.2);
+                        setTimeout(() => createSound(1000, 0.2), 100);
+                        break;
+                    case "vote":
+                        createSound(600, 0.1);
+                        setTimeout(() => createSound(800, 0.1), 50);
+                        setTimeout(() => createSound(1000, 0.1), 100);
+                        break;
+                    case "win":
+                        createSound(523, 0.1); // C
+                        setTimeout(() => createSound(659, 0.1), 100); // E
+                        setTimeout(() => createSound(784, 0.1), 200); // G
+                        setTimeout(() => createSound(1047, 0.3), 300); // C high
+                        break;
+                    case "lose":
+                        createSound(200, 0.3);
+                        setTimeout(() => createSound(150, 0.3), 100);
+                        break;
+                    case "notification":
+                        createSound(1000, 0.1);
+                        setTimeout(() => createSound(1200, 0.1), 100);
+                        break;
+                }
             }
 
-            playSound('notification');
-
-            // Emit hard mode status to server
-            socket.emit('toggleHardMode', hardModeEnabled);
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        function toggleTheme() {
-            darkMode = !darkMode;
-            const body = document.body;
-            const themeCheckbox = document.getElementById('themeCheckbox');
-
-            if (darkMode) {
-                body.classList.add('dark-mode');
-                themeCheckbox.checked = true;
-                showNotification('Dark mode enabled 🌙');
-            } else {
-                body.classList.remove('dark-mode');
-                themeCheckbox.checked = false;
-                showNotification('Light mode enabled ☀️');
+            function toggleSound() {
+                soundEnabled = !soundEnabled;
+                const checkbox = document.getElementById("checkboxInput");
+                checkbox.checked = !soundEnabled; // Invert because checked = muted
+                showNotification(soundEnabled ? "Sound enabled 🔊" : "Sound disabled 🔇");
+                playSound("notification");
             }
 
-            playSound('notification');
+            function toggleHardMode() {
+                if (!isHost) return;
 
-            // Save preference to localStorage
-            localStorage.setItem('darkMode', darkMode);
-        }
+                hardModeEnabled = !hardModeEnabled;
+                const warning = document.getElementById("hardModeWarning");
 
-        function loadThemePreference() {
-            const savedTheme = localStorage.getItem('darkMode');
-            if (savedTheme === 'true') {
-                darkMode = true;
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeCheckbox').checked = true;
-            } else {
-                darkMode = false;
-                document.body.classList.remove('dark-mode');
-                document.getElementById('themeCheckbox').checked = false;
-            }
-        }
-
-        function connectToServer() {
-            // replace with actual domain when i deploy
-            socket = io('https://yojit-org-134258260293.us-south1.run.app', {
-                transports: ['websocket', 'polling']
-            });
-
-            socket.on('connect', () => {
-                console.log('Connected to server');
-                playSound('join');
-            });
-
-            socket.on('roomJoined', (data) => {
-                currentRoom = data.roomCode;
-                currentPlayer = data.playerId;
-                isHost = data.isHost;
-                document.getElementById('roomCodeDisplay').textContent = currentRoom;
-                document.getElementById('joinSection').style.display = 'none';
-                document.getElementById('lobbySection').style.display = 'block';
-                document.getElementById('chatSection').style.display = 'block';
-                if (isHost) {
-                    document.getElementById('startGameBtn').style.display = 'block';
-                    document.getElementById('hardModeControls').style.display = 'block';
-                }
-                playSound('join');
-                showNotification(`Joined room ${data.roomCode} 🎮`);
-            });
-
-            socket.on('playersUpdate', (players) => {
-                updatePlayersList(players);
-                // Update the vote counter if we're in voting phase and player count changes
-                if (gameState && gameState.phase === 'voting') {
-                    updateVoteCounter();
-                }
-            });
-
-            socket.on('hardModeUpdate', (enabled) => {
-                hardModeEnabled = enabled;
-                const warning = document.getElementById('hardModeWarning');
-                const checkbox = document.getElementById('hardModeCheckbox');
-
-                checkbox.checked = enabled;
-                warning.style.display = enabled ? 'block' : 'none';
-
-                if (!isHost) {
-                    showNotification(enabled ? 'Host enabled Hard Mode! 🔥' : 'Host disabled Hard Mode');
-                }
-            });
-
-            socket.on('gameStarted', (state) => {
-                gameState = state;
-                showGameScreen();
-                playSound('join');
-                showNotification('Game started! 🚀');
-            });
-
-            socket.on('clueSubmitted', (data) => {
-                addClueToList(data.player, data.clue);
-                gameState.clues.push(data);
-                playSound('vote');
-            });
-
-            socket.on('turnUpdate', (playerId) => {
-                updateCurrentTurn(playerId);
-            });
-
-            socket.on('votingPhase', () => {
-                showVotingScreen();
-                playSound('vote');
-                showNotification('Voting phase! 🗳️');
-            });
-
-            socket.on('voteUpdate', (data) => {
-                const counter = document.getElementById('voteCounter');
-                if (counter) {
-                    // Use the stored total players count instead of the current one
-                    counter.textContent = `${data.totalVotes} / ${totalPlayersAtVoteStart} votes submitted`;
-                }
-            });
-
-            socket.on('chameleonCaught', (data) => {
-                if (data.chameleonId === currentPlayer) {
-                    document.getElementById('guessSection').style.display = 'block';
-                    playSound('lose');
-                    showNotification('You were caught! 😱');
+                if (hardModeEnabled) {
+                    warning.style.display = "block";
+                    showNotification("Hard Mode enabled! 🔥");
                 } else {
-                    showModal('Chameleon Caught!', `The Chameleon was ${data.chameleonName}! Waiting for their guess...`);
-                    playSound('win');
-                    showNotification('Chameleon caught! 🎯');
-                }
-            });
-
-            socket.on('gameEnd', (data) => {
-                let message = data.chameleonWon ?
-                    `The Chameleon (${data.chameleonName}) wins! They ${data.guessedCorrectly ? 'guessed the word correctly' : 'avoided detection'}!` :
-                    `The team wins! The Chameleon was caught and failed to guess the word.`;
-
-                if (data.secretWord) {
-                    message += `\n\nThe secret word was: ${data.secretWord}`;
+                    warning.style.display = "none";
+                    showNotification("Hard Mode disabled");
                 }
 
-                showModal('Game Over!', message);
-                playSound(data.chameleonWon ? 'win' : 'lose');
-                showNotification(data.chameleonWon ? 'Chameleon wins! 🦎' : 'Team wins! 🎉');
+                playSound("notification");
+
+                // Emit hard mode status to server
+                socket.emit("toggleHardMode", hardModeEnabled);
+            }
+
+            function showNotification(message) {
+                const notification = document.createElement("div");
+                notification.className = "notification";
+                notification.textContent = message;
+                document.body.appendChild(notification);
 
                 setTimeout(() => {
-                    resetToLobby();
-                }, 5000);
-            });
-
-            socket.on('chatMessage', (data) => {
-                addChatMessage(data.player, data.message);
-            });
-
-            socket.on('error', (error) => {
-                alert('Error: ' + error);
-            });
-        }
-
-        function joinGame() {
-            const name = document.getElementById('playerName').value.trim();
-            const roomCode = document.getElementById('roomCode').value.trim();
-
-            if (!name) {
-                alert('Please enter your name');
-                return;
+                    notification.remove();
+                }, 3000);
             }
 
-            if (!socket) {
-                connectToServer();
+            function toggleTheme() {
+                darkMode = !darkMode;
+                const body = document.body;
+                const themeCheckbox = document.getElementById("themeCheckbox");
+
+                if (darkMode) {
+                    body.classList.add("dark-mode");
+                    themeCheckbox.checked = true;
+                    showNotification("Dark mode enabled 🌙");
+                } else {
+                    body.classList.remove("dark-mode");
+                    themeCheckbox.checked = false;
+                    showNotification("Light mode enabled ☀️");
+                }
+
+                playSound("notification");
+
+                // Save preference to localStorage
+                localStorage.setItem("darkMode", darkMode);
             }
 
-            socket.emit('joinRoom', { playerName: name, roomCode: roomCode || null });
-        }
-
-        function startGame() {
-            if (isHost) {
-                const category = Object.keys(gameData)[Math.floor(Math.random() * Object.keys(gameData).length)];
-                const words = gameData[category];
-                const secretWord = words[Math.floor(Math.random() * words.length)];
-
-                socket.emit('startGame', { category, secretWord, words, hardMode: hardModeEnabled });
+            function loadThemePreference() {
+                const savedTheme = localStorage.getItem("darkMode");
+                if (savedTheme === "true") {
+                    darkMode = true;
+                    document.body.classList.add("dark-mode");
+                    document.getElementById("themeCheckbox").checked = true;
+                } else {
+                    darkMode = false;
+                    document.body.classList.remove("dark-mode");
+                    document.getElementById("themeCheckbox").checked = false;
+                }
             }
-        }
 
-        function showGameScreen() {
-            document.getElementById('lobbySection').style.display = 'none';
-            document.getElementById('gameSection').style.display = 'block';
+            function connectToServer() {
+                // replace with actual domain when i deploy
+                socket = io("https://yojit-org-134258260293.us-south1.run.app", {
+                    transports: ["websocket", "polling"],
+                });
 
-            const roleCard = document.getElementById('roleCard');
-            const roleInfo = document.getElementById('roleInfo');
+                socket.on("connect", () => {
+                    console.log("Connected to server");
+                    playSound("join");
+                });
 
-            if (gameState.role === 'chameleon') {
-                if (gameState.hardMode) {
-                    // Hard mode - no information at all
-                    roleCard.className = 'role-card chameleon-hard';
-                    roleInfo.innerHTML = `
+                socket.on("roomJoined", (data) => {
+                    currentRoom = data.roomCode;
+                    currentPlayer = data.playerId;
+                    isHost = data.isHost;
+                    document.getElementById("roomCodeDisplay").textContent = currentRoom;
+                    document.getElementById("joinSection").style.display = "none";
+                    document.getElementById("lobbySection").style.display = "block";
+                    document.getElementById("chatSection").style.display = "block";
+                    if (isHost) {
+                        document.getElementById("startGameBtn").style.display = "block";
+                        document.getElementById("hardModeControls").style.display = "block";
+                    }
+                    playSound("join");
+                    showNotification(`Joined room ${data.roomCode} 🎮`);
+                });
+
+                socket.on("playersUpdate", (players) => {
+                    updatePlayersList(players);
+                    // Update the vote counter if we're in voting phase and player count changes
+                    if (gameState && gameState.phase === "voting") {
+                        updateVoteCounter();
+                    }
+                });
+
+                socket.on("hardModeUpdate", (enabled) => {
+                    hardModeEnabled = enabled;
+                    const warning = document.getElementById("hardModeWarning");
+                    const checkbox = document.getElementById("hardModeCheckbox");
+
+                    checkbox.checked = enabled;
+                    warning.style.display = enabled ? "block" : "none";
+
+                    if (!isHost) {
+                        showNotification(enabled ? "Host enabled Hard Mode! 🔥" : "Host disabled Hard Mode");
+                    }
+                });
+
+                socket.on("gameStarted", (state) => {
+                    gameState = state;
+                    showGameScreen();
+                    playSound("join");
+                    showNotification("Game started! 🚀");
+                });
+
+                socket.on("clueSubmitted", (data) => {
+                    addClueToList(data.player, data.clue);
+                    gameState.clues.push(data);
+                    playSound("vote");
+                });
+
+                socket.on("turnUpdate", (playerId) => {
+                    updateCurrentTurn(playerId);
+                });
+
+                socket.on("votingPhase", () => {
+                    showVotingScreen();
+                    playSound("vote");
+                    showNotification("Voting phase! 🗳️");
+                });
+
+                socket.on("voteUpdate", (data) => {
+                    const counter = document.getElementById("voteCounter");
+                    if (counter) {
+                        // Use the stored total players count instead of the current one
+                        counter.textContent = `${data.totalVotes} / ${totalPlayersAtVoteStart} votes submitted`;
+                    }
+                });
+
+                socket.on("chameleonCaught", (data) => {
+                    if (data.chameleonId === currentPlayer) {
+                        document.getElementById("guessSection").style.display = "block";
+                        playSound("lose");
+                        showNotification("You were caught! 😱");
+                    } else {
+                        showModal("Chameleon Caught!", `The Chameleon was ${data.chameleonName}! Waiting for their guess...`);
+                        playSound("win");
+                        showNotification("Chameleon caught! 🎯");
+                    }
+                });
+
+                socket.on("gameEnd", (data) => {
+                    let message = data.chameleonWon
+                        ? `The Chameleon (${data.chameleonName}) wins! They ${data.guessedCorrectly ? "guessed the word correctly" : "avoided detection"}!`
+                        : `The team wins! The Chameleon was caught and failed to guess the word.`;
+
+                    if (data.secretWord) {
+                        message += `\n\nThe secret word was: ${data.secretWord}`;
+                    }
+
+                    showModal("Game Over!", message);
+                    playSound(data.chameleonWon ? "win" : "lose");
+                    showNotification(data.chameleonWon ? "Chameleon wins! 🦎" : "Team wins! 🎉");
+
+                    setTimeout(() => {
+                        resetToLobby();
+                    }, 5000);
+                });
+
+                socket.on("chatMessage", (data) => {
+                    addChatMessage(data.player, data.message);
+                });
+
+                socket.on("error", (error) => {
+                    alert("Error: " + error);
+                });
+            }
+
+            function joinGame() {
+                const name = document.getElementById("playerName").value.trim();
+                const roomCode = document.getElementById("roomCode").value.trim();
+
+                if (!name) {
+                    alert("Please enter your name");
+                    return;
+                }
+
+                if (!socket) {
+                    connectToServer();
+                }
+
+                socket.emit("joinRoom", { playerName: name, roomCode: roomCode || null });
+            }
+
+            function startGame() {
+                if (isHost) {
+                    const category = Object.keys(gameData)[Math.floor(Math.random() * Object.keys(gameData).length)];
+                    const words = gameData[category];
+                    const secretWord = words[Math.floor(Math.random() * words.length)];
+
+                    socket.emit("startGame", { category, secretWord, words, hardMode: hardModeEnabled });
+                }
+            }
+
+            function showGameScreen() {
+                document.getElementById("lobbySection").style.display = "none";
+                document.getElementById("gameSection").style.display = "block";
+
+                const roleCard = document.getElementById("roleCard");
+                const roleInfo = document.getElementById("roleInfo");
+
+                if (gameState.role === "chameleon") {
+                    if (gameState.hardMode) {
+                        // Hard mode - no information at all
+                        roleCard.className = "role-card chameleon-hard";
+                        roleInfo.innerHTML = `
                         <h2>You are the CHAMELEON! 🦎</h2>
                         <div class="hard-mode-warning">🔥 HARD MODE - NO INFORMATION!</div>
                         <p>You have no clues - listen carefully and blend in!</p>
                     `;
-                } else {
-                    // Normal mode - show category
-                    roleCard.className = 'role-card chameleon';
-                    roleInfo.innerHTML = `
+                    } else {
+                        // Normal mode - show category
+                        roleCard.className = "role-card chameleon";
+                        roleInfo.innerHTML = `
                         <h2>You are the CHAMELEON! 🦎</h2>
                         <p>Category: <span class="word-display">${gameState.category}</span></p>
                         <p>Blend in and figure out the secret word!</p>
                     `;
-                }
-            } else {
-                roleCard.className = 'role-card regular';
-                roleInfo.innerHTML = `
+                    }
+                } else {
+                    roleCard.className = "role-card regular";
+                    roleInfo.innerHTML = `
                     <h2>You are a regular player</h2>
                     <p>Category: ${gameState.category}</p>
                     <p>Secret Word: <span class="word-display">${gameState.secretWord}</span></p>
                     <p>Find the Chameleon!</p>
-                    ${gameState.hardMode ? '<div class="hard-mode-warning">🔥 HARD MODE - Chameleon has no info!</div>' : ''}
+                    ${gameState.hardMode ? '<div class="hard-mode-warning">🔥 HARD MODE - Chameleon has no info!</div>' : ""}
                 `;
+                }
+
+                document.getElementById("cluesSection").style.display = "block";
+                document.getElementById("cluesList").innerHTML = "";
+
+                if (gameState.currentTurn === currentPlayer) {
+                    showClueModal();
+                }
             }
 
-            document.getElementById('cluesSection').style.display = 'block';
-            document.getElementById('cluesList').innerHTML = '';
+            function updateCurrentTurn(playerId) {
+                const players = document.querySelectorAll(".player-card");
+                players.forEach((p) => p.classList.remove("current-turn"));
 
-            if (gameState.currentTurn === currentPlayer) {
-                showClueModal();
+                if (playerId === currentPlayer) {
+                    showClueModal();
+                }
             }
-        }
 
-        function updateCurrentTurn(playerId) {
-            const players = document.querySelectorAll('.player-card');
-            players.forEach(p => p.classList.remove('current-turn'));
+            function showClueModal() {
+                const clueModal = document.getElementById("clueModal");
+                const modalRoleInfo = document.getElementById("modalRoleInfo");
 
-            if (playerId === currentPlayer) {
-                showClueModal();
-            }
-        }
-
-        function showClueModal() {
-            const clueModal = document.getElementById('clueModal');
-            const modalRoleInfo = document.getElementById('modalRoleInfo');
-
-            // Populate the modal with role information
-            if (gameState.role === 'chameleon') {
-                if (gameState.hardMode) {
-                    modalRoleInfo.className = 'modal-role-info chameleon-hard';
-                    modalRoleInfo.innerHTML = `
+                // Populate the modal with role information
+                if (gameState.role === "chameleon") {
+                    if (gameState.hardMode) {
+                        modalRoleInfo.className = "modal-role-info chameleon-hard";
+                        modalRoleInfo.innerHTML = `
                         <h3>🦎 You are the CHAMELEON!</h3>
                         <div style="color: #ff6b6b; font-weight: bold;">🔥 HARD MODE - NO INFORMATION!</div>
                         <p>Listen carefully and blend in!</p>
                     `;
-                } else {
-                    modalRoleInfo.className = 'modal-role-info chameleon';
-                    modalRoleInfo.innerHTML = `
+                    } else {
+                        modalRoleInfo.className = "modal-role-info chameleon";
+                        modalRoleInfo.innerHTML = `
                         <h3>🦎 You are the CHAMELEON!</h3>
                         <p>Category: <span class="word-display">${gameState.category}</span></p>
                         <p>Figure out the secret word and blend in!</p>
                     `;
-                }
-            } else {
-                modalRoleInfo.className = 'modal-role-info';
-                modalRoleInfo.innerHTML = `
+                    }
+                } else {
+                    modalRoleInfo.className = "modal-role-info";
+                    modalRoleInfo.innerHTML = `
                     <h3>🕵️ Regular Player</h3>
                     <p>Category: ${gameState.category}</p>
                     <p>Secret Word: <span class="word-display">${gameState.secretWord}</span></p>
                     <p>Give a clue to help find the Chameleon!</p>
                 `;
-            }
-
-            clueModal.style.display = 'flex';
-
-            // Clear any previous input and focus on it
-            const clueInput = document.getElementById('clueWord');
-            clueInput.value = '';
-
-            // Focus the input after a short delay to ensure modal is visible
-            setTimeout(() => {
-                clueInput.focus();
-            }, 100);
-
-            // Add Enter key handler for quick submission
-            clueInput.onkeypress = function(event) {
-                if (event.key === 'Enter') {
-                    submitClue();
                 }
-            };
 
-            // Hide the "Give Clue" button while modal is open
-            document.getElementById('giveClueButton').style.display = 'none';
-        }
+                clueModal.style.display = "flex";
 
-        function closeClueModal() {
-            document.getElementById('clueModal').style.display = 'none';
-            // Show the "Give Clue" button again so player can reopen
-            if (gameState && gameState.currentTurn === currentPlayer) {
-                document.getElementById('giveClueButton').style.display = 'block';
-            }
-        }
+                // Clear any previous input and focus on it
+                const clueInput = document.getElementById("clueWord");
+                clueInput.value = "";
 
-        function closeClueModalFinal() {
-            document.getElementById('clueModal').style.display = 'none';
-        }
+                // Focus the input after a short delay to ensure modal is visible
+                setTimeout(() => {
+                    clueInput.focus();
+                }, 100);
 
-        function submitClue() {
-            const clueWord = document.getElementById('clueWord').value.trim();
+                // Add Enter key handler for quick submission
+                clueInput.onkeypress = function (event) {
+                    if (event.key === "Enter") {
+                        submitClue();
+                    }
+                };
 
-            if (!clueWord) {
-                alert('Please enter a clue');
-                return;
+                // Hide the "Give Clue" button while modal is open
+                document.getElementById("giveClueButton").style.display = "none";
             }
 
-            socket.emit('submitClue', clueWord);
-            closeClueModalFinal();
-        }
+            function closeClueModal() {
+                document.getElementById("clueModal").style.display = "none";
+                // Show the "Give Clue" button again so player can reopen
+                if (gameState && gameState.currentTurn === currentPlayer) {
+                    document.getElementById("giveClueButton").style.display = "block";
+                }
+            }
 
-        function addClueToList(playerName, clue) {
-            const cluesList = document.getElementById('cluesList');
-            const clueItem = document.createElement('div');
-            clueItem.className = 'clue-item';
-            clueItem.textContent = `${playerName}: ${clue}`;
-            cluesList.appendChild(clueItem);
-        }
+            function closeClueModalFinal() {
+                document.getElementById("clueModal").style.display = "none";
+            }
 
-        function showVotingScreen() {
-            closeClueModalFinal();
-            document.getElementById('votingSection').style.display = 'block';
+            function submitClue() {
+                const clueWord = document.getElementById("clueWord").value.trim();
 
-            const votingSection = document.getElementById('votingSection');
+                if (!clueWord) {
+                    alert("Please enter a clue");
+                    return;
+                }
 
-            // Store the total players count when voting starts
-            totalPlayersAtVoteStart = gameState.players.length;
+                socket.emit("submitClue", clueWord);
+                closeClueModalFinal();
+            }
 
-            // Clear previous content but keep the header
-            votingSection.innerHTML = `
+            function addClueToList(playerName, clue) {
+                const cluesList = document.getElementById("cluesList");
+                const clueItem = document.createElement("div");
+                clueItem.className = "clue-item";
+                clueItem.textContent = `${playerName}: ${clue}`;
+                cluesList.appendChild(clueItem);
+            }
+
+            function showVotingScreen() {
+                closeClueModalFinal();
+                document.getElementById("votingSection").style.display = "block";
+
+                const votingSection = document.getElementById("votingSection");
+
+                // Store the total players count when voting starts
+                totalPlayersAtVoteStart = gameState.players.length;
+
+                // Clear previous content but keep the header
+                votingSection.innerHTML = `
                 <h3>Vote for who you think is the Chameleon:</h3>
                 <p id="voteCounter">0 / ${totalPlayersAtVoteStart} votes submitted</p>
             `;
 
-            // Add vote buttons for each player
-            gameState.players.forEach(player => {
-                if (player.id !== currentPlayer) { // Don't let players vote for themselves
-                    const voteBtn = document.createElement('button');
-                    voteBtn.className = 'vote-button';
-                    voteBtn.textContent = player.name;
-                    voteBtn.onclick = () => vote(player.id);
-                    votingSection.appendChild(voteBtn);
-                }
-            });
+                // Add vote buttons for each player
+                gameState.players.forEach((player) => {
+                    if (player.id !== currentPlayer) {
+                        // Don't let players vote for themselves
+                        const voteBtn = document.createElement("button");
+                        voteBtn.className = "vote-button";
+                        voteBtn.textContent = player.name;
+                        voteBtn.onclick = () => vote(player.id);
+                        votingSection.appendChild(voteBtn);
+                    }
+                });
 
-            // Set the game phase to voting
-            gameState.phase = 'voting';
-        }
+                // Set the game phase to voting
+                gameState.phase = "voting";
+            }
 
-        function updateVoteCounter() {
-            const counter = document.getElementById('voteCounter');
-            if (counter && gameState && gameState.phase === 'voting') {
-                // Keep the current vote count but update the total
-                const currentText = counter.textContent;
-                const match = currentText.match(/(\d+) \/ \d+ votes submitted/);
-                if (match) {
-                    const currentVotes = match[1];
-                    counter.textContent = `${currentVotes} / ${totalPlayersAtVoteStart} votes submitted`;
-                } else {
-                    counter.textContent = `0 / ${totalPlayersAtVoteStart} votes submitted`;
+            function updateVoteCounter() {
+                const counter = document.getElementById("voteCounter");
+                if (counter && gameState && gameState.phase === "voting") {
+                    // Keep the current vote count but update the total
+                    const currentText = counter.textContent;
+                    const match = currentText.match(/(\d+) \/ \d+ votes submitted/);
+                    if (match) {
+                        const currentVotes = match[1];
+                        counter.textContent = `${currentVotes} / ${totalPlayersAtVoteStart} votes submitted`;
+                    } else {
+                        counter.textContent = `0 / ${totalPlayersAtVoteStart} votes submitted`;
+                    }
                 }
             }
-        }
 
-        function vote(playerId) {
-            socket.emit('vote', playerId);
-            playSound('vote');
+            function vote(playerId) {
+                socket.emit("vote", playerId);
+                playSound("vote");
 
-            // Disable all vote buttons after voting
-            document.querySelectorAll('.vote-button').forEach(btn => {
-                btn.disabled = true;
-                btn.classList.remove("selected");
-            });
+                // Disable all vote buttons after voting
+                document.querySelectorAll(".vote-button").forEach((btn) => {
+                    btn.disabled = true;
+                    btn.classList.remove("selected");
+                });
 
-            // Highlight the chosen player
-            const chosen = [...document.querySelectorAll('.vote-button')]
-                .find(btn => {
-                    const playerName = gameState.players.find(p => p.id === playerId).name;
+                // Highlight the chosen player
+                const chosen = [...document.querySelectorAll(".vote-button")].find((btn) => {
+                    const playerName = gameState.players.find((p) => p.id === playerId).name;
                     return btn.textContent.includes(playerName);
                 });
 
-            if (chosen) chosen.classList.add("selected");
-        }
-
-        function submitGuess() {
-            const guess = document.getElementById('guessWord').value.trim();
-            if (!guess) {
-                alert('Please enter your guess');
-                return;
+                if (chosen) chosen.classList.add("selected");
             }
-            socket.emit('chameleonGuess', guess);
-            document.getElementById('guessSection').style.display = 'none';
-        }
 
-        function updatePlayersList(players) {
-            const lobbyPlayers = document.getElementById('lobbyPlayers');
-            lobbyPlayers.innerHTML = '';
-
-            document.getElementById('playerCount').textContent = players.length;
-
-            players.forEach(player => {
-                const playerCard = document.createElement('div');
-                playerCard.className = 'player-card';
-                playerCard.textContent = player.name + (player.isHost ? ' 👑' : '');
-                lobbyPlayers.appendChild(playerCard);
-            });
-        }
-
-        function sendChat() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-
-            if (message) {
-                socket.emit('chatMessage', message);
-                input.value = '';
+            function submitGuess() {
+                const guess = document.getElementById("guessWord").value.trim();
+                if (!guess) {
+                    alert("Please enter your guess");
+                    return;
+                }
+                socket.emit("chameleonGuess", guess);
+                document.getElementById("guessSection").style.display = "none";
             }
-        }
 
-        function addChatMessage(playerName, message) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            messageDiv.innerHTML = `<strong>${playerName}:</strong> ${message}`;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+            function updatePlayersList(players) {
+                const lobbyPlayers = document.getElementById("lobbyPlayers");
+                lobbyPlayers.innerHTML = "";
 
-        function showModal(title, message) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').textContent = message;
-            document.getElementById('gameModal').style.display = 'flex';
-        }
+                document.getElementById("playerCount").textContent = players.length;
 
-        function closeModal() {
-            document.getElementById('gameModal').style.display = 'none';
-        }
+                players.forEach((player) => {
+                    const playerCard = document.createElement("div");
+                    playerCard.className = "player-card";
+                    playerCard.textContent = player.name + (player.isHost ? " 👑" : "");
+                    lobbyPlayers.appendChild(playerCard);
+                });
+            }
 
-        function resetToLobby() {
-            document.getElementById('gameSection').style.display = 'none';
-            document.getElementById('lobbySection').style.display = 'block';
-            document.getElementById('votingSection').style.display = 'none';
-            document.getElementById('guessSection').style.display = 'none';
-            closeClueModal();
-            gameState = null;
-            totalPlayersAtVoteStart = 0;
-        }
+            function sendChat() {
+                const input = document.getElementById("chatInput");
+                const message = input.value.trim();
 
-        // Initialize connection when page loads
-        window.onload = () => {
-            loadThemePreference();
-            connectToServer();
-        };
-    </script>
-</body>
+                if (message) {
+                    socket.emit("chatMessage", message);
+                    input.value = "";
+                }
+            }
+
+            function addChatMessage(playerName, message) {
+                const chatMessages = document.getElementById("chatMessages");
+                const messageDiv = document.createElement("div");
+                messageDiv.className = "chat-message";
+                messageDiv.innerHTML = `<strong>${playerName}:</strong> ${message}`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function showModal(title, message) {
+                document.getElementById("modalTitle").textContent = title;
+                document.getElementById("modalMessage").textContent = message;
+                document.getElementById("gameModal").style.display = "flex";
+            }
+
+            function closeModal() {
+                document.getElementById("gameModal").style.display = "none";
+            }
+
+            function resetToLobby() {
+                document.getElementById("gameSection").style.display = "none";
+                document.getElementById("lobbySection").style.display = "block";
+                document.getElementById("votingSection").style.display = "none";
+                document.getElementById("guessSection").style.display = "none";
+                closeClueModal();
+                gameState = null;
+                totalPlayersAtVoteStart = 0;
+            }
+
+            // Initialize connection when page loads
+            window.onload = () => {
+                loadThemePreference();
+                connectToServer();
+            };
+        </script>
+    </body>
 </html>
