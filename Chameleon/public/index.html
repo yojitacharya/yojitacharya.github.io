@@ -204,6 +204,26 @@
             transform: none;
         }
 
+        .give-clue-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .give-clue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.5);
+            background: linear-gradient(135deg, #f5a4ff 0%, #f7677c 100%);
+        }
+
         .clues-section {
             background: #f8f9fa;
             padding: 15px;
@@ -299,6 +319,129 @@
             text-align: center;
             max-width: 500px;
             animation: slideIn 0.3s ease;
+        }
+
+        .clue-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .clue-modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .clue-modal input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .clue-modal input[type="text"]:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .clue-modal button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .clue-modal button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .clue-modal button.primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .clue-modal button.primary:hover {
+            background: #f0f0f0;
+            color: #5566d6;
+        }
+
+        .modal-role-info {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-role-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .modal-role-info .word-display {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin: 5px 0;
+            color: #ffeb3b;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-role-info.chameleon {
+            background: rgba(240, 147, 251, 0.2);
+            border-color: rgba(240, 147, 251, 0.3);
+        }
+
+        .modal-role-info.chameleon-hard {
+            background: rgba(255, 71, 87, 0.2);
+            border-color: rgba(255, 71, 87, 0.3);
         }
 
         .loading {
@@ -538,6 +681,43 @@
         body.dark-mode .modal-content {
             background: #2a2a4a;
             color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal-content {
+            background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal h2 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal input[type="text"] {
+            background: #3a3a5a;
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal input[type="text"]::placeholder {
+            color: #cccccc;
+        }
+
+        body.dark-mode .clue-modal button.primary {
+            background: #ffffff;
+            color: #3a3a5a;
+        }
+
+        body.dark-mode .clue-modal button.primary:hover {
+            background: #f0f0f0;
+            color: #2a2a4a;
+        }
+
+        body.dark-mode .modal-role-info {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .modal-role-info .word-display {
+            color: #ffeb3b;
         }
 
         body.dark-mode .tutorial-button {
@@ -810,9 +990,8 @@
                 <div id="cluesList"></div>
             </div>
 
-            <div id="clueInput" style="display: none;">
-                <input type="text" id="clueWord" placeholder="It is your Turn. Enter your one-word clue" maxlength="30">
-                <button onclick="submitClue()">Submit Clue</button>
+            <div id="giveClueButton" style="display: none; text-align: center; margin: 20px 0;">
+                <button onclick="showClueModal()" class="give-clue-btn">Give Your Clue</button>
             </div>
 
             <div class="voting-section" id="votingSection" style="display: none;">
@@ -844,72 +1023,96 @@
         </div>
     </div>
 
+    <div class="clue-modal" id="clueModal">
+        <div class="clue-modal-content">
+            <h2>Your Turn!</h2>
+            <div id="modalRoleInfo" class="modal-role-info"></div>
+            <p>Give a one-word clue related to the secret word</p>
+            <input type="text" id="clueWord" placeholder="Enter your clue here..." maxlength="30" autofocus>
+            <div class="modal-buttons">
+                <button onclick="submitClue()" class="primary">Submit Clue</button>
+                <button onclick="closeClueModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         // Game word categories and words
         const gameData = {
             "Animals": [
-                "Lion", "Elephant", "Penguin", "Giraffe", "Dolphin", "Eagle", "Tiger",
-                "Zebra", "Kangaroo", "Panda", "Crocodile", "Shark", "Horse", "Wolf", "Fox",
-                "Octopus", "Bear", "Owl", "Monkey"
+                "Lion", "Elephant", "Penguin", "Giraffe", "Dolphin", "Eagle", "Tiger", "Zebra",
+                "Kangaroo", "Panda", "Crocodile", "Shark", "Horse", "Wolf", "Fox", "Octopus",
+                "Bear", "Owl", "Monkey", "Camel", "Rabbit", "Deer", "Goat", "Sheep",
+                "Snake", "Frog", "Whale", "Bat", "Parrot", "Dog", "Cat"
             ],
             "Fruits": [
-                "Apple", "Banana", "Orange", "Strawberry", "Mango", "Pineapple", "Grape", "Watermelon",
-                "Cherry", "Kiwi", "Blueberry", "Lemon", "Lime", "Raspberry"
+                "Apple", "Banana", "Orange", "Strawberry", "Mango", "Pineapple", "Grape",
+                "Watermelon", "Cherry", "Kiwi", "Blueberry", "Lemon", "Lime", "Raspberry",
+                "Peach", "Pear", "Plum", "Coconut"
             ],
             "Countries": [
                 "France", "Japan", "Brazil", "Canada", "Egypt", "Australia", "India", "Mexico",
-                "Germany", "China", "Spain", "Russia", "Argentina",
-                "Greece"
+                "Germany", "China", "Spain", "Russia", "Argentina", "Greece", "Italy",
+                "South Korea", "United Kingdom", "Turkey", "South Africa", "Thailand", "Sweden"
             ],
             "Movies": [
-                "Frozen", "Jaws", "Shrek",
-                "Star Wars", "Jurassic Park", "The Dark Knight", "Toy Story",
-                "Forrest Gump", "Finding Nemo", "Back to the Future", "The Lion King",
-                "Avengers", "Harry Potter", "Titanic"
+                "Frozen", "Jaws", "Shrek", "Star Wars", "Jurassic Park", "The Dark Knight",
+                "Toy Story", "Forrest Gump", "Finding Nemo", "Back to the Future", "The Lion King",
+                "Avengers", "Harry Potter", "Titanic", "The Matrix", "Inception",
+                "The Godfather", "E.T.", "Rocky", "The Incredibles"
             ],
             "Sports": [
                 "Soccer", "Basketball", "Tennis", "Swimming", "Golf", "Baseball", "Hockey",
-                "Volleyball", "Boxing", "Wrestling", "Skiing",
-                "Track"
+                "Volleyball", "Boxing", "Wrestling", "Skiing", "Track", "Cricket", "Rugby",
+                "Badminton", "Table Tennis", "Cycling"
             ],
             "Food": [
                 "Pizza", "Burger", "Sushi", "Pasta", "Tacos", "Salad", "Soup", "Sandwich",
-                "Steak", "Fried Rice", "Ramen", "Burrito",
-                "Pancakes", "Ice Cream"
+                "Steak", "Fried Rice", "Ramen", "Burrito", "Pancakes", "Ice Cream", "Curry",
+                "Hot Dog", "Dumplings", "Chili", "Lasagna", "Nachos", "Donuts", "Popcorn"
             ],
             "Professions": [
                 "Doctor", "Teacher", "Engineer", "Artist", "Chef", "Pilot", "Lawyer", "Firefighter",
                 "Nurse", "Scientist", "Farmer", "Architect", "Soldier", "Actor", "Musician",
-                "Writer", "Athlete", "Police Officer", "Judge"
+                "Writer", "Athlete", "Police Officer", "Judge", "Dentist", "Librarian", "Mechanic",
+                "Photographer", "Plumber"
             ],
             "Vehicles": [
-                "Car", "Airplane", "Boat", "Train", "Motorcycle", "Bus", "Truck",
-                "Helicopter", "Submarine", "Van",
-                "Ambulance", "Taxi", "Cruise Ship"
+                "Car", "Airplane", "Boat", "Train", "Motorcycle", "Bus", "Truck", "Helicopter",
+                "Submarine", "Van", "Ambulance", "Taxi", "Cruise Ship", "Bicycle", "Tractor",
+                "Limo"
             ],
             "Musical Instruments": [
                 "Guitar", "Piano", "Drums", "Violin", "Flute", "Saxophone", "Trumpet", "Cello",
-                "Harp", "Clarinet", "Trombone", "Banjo", "Accordion",
-                "Xylophone"
+                "Harp", "Clarinet", "Trombone", "Accordion", "Xylophone", "Ukulele"
             ],
             "Clothing": [
                 "Shirt", "Pants", "Dress", "Jacket", "Hat", "Shoes", "Scarf", "Gloves",
-                "Sweater", "Shorts", "Socks", "Tie", "Belt", "Skirt",
+                "Shorts", "Socks", "Tie", "Belt", "Skirt", "Jeans"
             ],
-            "Household Items": [
-                "Chair", "Table", "Lamp", "Sofa", "Bed", "Clock", "Mirror", "Curtains",
-                "Television", "Bookshelf", "Carpet", "Fan", "Microwave", "Fridge",
-                "Oven", "Vacuum", "Toaster", "Washing Machine"
-            ],
-            "Nature": [
-                "Tree", "River", "Mountain", "Ocean", "Flower", "Desert", "Rain", "Snow",
-                "Volcano", "Forest", "Lake", "Waterfall", "Island"
+            "Appliances": [
+                "Microwave", "Fridge", "Oven", "Toaster", "Blender", "Washing Machine", "Dryer",
+                "Dishwasher", "Stove", "Vacuum", "Fan", "Heater", "Air Conditioner", "Coffee Maker"
             ],
             "Technology": [
-                "Computer", "Phone", "Tablet", "Camera", "Printer", "Router", "Headphones", "Smartwatch",
-                "Television", "Drone", "Keyboard", "Mouse", "Microphone",
-                "Game Console", "Smart Speaker", "Charger", "Projector", "Monitor"
+                "Computer", "Phone", "Tablet", "Camera", "Printer", "Router", "Headphones",
+                "Smartwatch", "TV", "Drone", "Keyboard", "Mouse", "Microphone", "Charger", "Monitor"
+            ],
+            "Colors": [
+                "Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Black", "White",
+                "Gray", "Gold"
+            ],
+            "Planets": [
+                "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"
+            ],
+            "Jobs in a School": [
+                "Principal", "Teacher", "Janitor", "Librarian", "Counselor", "Coach",
+                "Secretary", "Nurse"
+            ],
+            "Drinks": [
+                "Water", "Coffee", "Tea", "Milk", "Juice", "Soda", "Lemonade", "Smoothie",
+                "Hot Chocolate", "Milkshake", "Energy Drink"
             ]
         };
 
@@ -1232,8 +1435,82 @@
             document.getElementById('cluesList').innerHTML = '';
 
             if (gameState.currentTurn === currentPlayer) {
-                document.getElementById('clueInput').style.display = 'block';
+                showClueModal();
             }
+        }
+
+        function updateCurrentTurn(playerId) {
+            const players = document.querySelectorAll('.player-card');
+            players.forEach(p => p.classList.remove('current-turn'));
+
+            if (playerId === currentPlayer) {
+                showClueModal();
+            }
+        }
+
+        function showClueModal() {
+            const clueModal = document.getElementById('clueModal');
+            const modalRoleInfo = document.getElementById('modalRoleInfo');
+
+            // Populate the modal with role information
+            if (gameState.role === 'chameleon') {
+                if (gameState.hardMode) {
+                    modalRoleInfo.className = 'modal-role-info chameleon-hard';
+                    modalRoleInfo.innerHTML = `
+                        <h3>🦎 You are the CHAMELEON!</h3>
+                        <div style="color: #ff6b6b; font-weight: bold;">🔥 HARD MODE - NO INFORMATION!</div>
+                        <p>Listen carefully and blend in!</p>
+                    `;
+                } else {
+                    modalRoleInfo.className = 'modal-role-info chameleon';
+                    modalRoleInfo.innerHTML = `
+                        <h3>🦎 You are the CHAMELEON!</h3>
+                        <p>Category: <span class="word-display">${gameState.category}</span></p>
+                        <p>Figure out the secret word and blend in!</p>
+                    `;
+                }
+            } else {
+                modalRoleInfo.className = 'modal-role-info';
+                modalRoleInfo.innerHTML = `
+                    <h3>🕵️ Regular Player</h3>
+                    <p>Category: ${gameState.category}</p>
+                    <p>Secret Word: <span class="word-display">${gameState.secretWord}</span></p>
+                    <p>Give a clue to help find the Chameleon!</p>
+                `;
+            }
+
+            clueModal.style.display = 'flex';
+
+            // Clear any previous input and focus on it
+            const clueInput = document.getElementById('clueWord');
+            clueInput.value = '';
+
+            // Focus the input after a short delay to ensure modal is visible
+            setTimeout(() => {
+                clueInput.focus();
+            }, 100);
+
+            // Add Enter key handler for quick submission
+            clueInput.onkeypress = function(event) {
+                if (event.key === 'Enter') {
+                    submitClue();
+                }
+            };
+
+            // Hide the "Give Clue" button while modal is open
+            document.getElementById('giveClueButton').style.display = 'none';
+        }
+
+        function closeClueModal() {
+            document.getElementById('clueModal').style.display = 'none';
+            // Show the "Give Clue" button again so player can reopen
+            if (gameState && gameState.currentTurn === currentPlayer) {
+                document.getElementById('giveClueButton').style.display = 'block';
+            }
+        }
+
+        function closeClueModalFinal() {
+            document.getElementById('clueModal').style.display = 'none';
         }
 
         function submitClue() {
@@ -1245,8 +1522,7 @@
             }
 
             socket.emit('submitClue', clueWord);
-            document.getElementById('clueWord').value = '';
-            document.getElementById('clueInput').style.display = 'none';
+            closeClueModalFinal();
         }
 
         function addClueToList(playerName, clue) {
@@ -1257,19 +1533,8 @@
             cluesList.appendChild(clueItem);
         }
 
-        function updateCurrentTurn(playerId) {
-            const players = document.querySelectorAll('.player-card');
-            players.forEach(p => p.classList.remove('current-turn'));
-
-            if (playerId === currentPlayer) {
-                document.getElementById('clueInput').style.display = 'block';
-            } else {
-                document.getElementById('clueInput').style.display = 'none';
-            }
-        }
-
         function showVotingScreen() {
-            document.getElementById('clueInput').style.display = 'none';
+            closeClueModalFinal();
             document.getElementById('votingSection').style.display = 'block';
 
             const votingSection = document.getElementById('votingSection');
@@ -1391,6 +1656,7 @@
             document.getElementById('lobbySection').style.display = 'block';
             document.getElementById('votingSection').style.display = 'none';
             document.getElementById('guessSection').style.display = 'none';
+            closeClueModal();
             gameState = null;
             totalPlayersAtVoteStart = 0;
         }
