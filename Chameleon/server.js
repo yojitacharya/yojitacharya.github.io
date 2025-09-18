@@ -301,9 +301,7 @@ io.on('connection', (socket) => {
         let room;
         let isNewRoom = false;
 
-
-      ,
-            if (roomCode && rooms.has(roomCode)) {
+        if (roomCode && rooms.has(roomCode)) {
             // Join existing room
             room = rooms.get(roomCode);
         } else {
