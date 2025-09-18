@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chameleon</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('background.jpg') repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+
+        .game-info {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: large;
+        }
+
+        .role-card {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .role-card.chameleon {
+            background-color: #ffc107;
+        }
+
+        .role-card.regular {
+            background-color: #28a745;
+        }
+
+        .role-card.chameleon-hard {
+            background-color: #dc3545;
+        }
+
+        .word-display {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .players-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .player-card {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px;
+            text-align: center;
+            width: 120px;
+        }
+
+        .player-card.current-turn {
+            border: 2px solid #007bff;
+        }
+
+        .player-card.voted {
+            opacity: 0.5;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .clues-section {
+            margin-top: 20px;
+        }
+
+        .clue-item {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .voting-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .vote-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .vote-button:hover {
+            background-color: #218838;
+        }
+
+        .vote-button.selected {
+            border: 2px solid #ffc107;
+        }
+
+        .chat-section {
+            margin-top: 20px;
+        }
+
+        .chat-message {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px; /* Increased max-width */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading::after {
+            content: 'Loading...';
+            font-size: 2em;
+            color: white;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .tutorial-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .tutorial-button:hover {
+            background-color: #0056b3;
+        }
+
+        .tutorial-button svg {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* Toggle Switch */
+        .toggleSwitch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggleSwitch #checkboxInput {
+            display: none;
+        }
+
+        .bell {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bell path {
+            fill: white;
+        }
+
+        .speaker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .speaker svg {
+            width: 25px;
+            height: 25px;
+            fill: white;
+        }
+
+        .mute-speaker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .mute-speaker svg {
+            width: 25px;
+            height: 25px;
+            fill: white;
+        }
+
+        #checkboxInput:checked+.toggleSwitch .speaker {
+            display: block;
+        }
+
+        #checkboxInput:checked+.toggleSwitch .mute-speaker {
+            display: none;
+        }
+
+        #checkboxInput:active+.toggleSwitch,
+        #checkboxInput:hover+.toggleSwitch {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #5cb85c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
+        body.dark-mode::before {
+            background: url('dark-background.jpg') repeat;
+            opacity: 0.1;
+        }
+
+        body.dark-mode .container {
+            background-color: #444;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h1 {
+            color: #66b3ff;
+        }
+
+        body.dark-mode .game-info {
+            color: #ddd;
+        }
+
+        body.dark-mode .role-card {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode .role-card.regular {
+            background-color: #4caf50;
+        }
+
+        body.dark-mode .player-card {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode input[type="text"] {
+            background-color: #6c757d;
+            color: #fff;
+            border-color: #495057;
+        }
+
+        body.dark-mode input[type="text"]:focus {
+            border-color: #66b3ff;
+        }
+
+        body.dark-mode .clues-section {
+            color: #ddd;
+        }
+
+        body.dark-mode .clue-item {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode .vote-button {
+            background-color: #4caf50;
+        }
+
+        body.dark-mode .vote-button:hover {
+            background-color: #43a047;
+        }
+
+        body.dark-mode .chat-section {
+            color: #ddd;
+        }
+
+        body.dark-mode .chat-message {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode .tutorial-button {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        body.dark-mode .tutorial-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Custom Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider::before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .slider::after {
+            position: absolute;
+            content: "Dark";
+            font-size: 10px;
+            color: #fff;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+        }
+
+        .checkbox:checked~.slider {
+            background-color: #2196F3;
+        }
+
+        .checkbox:checked~.slider::before {
+            transform: translateX(26px);
+        }
+
+        .checkbox:checked~.slider::after {
+            content: "Light";
+            left: auto;
+            right: 8px;
+        }
+
+        /* Hard Mode Styles */
+        .hard-mode-container {
+            margin-bottom: 10px;
+        }
+
+        .hard-mode-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .hard-mode-container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .hard-mode-container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .hard-mode-container input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .hard-mode-container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .hard-mode-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 7px;
+            height: 13px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .hard-mode-label {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+
+        .hard-mode-warning {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://github.com/yojitacharya/Chameleon" target="_blank" rel="noopener noreferrer" style="
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    z-index: 1000;
+">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+            <circle cx="125" cy="125" r="125" style="fill:#64CEAA" />
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" style="fill:#fff" />
+            <line x1="0" y1="0" x2="250" y2="250" style="stroke:#64CEAA; stroke-width:3" />
+        </svg>
+    </a>
+    <div>
+        <label class="switch-label">
+            <input type="checkbox" class="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div style="position: absolute; top: 10px; left: 10px;">
+        <label class="toggleSwitch">
+            <input type="checkbox" id="checkboxInput">
+            <div class="bell">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.27-4.18-6.04V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.96C7.63 4.73 6 6.93 6 9.5v5l-2 2v1h16v-1l-2-2z"></path>
+            </div>
+            <div class="speaker">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.07,19.81 21,16.27 21,12C21,7.73 18.07,4.19 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.9V16.1C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3V9Z" />
+                </svg>
+            </div>
+            <div class="mute-speaker">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M3,9H7L12,14V4L7,9H3V9M16.5,12A4.5,4.5 0 0,0 12,16.5V19C16.27,18.1 19.81,14.57 20.77,10.5H18.71A3.5,3.5 0 0,1 16.5,12M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,13.34 18.63,14.58 18,15.65L16.35,13.93C16.68,13.25 16.87,12.62 16.87,12C16.87,11.38 16.68,10.75 16.35,10.07L18,8.35C18.63,9.42 19,10.66 19,12C19,7.73 16.07,4.19 12,3.23V3.23M21.3,23L19.88,21.58L17.3,18.97C17.77,18.27 18.14,17.48 18.4,16.6L15.83,14.03C15.67,14.46 15.53,14.89 15.41,15.33L13.3,13.22L12,11.92L5,4.92L3.58,3.5L2.1,4.93L5.28,8.11L7.39,10.22L7,9H3V15H7L9.2,12.8L11.78,15.38L14,17.6L14.97,18.57C14.54,18.46 14.11,18.32 13.63,18.2L11.17,15.73C10.86,15.89 10.5,16 0,0 16.16L2.7,18.73L4.3,20.33C4.67,20.21 5,20.09 5.33,19.97L7.9,22.53C8.09,22.63 8.27,22.73 8.46,22.83L9.7,21.6L12,23.9L13.42,22.48L15.53,24.59L16.96,23.17L19.7,25.9L21.3,23Z" />
+                </svg>
+            </div>
+        </label>
+    </div>
+    <div class="container">
+        <h1>Chameleon</h1>
+
+        <div id="lobbySection">
+            <div>
+                <label for="playerName">Your Name:</label>
+                <input type="text" id="playerName" placeholder="Enter your name">
+            </div>
+            <div>
+                <label for="roomCode">Room Code:</label>
+                <input type="text" id="roomCode" placeholder="Enter room code (optional)">
+                <button onclick="joinGame()">Join/Create Room</button>
+            </div>
+        </div>
+
+        <div id="hostSettings" style="display:none;">
+            <h2>Host Settings</h2>
+            <div>
+                <label for="rounds">Number of Rounds:</label>
+                <select id="rounds">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div>
+                <input type="text" id="categoryInput" placeholder="Enter Category" />
+                <input type="text" id="secretWordInput" placeholder="Enter Secret Word" />
+                <button onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+
+        <div id="gameScreen" style="display:none;">
+            <div class="game-info">
+                <div id="hardModeControls">
+                    <label class="hard-mode-container">Enable Hard Mode
+                        <input type="checkbox" id="hardModeToggle">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="hard-mode-warning" style="display:none;">In Hard Mode, the Chameleon does not see the word list!</div>
+                </div>
+                <div class="role-card" id="roleCard">Your Role: <span id="role"></span></div>
+                <div class="word-display" id="wordDisplay">Category: <span id="category"></span> Word: <span id="secretWord"></span></div>
+            </div>
+
+            <div class="players-list" id="playersList">
+                <!-- Player cards will be dynamically added here -->
+            </div>
+
+            <div class="clues-section">
+                <h3>Clues</h3>
+                <div id="cluesList">
+                    <!-- Clues will be dynamically added here -->
+                </div>
+            </div>
+
+            <div id="votingSection" class="voting-section" style="display:none;">
+                <h3>Vote for the Chameleon!</h3>
+                <div id="voteButtons">
+                    <!-- Vote buttons will be dynamically added here -->
+                </div>
+                <p>Votes Received: <span id="voteCounter">0</span> / <span id="totalPlayersAtVoteStartDisplay">0</span></p>
+            </div>
+
+            <div id="guessSection" style="display:none;">
+                <h3>Chameleon, enter the secret word:</h3>
+                <input type="text" id="chameleonGuess" placeholder="Your guess">
+                <button onclick="submitGuess()">Submit Guess</button>
+            </div>
+
+            <div class="chat-section">
+                <h3>Chat</h3>
+                <div id="chatMessages">
+                    <!-- Chat messages will be dynamically added here -->
+                </div>
+                <input type="text" id="chatInput" placeholder="Enter your message">
+                <button onclick="sendChat()">Send</button>
+            </div>
+
+            <div class="timer" id="timer"></div>
+        </div>
+
+        <div id="endScreen" style="display:none;">
+            <h2>Game Over!</h2>
+            <p id="endMessage"></p>
+            <button onclick="resetToLobby()">Return to Lobby</button>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Welcome to Chameleon!</h2>
+                <p>This is a tutorial on how to play the game.</p>
+                <p><strong>Roles:</strong></p>
+                <ul>
+                    <li><strong>Regular Players:</strong> Know the secret word and must give clues to help others guess the Chameleon.</li>
+                    <li><strong>Chameleon:</strong> Does not know the secret word and must blend in by giving convincing clues.</li>
+                </ul>
+                <p><strong>How to Play:</strong></p>
+                <ol>
+                    <li>Each player submits a one-word clue related to the secret word.</li>
+                    <li>Players then vote on who they think the Chameleon is.</li>
+                    <li>If the Chameleon is caught, they get a chance to guess the secret word.</li>
+                </ol>
+                <p>Good luck, and have fun!</p>
+            </div>
+        </div>
+        <div class="modal" id="clueModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeClueModal()">&times;</span>
+                <h2>Enter Your Clue</h2>
+                <input type="text" id="clueWord" placeholder="Your clue">
+                <button onclick="submitClue()">Submit Clue</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="loading" id="loading" style="display: none;"></div>
+
+    <button class="tutorial-button" onclick="showModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V5h2v4z" />
+        </svg>
+        How to Play
+    </button>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        const gameData = {
+            categories: [
+                {
+                    name: "Animals",
+                    words: ["Elephant", "Tiger", "Penguin", "Squirrel", "Butterfly"]
+                },
+                {
+                    name: "Foods",
+                    words: ["Pizza", "Sushi", "Hamburger", "Chocolate", "Pasta"]
+                },
+                {
+                    name: "Countries",
+                    words: ["USA", "Japan", "France", "Brazil", "Australia"]
+                },
+                {
+                    name: "Jobs",
+                    words: ["Doctor", "Teacher", "Engineer", "Chef", "Artist"]
+                },
+                {
+                    name: "Sports",
+                    words: ["Football", "Basketball", "Tennis", "Swimming", "Baseball"]
+                }
+            ]
+        };
+
+        let socket;
+        let currentPlayer;
+        let currentRoom;
+        let gameState;
+        let isHost;
+        let totalPlayersAtVoteStart;
+        let soundEnabled = true;
+        let darkMode = false;
+        let hardModeEnabled = false;
+
+        const audioContext = new(window.AudioContext || window.webkitAudioContext)();
+
+        function createSound(frequency, type) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = type || 'sine';
+            oscillator.frequency.setValueAtTime(frequency || 440, audioContext.currentTime);
+
+            gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            return {
+                start: () => oscillator.start(),
+                stop: () => {
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    setTimeout(() => oscillator.stop(), 500); // Stop after fade out
+                }
+            };
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+
+            let frequency;
+
+            switch (type) {
+                case 'notification':
+                    frequency = 880; // Higher pitch
+                    break;
+                case 'error':
+                    frequency = 220; // Lower pitch
+                    break;
+                default:
+                    frequency = 440; // Base frequency
+            }
+            const sound = createSound(frequency);
+            sound.start();
+            setTimeout(() => sound.stop(), 500);
+
+        }
+
+    </script>
+</body>
+
+</html>

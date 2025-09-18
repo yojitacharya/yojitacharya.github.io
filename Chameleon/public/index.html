@@ -30,7 +30,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
@@ -45,7 +45,7 @@
             padding: 40px;
             max-width: 900px;
             width: 100%;
-            box-shadow: 
+            box-shadow:
                 0 25px 80px rgba(0, 0, 0, 0.2),
                 0 0 0 1px rgba(255, 255, 255, 0.1);
             animation: slideIn 0.6s ease;
@@ -301,6 +301,98 @@
             animation: slideIn 0.3s ease;
         }
 
+        .clue-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .clue-modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .clue-modal input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .clue-modal input[type="text"]:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .clue-modal .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .clue-modal button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .clue-modal button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .clue-modal button.primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .clue-modal button.primary:hover {
+            background: #f0f0f0;
+            color: #5566d6;
+        }
+
         .loading {
             display: inline-block;
             width: 30px;
@@ -347,7 +439,7 @@
             height: 20px;
         }
 
-        /* From Uiverse.io by vinodjangid07 */ 
+        /* From Uiverse.io by vinodjangid07 */
         /* The switch - the box around the speaker*/
         .toggleSwitch {
             width: 50px;
@@ -460,7 +552,7 @@
         }
 
         body.dark-mode::before {
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
@@ -540,6 +632,34 @@
             color: #ffffff;
         }
 
+        body.dark-mode .clue-modal-content {
+            background: linear-gradient(135deg, #4a4a6a 0%, #3a3a5a 100%);
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal h2 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal input[type="text"] {
+            background: #3a3a5a;
+            color: #ffffff;
+        }
+
+        body.dark-mode .clue-modal input[type="text"]::placeholder {
+            color: #cccccc;
+        }
+
+        body.dark-mode .clue-modal button.primary {
+            background: #ffffff;
+            color: #3a3a5a;
+        }
+
+        body.dark-mode .clue-modal button.primary:hover {
+            background: #f0f0f0;
+            color: #2a2a4a;
+        }
+
         body.dark-mode .tutorial-button {
             background: linear-gradient(135deg, #4a4a6a, #3a3a5a);
             box-shadow: 0 4px 15px rgba(74, 74, 106, 0.3);
@@ -550,13 +670,13 @@
             box-shadow: 0 8px 25px rgba(74, 74, 106, 0.5);
         }
 
-        /* From Uiverse.io by Madflows */ 
+        /* From Uiverse.io by Madflows */
         .toggle-switch {
             --light: #d8dbe0;
             --dark: #28292c;
             --link: rgb(27, 129, 112);
             --link-hover: rgb(24, 94, 82);
-            
+
             position: fixed;
             top: 20px;
             left: 20px;
@@ -747,15 +867,15 @@
         </svg>
     </a>
 
-    <!-- From Uiverse.io by Madflows --> 
+    <!-- From Uiverse.io by Madflows -->
     <div class="toggle-switch">
         <label class="switch-label">
             <input type="checkbox" class="checkbox" id="themeCheckbox" onchange="toggleTheme()">
             <span class="slider"></span>
         </label>
     </div>
-    
-    <!-- From Uiverse.io by vinodjangid07 --> 
+
+    <!-- From Uiverse.io by vinodjangid07 -->
     <input type="checkbox" id="checkboxInput" onchange="toggleSound()">
     <label for="checkboxInput" class="toggleSwitch">
         <div class="speaker"><svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 75 75">
@@ -767,10 +887,10 @@
         <path d="m49,26 20,24m0-24-20,24" fill="#fff" stroke-linecap="round"></path>
         </svg></div>
     </label>
-    
+
     <div class="container">
         <h1>🦎 Chameleon </h1>
-        
+
         <div id="joinSection">
             <input type="text" id="playerName" placeholder="Enter your name" maxlength="20">
             <input type="text" id="roomCode" placeholder="Enter room code (or leave blank to create)">
@@ -781,7 +901,7 @@
             <div class="game-info">
                 Room Code: <span id="roomCodeDisplay"></span> | Players: <span id="playerCount">0</span>
             </div>
-            
+
             <!-- Hard Mode Controls -->
             <div id="hardModeControls">
                 <label class="hard-mode-container">
@@ -793,7 +913,7 @@
                     ⚠️ HARD MODE ENABLED - The Chameleon will receive NO information at all!
                 </div>
             </div>
-            
+
             <div class="players-list" id="lobbyPlayers"></div>
             <button id="startGameBtn" onclick="startGame()" style="display: none;">Start Game</button>
         </div>
@@ -808,11 +928,6 @@
             <div class="clues-section" id="cluesSection" style="display: none;">
                 <h3>Clues Given:</h3>
                 <div id="cluesList"></div>
-            </div>
-
-            <div id="clueInput" style="display: none;">
-                <input type="text" id="clueWord" placeholder="It is your Turn. Enter your one-word clue" maxlength="30">
-                <button onclick="submitClue()">Submit Clue</button>
             </div>
 
             <div class="voting-section" id="votingSection" style="display: none;">
@@ -841,6 +956,18 @@
             <h2 id="modalTitle">Game Result</h2>
             <p id="modalMessage"></p>
             <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <div class="clue-modal" id="clueModal">
+        <div class="clue-modal-content">
+            <h2>Your Turn!</h2>
+            <p>Give a one-word clue related to the secret word</p>
+            <input type="text" id="clueWord" placeholder="Enter your clue here..." maxlength="30" autofocus>
+            <div class="modal-buttons">
+                <button onclick="submitClue()" class="primary">Submit Clue</button>
+                <button onclick="closeClueModal()">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -914,10 +1041,6 @@
             "Planets": [
                 "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"
             ],
-            "Jobs in a School": [
-                "Principal", "Teacher", "Janitor", "Librarian", "Counselor", "Coach",
-                "Secretary", "Nurse"
-            ],
             "Drinks": [
                 "Water", "Coffee", "Tea", "Milk", "Juice", "Soda", "Lemonade", "Smoothie",
                 "Hot Chocolate", "Milkshake", "Energy Drink"
@@ -936,29 +1059,29 @@
 
         // Sound effects using Web Audio API for better quality
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
+
         function createSound(frequency, duration, type = 'sine') {
             if (!soundEnabled) return;
-            
+
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
+
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
+
             oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
             oscillator.type = type;
-            
+
             gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
+
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + duration);
         }
 
         function playSound(soundType) {
             if (!soundEnabled) return;
-            
+
             switch(soundType) {
                 case 'join':
                     createSound(800, 0.2);
@@ -996,10 +1119,10 @@
 
         function toggleHardMode() {
             if (!isHost) return;
-            
+
             hardModeEnabled = !hardModeEnabled;
             const warning = document.getElementById('hardModeWarning');
-            
+
             if (hardModeEnabled) {
                 warning.style.display = 'block';
                 showNotification('Hard Mode enabled! 🔥');
@@ -1007,9 +1130,9 @@
                 warning.style.display = 'none';
                 showNotification('Hard Mode disabled');
             }
-            
+
             playSound('notification');
-            
+
             // Emit hard mode status to server
             socket.emit('toggleHardMode', hardModeEnabled);
         }
@@ -1019,7 +1142,7 @@
             notification.className = 'notification';
             notification.textContent = message;
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.remove();
             }, 3000);
@@ -1029,7 +1152,7 @@
             darkMode = !darkMode;
             const body = document.body;
             const themeCheckbox = document.getElementById('themeCheckbox');
-            
+
             if (darkMode) {
                 body.classList.add('dark-mode');
                 themeCheckbox.checked = true;
@@ -1039,9 +1162,9 @@
                 themeCheckbox.checked = false;
                 showNotification('Light mode enabled ☀️');
             }
-            
+
             playSound('notification');
-            
+
             // Save preference to localStorage
             localStorage.setItem('darkMode', darkMode);
         }
@@ -1098,10 +1221,10 @@
                 hardModeEnabled = enabled;
                 const warning = document.getElementById('hardModeWarning');
                 const checkbox = document.getElementById('hardModeCheckbox');
-                
+
                 checkbox.checked = enabled;
                 warning.style.display = enabled ? 'block' : 'none';
-                
+
                 if (!isHost) {
                     showNotification(enabled ? 'Host enabled Hard Mode! 🔥' : 'Host disabled Hard Mode');
                 }
@@ -1146,23 +1269,23 @@
                 } else {
                     showModal('Chameleon Caught!', `The Chameleon was ${data.chameleonName}! Waiting for their guess...`);
                     playSound('win');
-                    showNotification('Chameleon caught! 🎯');
+                    showNotification('Chameleon caught! 🦎');
                 }
             });
 
             socket.on('gameEnd', (data) => {
-                let message = data.chameleonWon ? 
+                let message = data.chameleonWon ?
                     `The Chameleon (${data.chameleonName}) wins! They ${data.guessedCorrectly ? 'guessed the word correctly' : 'avoided detection'}!` :
                     `The team wins! The Chameleon was caught and failed to guess the word.`;
-                
+
                 if (data.secretWord) {
                     message += `\n\nThe secret word was: ${data.secretWord}`;
                 }
-                
+
                 showModal('Game Over!', message);
                 playSound(data.chameleonWon ? 'win' : 'lose');
                 showNotification(data.chameleonWon ? 'Chameleon wins! 🦎' : 'Team wins! 🎉');
-                
+
                 setTimeout(() => {
                     resetToLobby();
                 }, 5000);
@@ -1180,7 +1303,7 @@
         function joinGame() {
             const name = document.getElementById('playerName').value.trim();
             const roomCode = document.getElementById('roomCode').value.trim();
-            
+
             if (!name) {
                 alert('Please enter your name');
                 return;
@@ -1198,7 +1321,7 @@
                 const category = Object.keys(gameData)[Math.floor(Math.random() * Object.keys(gameData).length)];
                 const words = gameData[category];
                 const secretWord = words[Math.floor(Math.random() * words.length)];
-                
+
                 socket.emit('startGame', { category, secretWord, words, hardMode: hardModeEnabled });
             }
         }
@@ -1206,10 +1329,10 @@
         function showGameScreen() {
             document.getElementById('lobbySection').style.display = 'none';
             document.getElementById('gameSection').style.display = 'block';
-            
+
             const roleCard = document.getElementById('roleCard');
             const roleInfo = document.getElementById('roleInfo');
-            
+
             if (gameState.role === 'chameleon') {
                 if (gameState.hardMode) {
                     // Hard mode - no information at all
@@ -1235,29 +1358,62 @@
                     <p>Category: ${gameState.category}</p>
                     <p>Secret Word: <span class="word-display">${gameState.secretWord}</span></p>
                     <p>Find the Chameleon!</p>
-                    ${gameState.hardMode ? '<div class="hard-mode-warning">🔥 HARD MODE - Chameleon has no info!</div>' : ''}
+                    ${gameState.hardMode ? '<div class="hard-mode-warning"> HARD MODE - Chameleon has no info!</div>' : ''}
                 `;
             }
-            
+
             document.getElementById('cluesSection').style.display = 'block';
             document.getElementById('cluesList').innerHTML = '';
-            
+
             if (gameState.currentTurn === currentPlayer) {
-                document.getElementById('clueInput').style.display = 'block';
+                showClueModal();
             }
+        }
+
+        function updateCurrentTurn(playerId) {
+            const players = document.querySelectorAll('.player-card');
+            players.forEach(p => p.classList.remove('current-turn'));
+
+            if (playerId === currentPlayer) {
+                showClueModal();
+            }
+        }
+
+        function showClueModal() {
+            const clueModal = document.getElementById('clueModal');
+            clueModal.style.display = 'flex';
+
+            // Clear any previous input and focus on it
+            const clueInput = document.getElementById('clueWord');
+            clueInput.value = '';
+
+            // Focus the input after a short delay to ensure modal is visible
+            setTimeout(() => {
+                clueInput.focus();
+            }, 100);
+
+            // Add Enter key handler for quick submission
+            clueInput.onkeypress = function(event) {
+                if (event.key === 'Enter') {
+                    submitClue();
+                }
+            };
+        }
+
+        function closeClueModal() {
+            document.getElementById('clueModal').style.display = 'none';
         }
 
         function submitClue() {
             const clueWord = document.getElementById('clueWord').value.trim();
-            
+
             if (!clueWord) {
                 alert('Please enter a clue');
                 return;
             }
-            
+
             socket.emit('submitClue', clueWord);
-            document.getElementById('clueWord').value = '';
-            document.getElementById('clueInput').style.display = 'none';
+            closeClueModal();
         }
 
         function addClueToList(playerName, clue) {
@@ -1268,26 +1424,15 @@
             cluesList.appendChild(clueItem);
         }
 
-        function updateCurrentTurn(playerId) {
-            const players = document.querySelectorAll('.player-card');
-            players.forEach(p => p.classList.remove('current-turn'));
-            
-            if (playerId === currentPlayer) {
-                document.getElementById('clueInput').style.display = 'block';
-            } else {
-                document.getElementById('clueInput').style.display = 'none';
-            }
-        }
-
         function showVotingScreen() {
-            document.getElementById('clueInput').style.display = 'none';
+            closeClueModal();
             document.getElementById('votingSection').style.display = 'block';
-            
+
             const votingSection = document.getElementById('votingSection');
-            
+
             // Store the total players count when voting starts
             totalPlayersAtVoteStart = gameState.players.length;
-            
+
             // Clear previous content but keep the header
             votingSection.innerHTML = `
                 <h3>Vote for who you think is the Chameleon:</h3>
@@ -1304,7 +1449,7 @@
                     votingSection.appendChild(voteBtn);
                 }
             });
-            
+
             // Set the game phase to voting
             gameState.phase = 'voting';
         }
@@ -1327,7 +1472,7 @@
         function vote(playerId) {
             socket.emit('vote', playerId);
             playSound('vote');
-            
+
             // Disable all vote buttons after voting
             document.querySelectorAll('.vote-button').forEach(btn => {
                 btn.disabled = true;
@@ -1340,7 +1485,7 @@
                     const playerName = gameState.players.find(p => p.id === playerId).name;
                     return btn.textContent.includes(playerName);
                 });
-            
+
             if (chosen) chosen.classList.add("selected");
         }
 
@@ -1357,9 +1502,9 @@
         function updatePlayersList(players) {
             const lobbyPlayers = document.getElementById('lobbyPlayers');
             lobbyPlayers.innerHTML = '';
-            
+
             document.getElementById('playerCount').textContent = players.length;
-            
+
             players.forEach(player => {
                 const playerCard = document.createElement('div');
                 playerCard.className = 'player-card';
@@ -1371,7 +1516,7 @@
         function sendChat() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
-            
+
             if (message) {
                 socket.emit('chatMessage', message);
                 input.value = '';
@@ -1402,6 +1547,7 @@
             document.getElementById('lobbySection').style.display = 'block';
             document.getElementById('votingSection').style.display = 'none';
             document.getElementById('guessSection').style.display = 'none';
+            closeClueModal();
             gameState = null;
             totalPlayersAtVoteStart = 0;
         }
@@ -1414,4 +1560,3 @@
     </script>
 </body>
 </html>
-                "

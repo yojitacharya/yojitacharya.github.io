@@ -284,7 +284,7 @@ class Room {
 
 // Generate room code
 function generateRoomCode() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const characters = '0123456789';
     let code = '';
     for (let i = 0; i < 6; i++) {
         code += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -301,7 +301,9 @@ io.on('connection', (socket) => {
         let room;
         let isNewRoom = false;
 
-        if (roomCode && rooms.has(roomCode)) {
+
+      ,
+            if (roomCode && rooms.has(roomCode)) {
             // Join existing room
             room = rooms.get(roomCode);
         } else {
