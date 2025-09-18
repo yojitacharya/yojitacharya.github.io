@@ -1735,10 +1735,8 @@
 
             function closeClueModal() {
                 document.getElementById("clueModal").style.display = "none";
-                // Show the "Give Clue" button again so player can reopen
-                if (gameState && gameState.currentTurn === currentPlayer) {
-                    document.getElementById("giveClueButton").style.display = "block";
-                }
+                // Always show the "Give Clue" button
+                document.getElementById("giveClueButton").style.display = "block";
             }
 
             function closeClueModalFinal() {
@@ -1888,7 +1886,7 @@
                 document.getElementById("lobbySection").style.display = "block";
                 document.getElementById("votingSection").style.display = "none";
                 document.getElementById("guessSection").style.display = "none";
-                closeClueModal();
+                closeClueModalFinal();
                 gameState = null;
                 totalPlayersAtVoteStart = 0;
             }
