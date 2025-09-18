@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-3373032658684210">
     <meta charset="UTF-8" />
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
@@ -40,7 +40,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 30% 70%, rgba(255, 119, 198, 0.12) 0%, transparent 50%),
                 radial-gradient(circle at 70% 30%, rgba(120, 255, 198, 0.12) 0%, transparent 50%),
                 radial-gradient(circle at 50% 80%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
@@ -56,7 +56,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 40%, #7877c6 1px, transparent 1px),
                 radial-gradient(circle at 80% 60%, #ff77c6 1px, transparent 1px),
                 radial-gradient(circle at 60% 20%, #77ffc6 1px, transparent 1px);
@@ -89,7 +89,7 @@
             padding: 1.5rem 0;
             transform: translateY(-100%);
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 
+            box-shadow:
                 0 8px 32px rgba(120, 119, 198, 0.15),
                 0 0 80px rgba(255, 119, 198, 0.05);
         }
@@ -208,7 +208,7 @@
 
         nav li a:hover {
             transform: translateY(-3px);
-            box-shadow: 
+            box-shadow:
                 0 15px 50px rgba(120, 119, 198, 0.4),
                 0 0 30px rgba(120, 119, 198, 0.3);
             background: linear-gradient(135deg, rgba(120, 119, 198, 0.25), rgba(255, 119, 198, 0.25));
@@ -240,8 +240,8 @@
         .portfolio-items figure {
             position: relative;
             border-radius: 25px;
-            background: linear-gradient(135deg, 
-                rgba(120, 119, 198, 0.15), 
+            background: linear-gradient(135deg,
+                rgba(120, 119, 198, 0.15),
                 rgba(255, 119, 198, 0.08),
                 rgba(120, 255, 198, 0.05));
             backdrop-filter: blur(15px);
@@ -290,8 +290,8 @@
             content: '';
             position: absolute;
             inset: 2px;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 15, 0.95), 
+            background: linear-gradient(135deg,
+                rgba(10, 10, 15, 0.95),
                 rgba(26, 26, 46, 0.95));
             border-radius: 23px;
             z-index: -1;
@@ -311,7 +311,7 @@
 
         .portfolio-items figure:hover {
             transform: translateY(-15px) scale(1.03) rotateX(5deg);
-            box-shadow: 
+            box-shadow:
                 0 25px 80px rgba(120, 119, 198, 0.3),
                 0 0 60px rgba(255, 119, 198, 0.2);
             border-color: rgba(120, 119, 198, 0.5);
@@ -400,25 +400,25 @@
                 gap: 1.5rem;
                 padding: 0 2rem;
             }
-            
+
             .nav-links {
                 gap: 1rem;
             }
-            
+
             nav li a {
                 padding: 10px 20px;
                 font-size: 0.8rem;
             }
-            
+
             main {
                 padding: 2rem 1rem;
             }
-            
+
             .portfolio-items {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            
+
             .portfolio-items figure {
                 max-width: 100%;
             }
@@ -426,10 +426,10 @@
 
         /* Loading animation */
         @keyframes pulseGlow {
-            0%, 100% { 
+            0%, 100% {
                 box-shadow: 0 0 20px rgba(120, 119, 198, 0.3);
             }
-            50% { 
+            50% {
                 box-shadow: 0 0 40px rgba(120, 119, 198, 0.6);
             }
         }
@@ -443,7 +443,7 @@
             scroll-behavior: smooth;
         }
     </style>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const headerElement = document.querySelector('header');
@@ -489,7 +489,7 @@
                     this.style.transform = 'translateY(-15px) scale(1.03) rotateX(5deg)';
                     this.style.zIndex = '10';
                 });
-                
+
                 figure.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
                     this.style.zIndex = '1';
@@ -528,7 +528,6 @@
                 <h1>Portfolio</h1>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="test.html">Test</a></li>
             </ul>
         </nav>
     </header>

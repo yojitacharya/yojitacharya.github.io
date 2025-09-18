@@ -21,7 +21,7 @@
             { img: 'Chess/Chess_Pieces/N.png', icon: '♞', link: 'Chess/index.html', name: 'Chess' },
             { img: 'Imgs/blackjack.png', icon: '🃏', link: 'Blackjack/index.html', name: 'Blackjack' },
             { img: 'Imgs/Wordle.png', icon: '📝', link: 'Wordle/index.html', name: 'Wordle' },
-            { img: 'Imgs/BlockBlast.png', icon: '💥', link: 'BlockBlast/index.html', name: 'Block Blast' },
+          //  { img: 'Imgs/BlockBlast.png', icon: '💥', link: 'BlockBlast/index.html', name: 'Block Blast' },
             { img: 'Imgs/Sudoku.png', icon: '🔢', link: 'Sudoku/index.html', name: 'Sudoku' }
         ];
 
@@ -29,12 +29,12 @@
             // Set up the image element with proper attributes
             imgElement.style.background = 'linear-gradient(45deg, rgba(64, 224, 208, 0.2), rgba(255, 105, 180, 0.2))';
             imgElement.classList.add('loading');
-            
+
             console.log(`🔄 Attempting to load: ${imagePath}`);
 
             // Create a test image
             const testImg = new Image();
-            
+
             testImg.onload = function() {
                 // Image loaded successfully
                 imgElement.src = this.src;
@@ -50,7 +50,7 @@
                 imgElement.classList.add('placeholder');
                 imgElement.setAttribute('data-icon', fallbackIcon);
                 imgElement.removeAttribute('src');
-                
+
                 // Set placeholder styling
                 imgElement.style.background = 'linear-gradient(45deg, rgba(64, 224, 208, 0.3), rgba(255, 105, 180, 0.3))';
                 imgElement.style.border = '2px dashed rgba(255, 255, 255, 0.3)';
@@ -76,7 +76,7 @@
 
         function initializeApp() {
             console.log('🚀 Initializing application...');
-            
+
             // Add slide-in classes to elements
             const header = document.querySelector('header');
             const navItems = document.querySelectorAll('nav li');
@@ -85,7 +85,7 @@
 
             // Start animations
             if (header) header.classList.add('slide-in');
-            
+
             setTimeout(() => {
                 navItems.forEach(item => item.classList.add('slide-in'));
             }, 400);
@@ -117,7 +117,7 @@
                 figure.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-10px) scale(1.02)';
                 });
-                
+
                 figure.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0) scale(1)';
                 });
@@ -155,7 +155,6 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="test.html">Test</a></li>
             </ul>
         </nav>
     </header>
@@ -184,7 +183,7 @@
                 <a href="Tetris/index.html">
                     <img alt="Tetris game screenshot">
                 </a>
-                <figcaption><a href="Tetris/index.html">Tetris</a></figcaption>
+                <figcaption><a href="Tetris/index.html">Not Totris, <br> but similar</a></figcaption>
             </figure>
 
             <figure>
@@ -193,7 +192,7 @@
                 </a>
                 <figcaption><a href="Snake/index.html">Snake</a></figcaption>
             </figure>
-            
+
             <figure>
                <a href="Chess/index.html">
                    <img alt="Chess knight piece">
@@ -208,22 +207,22 @@
                 </a>
                 <figcaption><a href="Blackjack/index.html">Blackjack</a></figcaption>
             </figure>
-            
+
             <figure>
                 <a href="Wordle/index.html">
                     <img alt="Wordle game screenshot">
                 </a>
-                <figcaption><a href="Wordle/index.html">Wordle</a></figcaption>
+                <figcaption><a href="Wordle/index.html">Word-el</a></figcaption>
             </figure>
-            
+<!--
             <figure>
                 <a href="BlockBlast/index.html">
                     <img alt="Block Blast game screenshot">
                 </a>
-                <figcaption><a href="BlockBlast/index.html">Block Blast</a></figcaption>
+                <figcaption><a href="BlockBlast/index.html">Block Blaster</a></figcaption>
             </figure>
         </div>
-
+-->
         <div class="games">
             <figure>
                 <a href="Sudoku/index.html">
